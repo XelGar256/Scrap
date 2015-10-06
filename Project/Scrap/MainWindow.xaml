@@ -11,10 +11,22 @@
                     <TextBox x:Name="txtUsernameZoom" HorizontalAlignment="Left" Height="23" Margin="81,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-1.85,-4.87"/>
                     <PasswordBox x:Name="txtPasswordZoom" HorizontalAlignment="Left" Margin="81,44,0,0" VerticalAlignment="Top" Width="120" Height="23"/>
                     <Button x:Name="btnLoginZoom" Content="Start To Zoom" HorizontalAlignment="Left" Margin="81,86,0,0" VerticalAlignment="Top" Width="85" Click="btnLoginZoom_Click"/>
+                    <Button x:Name="btnStopZoom" Content="Stop Zooming" HorizontalAlignment="Left" Margin="81,111,0,0" VerticalAlignment="Top" Width="85" Click="btnStopZoom_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Swagbucks">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="51*"/>
+                        <ColumnDefinition Width="535*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Username:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                    <Label Content="Password:" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                    <TextBox x:Name="txtUsernameSwag" HorizontalAlignment="Left" Height="23" Margin="30,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-1.85,-4.87" Grid.Column="1"/>
+                    <PasswordBox x:Name="txtPasswordSwag" HorizontalAlignment="Left" Margin="30,44,0,0" VerticalAlignment="Top" Width="120" Height="23" Grid.Column="1"/>
+                    <Button x:Name="btnLoginSwag" Content="Start The Bucks" HorizontalAlignment="Left" Margin="30,86,0,0" VerticalAlignment="Top" Width="85" Click="btnLoginSwag_Click" Grid.Column="1"/>
+                    <Button x:Name="btnStopSwag" Content="Stop The Bucks" Grid.Column="1" HorizontalAlignment="Left" Margin="30,111,0,0" VerticalAlignment="Top" Width="85" RenderTransformOrigin="-0.36,-0.3" Click="btnStopSwag_Click"/>
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>
