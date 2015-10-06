@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="Scrap" Language="1033" Version="!(bind.FileVersion.exeFile)" Manufacturer="Scrap" UpgradeCode="48f1421f-1fcf-4337-8ebc-98607720b294">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perUser" Comments="!(bind.FileVersion.exeFile)" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate EmbedCab="yes" />
+
+		<Feature Id="ProductFeature" Title="Setup" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="DesktopShortcutComponents" />
+		</Feature>
+      <CustomAction Id="LaunchFile" FileKey="exeFile" ExeCommand="" Return="asyncNoWait" />
+      <InstallExecuteSequence>
+        <Custom Action="LaunchFile" After="InstallFinalize">LAUNCH = 1 and NOT Installed</Custom>
+      </InstallExecuteSequence>
+	</Product>
+
+	<Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="DesktopFolder" />
+      <Directory Id="LocalAppDataFolder">
+        <Directory Id="InstallFolder" Name="Scrap" />
+      </Directory>
+    </Directory>
+	</Fragment>
+
+	<Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="InstallFolder">
+      <Component Id="exeFile" Guid="{7EB61895-28A1-4FE7-B31D-3675D64FB13F}">
+        <File Id="exeFile" Source="$(var.Scrap.TargetPath)" />
+        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" KeyPath="yes"/>
+        <RemoveFolder Id="InstallFolder" On="uninstall" />
+      </Component>
+      <Component Id="chromedriverFile" Guid="{7AFAB036-39A0-46AF-99AC-405C9415D32C}">
+        <File Id="chromedriverFile" Source="redist\chromedriver.exe" />
+        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" KeyPath="yes"/>
+      </Component>
+    </ComponentGroup>
+
+    <ComponentGroup Id="DesktopShortcutComponents" Directory="DesktopFolder">
+      <Component Id="desktopShortcutFile" Guid="{03486418-26B9-4C7E-9D17-18BFB20C744F}">
+        <Shortcut Id="desktopShortcutFile" Name="Scrap" Target="[!exeFile]" WorkingDirectory="InstallFolder" />
+        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" KeyPath="yes"/>
+      </Component>
+    </ComponentGroup>
+  
+	</Fragment>
+</Wix>
