@@ -54,6 +54,9 @@
   <PropertyGroup>
     <StartupObject>Scrap.App</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Scrap.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -100,6 +103,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\JavascriptExecutor.cs" />
     <Compile Include="Models\SwagModel.cs" />
     <Compile Include="Models\ZoomModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -150,6 +154,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Scrap.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

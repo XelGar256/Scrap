@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Scrap.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="756" Width="620">
+        Title="MainWindow" Height="756" Width="620" Icon="Scrap.ico">
     <Grid>
         <TabControl HorizontalAlignment="Left" Height="705" Margin="10,10,0,0" VerticalAlignment="Top" Width="592">
             <TabItem Header="ZoomBucks">
