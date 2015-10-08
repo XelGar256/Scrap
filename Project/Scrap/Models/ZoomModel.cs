@@ -5,13 +5,17 @@ using Scrap.Classes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace Scrap.Models
 {
     class ZoomModel
     {
+        string[] titles = { "Dashboard", "Watch and", "http://www.zoombucks.com/hourly_offer_contest.php?check_in", "RadioLoyalty" };
+
         public ZoomModel(string username, string password, BackgroundWorker bw)
         {
+            int hour = -1;
             ChromeDriverService service = ChromeDriverService.CreateDefaultService(App.Folder);
             service.HideCommandPromptWindow = true;
 
@@ -35,7 +39,19 @@ namespace Scrap.Models
             catch { }
             finally { }
             //jun videos
-            Helpers.wait(5000);
+            Helpers.wait(2000);
+            try
+            {
+                driver.FindElement(By.XPath("//a[contains(@href, 'hourly_offer_contest')]")).Click();
+                //MessageBox.Show(driver.Title);
+                hour = DateTime.Now.Hour;
+            }
+            catch
+            {
+                Debug.WriteLine("Couldn't Click Contest");
+            }
+            finally { }
+            Helpers.wait(2000);
 
             while (!bw.CancellationPending)
             {
@@ -43,7 +59,7 @@ namespace Scrap.Models
                 try
                 {
                     driver.FindElement(By.LinkText("Jun Videos")).Click();
-                    Console.WriteLine("Jun Videos Clicked!!");
+                    Debug.WriteLine("Jun Videos Clicked!!");
                     Helpers.switchToBrowserByString(driver, "Watch Videos");
                     IList<IWebElement> oLinks = driver.FindElements(By.ClassName("go-btns"));
                     int count = 0;
@@ -70,22 +86,27 @@ namespace Scrap.Models
                     catch
                     {
                         Helpers.wait(2000);
-                        driver.FindElement(By.ClassName("brand")).Click();
+                        try
+                        {
+                            driver.FindElement(By.ClassName("brand")).Click();
+                        }
+                        catch { }
+                        finally {}
                     }
                     finally { }
                 }
 
                 Helpers.wait(2000);
-                Console.WriteLine(driver.Title.ToString());
+                Debug.WriteLine(driver.Title.ToString());
 
                 try
                 {
-                    Console.WriteLine("Switching to Watch and Get Rewarded!");
+                    Debug.WriteLine("Switching to Watch and Get Rewarded!");
                     Helpers.switchToBrowserByString(driver, "Watch and");
-                    Console.WriteLine("hey whats your title");
-                    Console.WriteLine(driver.Title);
+                    Debug.WriteLine("hey whats your title");
+                    Debug.WriteLine(driver.Title);
                     IList<IWebElement> iframes = driver.FindElements(By.TagName("iframe"));
-                    Console.WriteLine(iframes.Count);
+                    Debug.WriteLine(iframes.Count);
 
                     if (!driver.Title.Contains("Watch and"))
                     {
@@ -107,30 +128,32 @@ namespace Scrap.Models
 
                 while (driver.Title.Contains("Watch and"))
                 {
+                    if (hour != DateTime.Now.Hour)
+                    {
+                        try
+                        {
+                            Helpers.switchToBrowserByString(driver, "Dashboard");
+                            driver.FindElement(By.XPath("//a[contains(@href, 'hourly_offer_contest')]")).Click();
+                            //MessageBox.Show(driver.Title);
+                            hour = DateTime.Now.Hour;
+                        }
+                        catch
+                        {
+                            Debug.WriteLine("Couldn't Click Contest");
+                        }
+                        finally { }
+                    }
+
+                    Debug.WriteLine("Last Hour: " + hour);
+                    Debug.WriteLine("Current Hour: " + DateTime.Now.Hour);
                     try
                     {
-                        Console.WriteLine("Switching to Watch and Get Rewarded!");
+                        Debug.WriteLine("Switching to Watch and Get Rewarded!");
                         Helpers.switchToBrowserByString(driver, "Watch and");
-                        Console.WriteLine("hey whats your title");
-                        Console.WriteLine(driver.Title);
+                        Debug.WriteLine("hey whats your title");
+                        Debug.WriteLine(driver.Title);
                         IList<IWebElement> iframes = driver.FindElements(By.TagName("iframe"));
-                        Console.WriteLine(iframes.Count);
-
-                        if (!driver.Title.Contains("Watch and"))
-                        {
-                            try
-                            {
-                                driver.FindElement(By.ClassName("widgetcontent")).Click();
-                            }
-                            catch { }
-                            finally { }
-                        }
-
-                        if (iframes.Count > 0)
-                            Helpers.switchToFrame(driver, iframes, iframes.Count);
-                        else
-                            driver.SwitchTo().DefaultContent();
-
+                        Debug.WriteLine(iframes.Count);
 
                         try
                         {
@@ -140,7 +163,7 @@ namespace Scrap.Models
                             string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
                             Random random = new Random();
                             int rndMonth = random.Next(0, 11);
-                            Console.WriteLine(rndMonth);
+                            Debug.WriteLine(rndMonth);
                             SelectElement clickThis = new SelectElement(dropDownMonth);
                             clickThis.SelectByText(months[rndMonth]);
                             Helpers.wait(1000);
@@ -161,11 +184,11 @@ namespace Scrap.Models
                             IList<IWebElement> oLinks = driver.FindElements(By.ClassName("singleselectset_radio"));
                             Random random = new Random();
                             int rndClick = random.Next(1, oLinks.Count);
-                            Console.WriteLine(rndClick);
+                            Debug.WriteLine(rndClick);
                             int counterClick = 1;
                             foreach (IWebElement oLink in oLinks)
                             {
-                                Console.WriteLine(counterClick);
+                                Debug.WriteLine(counterClick);
                                 if (counterClick == rndClick)
                                 {
                                     oLink.Click();
@@ -187,13 +210,13 @@ namespace Scrap.Models
                         {
                             IWebElement earn2Swag = driver.FindElement(By.ClassName("webtraffic_start_button"));
                             earn2Swag.Click();
-                            Console.WriteLine("earn2Swag found, wait 5 seconds");
-                            Helpers.wait(5000);
+                            Debug.WriteLine("Zoooommmm!! found, wait 1 seconds");
+                            Helpers.wait(1000);
                         }
                         catch
                         {
-                            Console.WriteLine("Waiting 5 Seconds!!");
-                            Helpers.wait(5000);
+                            Debug.WriteLine("Waiting 1 Seconds!!");
+                            Helpers.wait(1000);
                         }
                         finally { }
 
@@ -201,26 +224,26 @@ namespace Scrap.Models
                         {
                             IWebElement nextPage = driver.FindElement(By.ClassName("webtraffic_next_button"));
                             nextPage.Click();
-                            Console.WriteLine("Next Page");
-                            Helpers.wait(5000);
+                            Debug.WriteLine("Next Page");
+                            Helpers.wait(1000);
                         }
                         catch
                         {
-                            Console.WriteLine("Waiting 5 Seconds!!");
-                            Helpers.wait(5000);
+                            Debug.WriteLine("Waiting 1 Seconds!!");
+                            Helpers.wait(1000);
                         }
                         finally { }
                         try
                         {
                             IWebElement earn2Swag = driver.FindElement(By.Id("webtraffic_popup_start_button"));
                             earn2Swag.Click();
-                            Console.WriteLine("earn2Swag found, wait 5 seconds");
-                            Helpers.wait(5000);
+                            Debug.WriteLine("earn2Swag found, wait 1 seconds");
+                            Helpers.wait(1000);
                         }
                         catch
                         {
-                            Console.WriteLine("Waiting 5 Seconds!!");
-                            Helpers.wait(5000);
+                            Debug.WriteLine("Waiting 1 Seconds!!");
+                            Helpers.wait(1000);
                         }
                         finally { }
 
@@ -228,13 +251,13 @@ namespace Scrap.Models
                         {
                             IWebElement nextPage = driver.FindElement(By.Id("webtraffic_popup_next_button"));
                             nextPage.Click();
-                            Console.WriteLine("Next Page");
-                            Helpers.wait(5000);
+                            Debug.WriteLine("Next Page");
+                            Helpers.wait(1000);
                         }
                         catch
                         {
-                            Console.WriteLine("Waiting 5 Seconds!!");
-                            Helpers.wait(5000);
+                            Debug.WriteLine("Waiting 5 Seconds!!");
+                            Helpers.wait(1000);
                         }
                         finally { }
 
@@ -243,24 +266,24 @@ namespace Scrap.Models
                             IWebElement rewardText = driver.FindElement(By.Id("ty_header"));
                             if (rewardText.Text == "You earned 2 ZBs!")
                             {
-                                Console.WriteLine("Start Refresh");
+                                Debug.WriteLine("Start Refresh");
                                 driver.Navigate().Refresh();
-                                Console.WriteLine("Stop Refresh");
-                                Helpers.closeWindows(driver, new string[] { "Dashboard", "Watch and" });
+                                Debug.WriteLine("Stop Refresh");
+                                Helpers.closeWindows(driver, titles);
                             }
                             else if (rewardText.Text == "You've earned 2 ZBs!")
                             {
-                                Console.WriteLine("Start Refresh");
+                                Debug.WriteLine("Start Refresh");
                                 driver.Navigate().Refresh();
-                                Console.WriteLine("Stop Refresh");
-                                Helpers.closeWindows(driver, new string[] { "Dashboard", "Watch and" });
+                                Debug.WriteLine("Stop Refresh");
+                                Helpers.closeWindows(driver, titles);
                             }
                             else if (rewardText.Text == "You earned 1 ZBs!")
                             {
-                                Console.WriteLine("Start Refresh");
+                                Debug.WriteLine("Start Refresh");
                                 driver.Navigate().Refresh();
-                                Console.WriteLine("Stop Refresh");
-                                Helpers.closeWindows(driver, new string[] { "Dashboard", "Watch and" });
+                                Debug.WriteLine("Stop Refresh");
+                                Helpers.closeWindows(driver, titles);
                             }
                         }
                         catch { }
@@ -279,7 +302,7 @@ namespace Scrap.Models
                                 }
                                 catch
                                 {
-                                    Console.WriteLine("Waiting to finish");
+                                    Debug.WriteLine("Waiting to finish");
                                     try
                                     {
                                         driver.FindElement(By.XPath("//img[@alt='Claim your reward']")).Click();
@@ -287,44 +310,41 @@ namespace Scrap.Models
                                     }
                                     catch { }
                                     finally { }
-                                    Helpers.wait(5000);
+                                    Helpers.wait(1000);
                                 }
+                                if (hour != DateTime.Now.Hour)
+                                {
+                                    try
+                                    {
+                                        Helpers.switchToBrowserByString(driver, "Dashboard");
+                                        driver.FindElement(By.XPath("//a[contains(@href, 'hourly_offer_contest')]")).Click();
+                                        //MessageBox.Show(driver.Title);
+                                        hour = DateTime.Now.Hour;
+                                    }
+                                    catch
+                                    {
+                                        Debug.WriteLine("Couldn't Click Contest");
+                                    }
+                                    finally { }
+                                }
+                                Debug.WriteLine("Last Hour: " + hour);
+                                Debug.WriteLine("Current Hour: " + DateTime.Now.Hour);
                             }
                         }
                         catch { }
                         finally { }
 
+                        /*
                         IList<IWebElement> oframes = driver.FindElements(By.TagName("iframe"));
-                        Console.WriteLine(oframes.Count);
+                        Debug.WriteLine(oframes.Count);
 
                         if (oframes.Count > 0)
                             Helpers.switchToFrame(driver, iframes, iframes.Count);
                         else
                             driver.SwitchTo().DefaultContent();
+                        */
 
-                        try
-                        {
-                            Console.WriteLine(driver.FindElement(By.Id("compositor_placed_innerclip_cta")).Displayed);
-                            if (driver.FindElement(By.Id("compositor_placed_innerclip_cta")).Displayed)
-                            {
-                                Console.WriteLine("Start Refresh");
-                                driver.Navigate().Refresh();
-                                Console.WriteLine("Stop Refresh");
-                            }
-                        }
-                        catch
-                        {
-                            Console.WriteLine("Waiting 2 seconds!!");
-                            Helpers.wait(2000);
-                        }
-                        finally { }
-
-                        try
-                        {
-                            driver.FindElement(By.Id("player")).Click();
-                        }
-                        catch { }
-                        finally { }
+                        /*
                         try
                         {
                             IWebElement youTube = driver.FindElement(By.CssSelector("div.ytp-play-button"));
@@ -336,18 +356,59 @@ namespace Scrap.Models
                             youTube.Click();
                         }
                         finally { }
+                        */
+
+                        /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                        Helpers.switchToBrowserByString(driver, "Watch and");
+                        try
+                        {
+                            driver.FindElement(By.Id("app_downloader_button")).Click();
+
+                        }
+                        catch
+                        {
+                            driver.FindElement(By.Id("webtraffic_wrapper")).Click();
+                        }
+                        finally { }
 
                         try
                         {
-                            if (driver.FindElement(By.ClassName("naked")).Displayed)
+                            driver.FindElement(By.Id("cta_sharing_image")).Click();
+                        }
+                        catch
+                        {
+                            driver.FindElement(By.Id("player_wrapper")).Click();
+                        }
+                        finally { }
+
+                        try
+                        {
+                            IWebElement twitter = driver.FindElement(By.Id("twitter_sharing"));
+                            if (twitter.Displayed)
                             {
-                                Console.WriteLine("Start Refresh");
+                                Helpers.closeWindows(driver, titles);
+                                Debug.WriteLine("Start Refresh");
                                 driver.Navigate().Refresh();
-                                Console.WriteLine("Stop Refresh");
+                                Debug.WriteLine("Stop Refresh");
                             }
                         }
                         catch { }
                         finally { }
+                        /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    }
+                    catch { }
+                    finally { }
+
+                    try
+                    {
+                        IList<IWebElement> eframes = driver.FindElements(By.TagName("iframe"));
+                        Debug.WriteLine(eframes.Count);
+
+                        if (eframes.Count > 0)
+                            Helpers.switchToFrame(driver, eframes, eframes.Count);
+                        else
+                            driver.SwitchTo().DefaultContent();
 
                         try
                         {
@@ -356,56 +417,25 @@ namespace Scrap.Models
                         }
                         catch { }
                         finally { }
-
-                        try
-                        {
-                            Console.WriteLine(driver.FindElement(By.Id("expository_image")).Displayed);
-                            Helpers.wait(2000);
-                            Helpers.switchToBrowserByString(driver, "Watch and");
-                            Console.WriteLine(driver.FindElement(By.Id("expository_image")).Displayed);
-                            Helpers.wait(2000);
-                            driver.SwitchTo().Frame(driver.FindElement(By.TagName("iframe")));
-                            Console.WriteLine(driver.FindElement(By.Id("expository_image")).Displayed);
-                            Helpers.wait(2000);
-
-                            driver.FindElement(By.Id("expository_image")).Click();
-                        }
-                        catch { }
-                        finally { }
-
-                        try
-                        {
-                            Helpers.switchToBrowserByString(driver, "Watch and");
-                            driver.SwitchTo().DefaultContent();
-                            Console.WriteLine("Is there an image: ");
-                            Console.WriteLine(driver.FindElement(By.Id("expository_image")).Displayed);
-                            Helpers.wait(2000);
-                            driver.FindElement(By.Id("expository_image")).FindElement(By.TagName("src")).Click();
-                        }
-                        catch { }
-                        finally { }
                     }
                     catch { }
                     finally { }
 
-                    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    try
-                    {
-                        Helpers.wait(2000);
-                        driver.FindElement(By.Id("app_downloader_button")).Click();
-                    }
-                    catch { }
-                    finally { }
-                    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-                    Console.WriteLine("Switching to Watch and Get Rewarded!");
+
+                    Debug.WriteLine("Switching to Watch and Get Rewarded!");
                     Helpers.switchToBrowserByString(driver, "Watch and");
                 }
 
                 Helpers.wait(10000);
-                Console.WriteLine("Start Refresh");
-                driver.Navigate().Refresh();
-                Console.WriteLine("Stop Refresh");
+                Debug.WriteLine("Start Refresh");
+                try
+                {
+                    driver.Navigate().Refresh();
+                }
+                catch { }
+                finally { }
+                Debug.WriteLine("Stop Refresh");
             }
 
 
@@ -429,12 +459,12 @@ namespace Scrap.Models
                 {
                     try
                     {
-                        Console.WriteLine(odometer.GetAttribute("src"));
+                        Debug.WriteLine(odometer.GetAttribute("src"));
                     }
                     catch
                     {
                         odometer = driver.FindElement(By.Id("odometer"));
-                        Console.WriteLine(odometer.GetAttribute("src"));
+                        Debug.WriteLine(odometer.GetAttribute("src"));
                     }
                     finally { }
                 }
@@ -465,12 +495,12 @@ namespace Scrap.Models
             /*
             try
             {
-                Console.WriteLine("Switching to Watch and Get Rewarded!");
+                Debug.WriteLine("Switching to Watch and Get Rewarded!");
                 Helpers.switchToBrowserByString(driver, "Watch and");
-                Console.WriteLine("hey whats your title");
-                Console.WriteLine(driver.Title);
+                Debug.WriteLine("hey whats your title");
+                Debug.WriteLine(driver.Title);
                 IList<IWebElement> iframes = driver.FindElements(By.TagName("iframe"));
-                Console.WriteLine(iframes.Count);
+                Debug.WriteLine(iframes.Count);
 
                 if (!driver.Title.Contains("Watch and"))
                 {
