@@ -63,7 +63,7 @@ namespace Scrap.Models
 
             while (!bw.CancellationPending)
             {
-                //discoveryBreak(driver, bw);
+                discoveryBreak(driver, bw);
                 Helpers.switchToBrowserByString(driver, "Home | Swagbucks");
                 Helpers.closeWindows(driver, titles);
                 nGage(driver, bw);
@@ -119,6 +119,7 @@ namespace Scrap.Models
             {
                 while (discoBreak && !bw.CancellationPending)
                 {
+                    Helpers.minimizeWindows(driver, titles);
                     try
                     {
                         driver.SwitchTo().Alert().Dismiss();
@@ -441,6 +442,7 @@ namespace Scrap.Models
             {
                 while (driver.Title.Contains("nGage") && !bw.CancellationPending)
                 {
+                    Helpers.minimizeWindows(driver, titles);
                     try
                     {
                         driver.SwitchTo().Alert().Dismiss();
