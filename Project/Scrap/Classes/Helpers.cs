@@ -11,6 +11,40 @@ namespace Scrap.Classes
             System.Threading.Thread.Sleep(delay);
         }
 
+        public static void ById(IWebDriver driver, string targetID)
+        {
+            try
+            {
+                if (driver.FindElement(By.Id(targetID)).Displayed)
+                {
+                    wait(2000);
+                    driver.FindElement(By.Id(targetID)).Click();
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Trying to find ID " + targetID);
+            }
+            finally { }
+        }
+
+        public static void ByClass(IWebDriver driver, string targetClass)
+        {
+            try
+            {
+                if (driver.FindElement(By.ClassName(targetClass)).Displayed)
+                {
+                    wait(2000);
+                    driver.FindElement(By.ClassName(targetClass)).Click();
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Trying to find ClassName " + targetClass);
+            }
+            finally { }
+        }
+
         public static void switchToBrowserFrameByString(IWebDriver driver, string targetBrowserString)
         {
             try
@@ -40,10 +74,10 @@ namespace Scrap.Classes
             {
                 foreach (string defwindow in driver.WindowHandles)
                 {
+                    Console.WriteLine(driver.Title.ToString());
                     try
                     {
                         driver.SwitchTo().Window(defwindow);
-                        Console.WriteLine(driver.Title.ToString());
                     }
                     catch
                     {
@@ -58,6 +92,7 @@ namespace Scrap.Classes
                     {
                         if (driver.Title.Contains(targetBrowserString))
                         {
+                            Console.WriteLine("You are now in " + driver.Title);
                             break;
                         }
                     }
@@ -105,6 +140,49 @@ namespace Scrap.Classes
                 }
             }
             catch { }
+            finally { }
+        }
+
+        public static bool lookFor(IWebDriver driver, string title)
+        {
+            try
+            {
+                foreach (string defwindow in driver.WindowHandles)
+                {
+                    Console.WriteLine(driver.Title);
+                    try
+                    {
+                        driver.SwitchTo().Window(defwindow);
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Hang Up");
+                        return true;
+                    }
+                    finally
+                    {
+                        Console.WriteLine("Couldn't Get Window");
+                    }
+                    try
+                    {
+                        if (driver.Title.Contains(title))
+                        {
+                            Console.WriteLine("There is " + title);
+                            return true;
+                        }
+                    }
+                    catch
+                    {
+                        return true;
+                    }
+                    finally { }
+                }
+                return false;
+            }
+            catch
+            {
+                return true;
+            }
             finally { }
         }
     }

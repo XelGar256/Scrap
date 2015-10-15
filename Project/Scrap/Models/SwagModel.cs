@@ -33,11 +33,11 @@ namespace Scrap.Models
             {
 
                 IWebElement userNames = driver.FindElement(By.Id("sbxJxRegEmail"));
-                Helpers.wait(1000);
+                Helpers.wait(500);
                 userNames.SendKeys(username);
-                Helpers.wait(1000);
+                Helpers.wait(500);
                 IWebElement userPassword = driver.FindElement(By.Id("sbxJxRegPswd"));
-                Helpers.wait(1000);
+                Helpers.wait(500);
                 userPassword.SendKeys(password);
                 //xbxJxRegPswd
             }
@@ -51,7 +51,7 @@ namespace Scrap.Models
             catch { }
             finally { }
 
-            Helpers.wait(2000);
+            Helpers.wait(500);
 
             try
             {
@@ -59,11 +59,13 @@ namespace Scrap.Models
             }
             catch { }
             finally { }
-            Helpers.wait(5000);
+            Helpers.wait(500);
 
             while (!bw.CancellationPending)
             {
-                discoveryBreak(driver, bw);
+                //discoveryBreak(driver, bw);
+                Helpers.switchToBrowserByString(driver, "Home | Swagbucks");
+                Helpers.closeWindows(driver, titles);
                 nGage(driver, bw);
             }
 
@@ -117,6 +119,12 @@ namespace Scrap.Models
             {
                 while (discoBreak && !bw.CancellationPending)
                 {
+                    try
+                    {
+                        driver.SwitchTo().Alert().Dismiss();
+                    }
+                    catch { }
+                    finally { }
                     Console.WriteLine("In the discoBreak!!");
                     Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
                     try
@@ -154,12 +162,12 @@ namespace Scrap.Models
                         IWebElement earn2Swag = driver.FindElement(By.Id("webtraffic_popup_start_button"));
                         earn2Swag.Click();
                         Console.WriteLine("earn2Swag found,Helpers.wait 5 seconds");
-                        Helpers.wait(5000);
+                        Helpers.wait(500);
                     }
                     catch
                     {
                         Console.WriteLine("Waiting 5 Seconds!!");
-                        Helpers.wait(5000);
+                        Helpers.wait(500);
                     }
 
                     Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
@@ -169,12 +177,12 @@ namespace Scrap.Models
                         IWebElement nextPage = driver.FindElement(By.Id("webtraffic_popup_next_button"));
                         nextPage.Click();
                         Console.WriteLine("Next Page");
-                        Helpers.wait(5000);
+                        Helpers.wait(500);
                     }
                     catch
                     {
                         Console.WriteLine("Waiting 5 Seconds!!");
-                        Helpers.wait(5000);
+                        Helpers.wait(500);
                     }
 
                     Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
@@ -203,7 +211,7 @@ namespace Scrap.Models
                     catch
                     {
                         Console.WriteLine("Waiting 5 Seconds!!");
-                        Helpers.wait(5000);
+                        Helpers.wait(500);
                     }
                     finally { }
 
@@ -222,7 +230,7 @@ namespace Scrap.Models
                     catch
                     {
                         Console.WriteLine("Waiting 5 seconds!!");
-                        Helpers.wait(5000);
+                        Helpers.wait(500);
                     }
                     finally { }
 
@@ -433,18 +441,26 @@ namespace Scrap.Models
             {
                 while (driver.Title.Contains("nGage") && !bw.CancellationPending)
                 {
+                    try
+                    {
+                        driver.SwitchTo().Alert().Dismiss();
+                        Helpers.closeWindows(driver, titles);
+                    }
+                    catch { }
+                    finally { }
+
                     Helpers.switchToBrowserByString(driver, "nGage");
                     try
                     {
                         IWebElement startEarningBtn = driver.FindElement(By.XPath("//*[@class=\"success\"][@id=\"startEarning\"]"));
                         startEarningBtn.Click();
                         Console.WriteLine("startEarningBtn found,Helpers.wait 5 seconds");
-                        Helpers.wait(5000);
+                        Helpers.wait(500);
                     }
                     catch
                     {
                         Console.WriteLine("stuff");
-                        Helpers.wait(5000);
+                        Helpers.wait(500);
                     }
 
                     try
@@ -452,7 +468,7 @@ namespace Scrap.Models
                         IWebElement discoverMoreBtn = driver.FindElement(By.XPath("//*[@class=\"success\"][@id=\"discoverMore\"]"));
                         discoverMoreBtn.Click();
                         Helpers.closeWindows(driver, titles);
-                        Helpers.wait(5000);
+                        Helpers.wait(500);
                     }
                     catch
                     {
