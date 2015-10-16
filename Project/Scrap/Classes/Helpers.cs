@@ -214,5 +214,28 @@ namespace Scrap.Classes
             catch { }
             finally { }
         }
+
+        public static bool isID(IWebDriver driver, string element)
+        {
+            if (driver.FindElement(By.Id(element)).Displayed)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static bool isClass(IWebDriver driver, string element)
+        {
+            if (driver.FindElement(By.Id(element)).Displayed)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

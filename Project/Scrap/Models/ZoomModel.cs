@@ -87,13 +87,21 @@ namespace Scrap.Models
                 try
                 {
                     Helpers.switchToBrowserByString(driver, "Watch and");
-                    driver.SwitchTo().Frame(0);
-                    IWebElement reward = driver.FindElement(By.ClassName("header"));
-                    if (reward.Text == "You earned 2 ZBs!")
+                    try
                     {
+                        driver.SwitchTo().Frame(0);
+                    }
+                    catch { }
+                    finally { }
+                    //Console.WriteLine(driver.FindElement(By.ClassName("reward_text ")).ToString());
+                    //if (Helpers.isID(driver, "ty_header"));
+                    if (driver.FindElement(By.Id("ty_header")).Text.Contains("ZBs"))
+                    {
+                        Console.WriteLine("I'm Here!!");
                         Console.WriteLine("Attempting Refresh");
                         driver.Navigate().Refresh();
                         Console.WriteLine("Refresh Complete");
+                        Helpers.closeWindows(driver, titles);
                     }
                 }
                 catch { }
