@@ -42,14 +42,12 @@ namespace Scrap.Models
 
             do
             {
+                string mainHandle = driver.CurrentWindowHandle;
+                Helpers.wait(1000);
                 Helpers.switchToBrowserByString(driver, "Watch and");
-                try
-                {
-                    driver.SwitchTo().Frame(0);
-                }
-                catch { }
-                finally { }
+                Helpers.wait(1000);
 
+                    driver.SwitchTo().Frame(0);
 
                 Helpers.ById(driver, "webtraffic_popup_start_button");
                 Helpers.ById(driver, "webtraffic_popup_next_button");
@@ -84,17 +82,19 @@ namespace Scrap.Models
                 catch { }
                 finally { }
 
+                //Console.WriteLine(driver.FindElement(By.ClassName("reward_text ")).ToString());
+                //if (Helpers.isID(driver, "ty_header"));
+                Helpers.switchToBrowserByString(driver, "Watch and");
+
                 try
                 {
-                    Helpers.switchToBrowserByString(driver, "Watch and");
-                    try
-                    {
-                        driver.SwitchTo().Frame(0);
-                    }
-                    catch { }
-                    finally { }
-                    //Console.WriteLine(driver.FindElement(By.ClassName("reward_text ")).ToString());
-                    //if (Helpers.isID(driver, "ty_header"));
+                    driver.SwitchTo().Frame(0);
+                }
+                catch { }
+                finally { }
+
+                try
+                {
                     if (driver.FindElement(By.Id("ty_header")).Text.Contains("ZBs"))
                     {
                         Console.WriteLine("I'm Here!!");
@@ -107,9 +107,7 @@ namespace Scrap.Models
                 catch { }
                 finally { }
 
-                Helpers.wait(5000);
                 watchAnd = Helpers.lookFor(driver, "Watch and");
-
             } while (watchAnd);
 
             driver.Navigate().GoToUrl("http://www.zoombucks.com/offer_walls.php?t=1444653478#volume-11");
