@@ -11,7 +11,7 @@ namespace Scrap.Models
     class SwagModel
     {
         string[] titles = { "Home | Swagbucks", "nCrave | Swagbucks", "www.swagbucks.com/?", "Entertainmentcrave.com" };
-        public SwagModel(string username, string password, BackgroundWorker bw)
+        public SwagModel(string username, string password, BackgroundWorker bw, bool vids)
         {
 
             ChromeDriverService service = ChromeDriverService.CreateDefaultService(App.Folder);
@@ -60,8 +60,12 @@ namespace Scrap.Models
             catch { }
             finally { }
             Helpers.wait(500);
+            while (!bw.CancellationPending && vids)
+            {
+                Videos(driver, bw);
+            }
 
-            while (!bw.CancellationPending)
+            while (!bw.CancellationPending && !vids)
             {
                 discoveryBreak(driver, bw);
                 Helpers.switchToBrowserByString(driver, "Home | Swagbucks");
@@ -503,6 +507,50 @@ namespace Scrap.Models
             }
             catch { }
             finally { }
+        }
+
+        void Videos(IWebDriver driver, BackgroundWorker bw)
+        {
+            string links = "Wedding";
+            Helpers.wait(1000);
+            IWebElement findWatch = driver.FindElement(By.LinkText("Watch"));
+            if (findWatch.Displayed)
+            {
+                findWatch.Click();
+            }
+            else
+            {
+                Console.WriteLine("Could not find Watch");
+            }
+
+            Helpers.wait(1000);
+
+            IWebElement catLinks = driver.FindElement(By.LinkText("Personal Finance"));
+            if (catLinks.Displayed)
+            {
+                catLinks.Click();
+            }
+            else
+            {
+                Console.WriteLine("Couldn't click on link: " + links);
+            }
+
+            Helpers.wait(1000);
+            driver.FindElement(By.ClassName("sbTrayListItemHeader")).Click();
+
+            while (true)
+            {
+                try
+                {
+                    if (driver.FindElement(By.ClassName("showPlaylists")).Displayed)
+                    {
+                        Helpers.wait(1000);
+                        driver.FindElement(By.ClassName("playlistsShowImage")).Click();
+                    }
+                }
+                catch { }
+                finally { }
+            }
         }
     }
 }

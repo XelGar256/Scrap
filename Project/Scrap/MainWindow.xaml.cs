@@ -19,10 +19,11 @@ namespace Scrap
         private void btnLoginSwag_Click(object sender, RoutedEventArgs e)
         {
             string username = txtUsernameSwag.Text, password = txtPasswordSwag.Password;
+            bool vids = false;
 
             swagBw = new BackgroundWorker();
             swagBw.WorkerSupportsCancellation = true;
-            swagBw.DoWork += delegate(object o, DoWorkEventArgs args) { new SwagModel(username, password, swagBw); };
+            swagBw.DoWork += delegate(object o, DoWorkEventArgs args) { new SwagModel(username, password, swagBw, vids); };
             swagBw.RunWorkerAsync();
         }
 
@@ -44,6 +45,17 @@ namespace Scrap
         private void btnStopRebel_Click(object sender, RoutedEventArgs e)
         {
             rebelBw.CancelAsync();
+        }
+
+        private void btnVideos_Click(object sender, RoutedEventArgs e)
+        {
+            string username = txtUsernameZoom.Text, password = txtPasswordZoom.Password;
+            bool vids = true;
+
+            zoomBw = new BackgroundWorker();
+            zoomBw.WorkerSupportsCancellation = true;
+            zoomBw.DoWork += delegate (object o, DoWorkEventArgs args) { new SwagModel(username, password, zoomBw, vids); };
+            zoomBw.RunWorkerAsync();
         }
 
         private void btnLoginRebel_Click(object sender, RoutedEventArgs e)

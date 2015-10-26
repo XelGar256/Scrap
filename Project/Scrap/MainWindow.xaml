@@ -26,6 +26,7 @@
                     <PasswordBox x:Name="txtPasswordSwag" HorizontalAlignment="Left" Margin="30,44,0,0" VerticalAlignment="Top" Width="120" Height="23" Grid.Column="1"/>
                     <Button x:Name="btnLoginSwag" Content="Start The Bucks" HorizontalAlignment="Left" Margin="30,86,0,0" VerticalAlignment="Top" Width="85" Click="btnLoginSwag_Click" Grid.Column="1"/>
                     <Button x:Name="btnStopSwag" Content="Stop The Bucks" Grid.Column="1" HorizontalAlignment="Left" Margin="30,111,0,0" VerticalAlignment="Top" Width="85" RenderTransformOrigin="-0.36,-0.3" Click="btnStopSwag_Click"/>
+                    <Button x:Name="btnVideos" Content="Start Vids" Grid.Column="1" HorizontalAlignment="Left" Margin="130,86,0,0" VerticalAlignment="Top" Width="75" Click="btnVideos_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="PrizeRebel" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top">
