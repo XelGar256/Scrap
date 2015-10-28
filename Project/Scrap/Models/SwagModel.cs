@@ -69,6 +69,7 @@ namespace Scrap.Models
             {
                 discoveryBreak(driver, bw);
                 Helpers.switchToBrowserByString(driver, "Home | Swagbucks");
+                driver.Navigate().Refresh();
                 Helpers.closeWindows(driver, titles);
                 nGage(driver, bw);
             }
