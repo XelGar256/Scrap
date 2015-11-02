@@ -8,7 +8,7 @@ namespace Scrap.Models
 {
     class ZoomModel
     {
-        string[] titles = { "Dashboard", "Offer Walls" };
+        string[] titles = { "Dashboard", "Offer Walls", "Watch and" };
         public ZoomModel(string username, string password, BackgroundWorker bw)
         {
             int hour = -1;
@@ -34,96 +34,145 @@ namespace Scrap.Models
             catch { }
             finally { }
             //jun videos
-            while (true)
+            Helpers.wait(2000);
+            Helpers.switchToBrowserByString(driver, "Dashboard");
+            try
             {
-                Helpers.wait(1000);
-                Helpers.ByClass(driver, "widgetcontent");
-                Helpers.wait(1000);
+                driver.FindElement(By.XPath("//a[contains(@href, 'hourly_offer_contest')]")).Click();
+                //MessageBox.Show(driver.Title);
+                hour = DateTime.Now.Hour;
+            }
+            catch
+            {
+                Console.WriteLine("Couldn't Click Contest");
+            }
+            finally { }
 
-                bool watchAnd = true;
+            Helpers.ByClass(driver, "brand");
 
-                do
+
+            Helpers.wait(1000);
+            Helpers.ByClass(driver, "widgetcontent");
+            Helpers.wait(1000);
+
+            bool watchAnd = true;
+            bool closeWindows = false;
+
+            do
+            {
+                if (hour != DateTime.Now.Hour)
                 {
-                    //string mainHandle = driver.CurrentWindowHandle;
-                    Helpers.wait(1000);
-                    Helpers.switchToBrowserByString(driver, "Watch and");
-                    Helpers.wait(1000);
-
                     try
                     {
-                        driver.SwitchTo().Frame(0);
+                        Helpers.switchToBrowserByString(driver, "Dashboard");
+                        driver.FindElement(By.XPath("//a[contains(@href, 'hourly_offer_contest')]")).Click();
+                        //MessageBox.Show(driver.Title);
+                        hour = DateTime.Now.Hour;
                     }
-                    catch { }
+                    catch
+                    {
+                        Console.WriteLine("Couldn't Click Contest");
+                    }
                     finally { }
 
-                    Helpers.ById(driver, "webtraffic_popup_start_button");
-                    Helpers.ById(driver, "webtraffic_popup_next_button");
-                    Helpers.ByClass(driver, "webtraffic_start_button");
-                    Helpers.ByClass(driver, "webtraffic_next_button");
+                    Helpers.ByClass(driver, "brand");
+                }
 
-                    try
+                //string mainHandle = driver.CurrentWindowHandle;
+                Helpers.wait(1000);
+                Helpers.switchToBrowserByString(driver, "Watch and");
+                Helpers.wait(1000);
+                Helpers.switchFrameByNumber(driver, 0);
+                Helpers.ById(driver, "webtraffic_popup_start_button");
+                Helpers.switchToBrowserByString(driver, "Watch and");
+                Helpers.switchFrameByNumber(driver, 0);
+                Helpers.ById(driver, "webtraffic_popup_next_button");
+                Helpers.switchToBrowserByString(driver, "Watch and");
+                Helpers.switchFrameByNumber(driver, 0);
+                Helpers.ByClass(driver, "webtraffic_start_button");
+                Helpers.switchToBrowserByString(driver, "Watch and");
+                Helpers.switchFrameByNumber(driver, 0);
+                Helpers.ByClass(driver, "webtraffic_next_button");
+
+                Helpers.switchToBrowserByString(driver, "Watch and");
+                Helpers.switchFrameByNumber(driver, 0);
+                Helpers.ById(driver, "expository_image");
+
+                try
+                {
+                    Helpers.switchToBrowserByString(driver, "Now Exploring great content!");
+                    while (driver.Title.Contains("Now Exploring"))
                     {
                         Helpers.switchToBrowserByString(driver, "Now Exploring great content!");
-                        while (driver.Title.Contains("Now Exploring"))
+                        try
                         {
-                            Helpers.switchToBrowserByString(driver, "Now Exploring great content!");
+                            IWebElement greatContent = driver.FindElement(By.ClassName("nextstepimg"));
+                            greatContent.Click();
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Waiting to finish");
                             try
                             {
-                                IWebElement greatContent = driver.FindElement(By.ClassName("nextstepimg"));
-                                greatContent.Click();
+                                driver.FindElement(By.XPath("//img[@alt='Claim your reward']")).Click();
+                                Helpers.switchToBrowserByString(driver, "Dashboard");
                             }
-                            catch
-                            {
-                                Console.WriteLine("Waiting to finish");
-                                try
-                                {
-                                    driver.FindElement(By.XPath("//img[@alt='Claim your reward']")).Click();
-                                    Helpers.switchToBrowserByString(driver, "Offer Walls");
-                                }
-                                catch { }
-                                finally { }
-                                Helpers.wait(5000);
-                            }
+                            catch { }
+                            finally { }
+                            Helpers.wait(5000);
                         }
                     }
-                    catch { }
-                    finally { }
+                }
+                catch { }
+                finally { }
 
-                    //Console.WriteLine(driver.FindElement(By.ClassName("reward_text ")).ToString());
-                    //if (Helpers.isID(driver, "ty_header"));
-                    Helpers.switchToBrowserByString(driver, "Watch and");
+                //Console.WriteLine(driver.FindElement(By.ClassName("reward_text ")).ToString());
+                //if (Helpers.isID(driver, "ty_header"));
+                Helpers.switchToBrowserByString(driver, "Watch and");
+                Helpers.switchFrameByNumber(driver, 0);
 
-                    try
+                try
+                {
+                    if (driver.FindElement(By.Id("ty_header")).Text.Contains("ZBs"))
                     {
-                        driver.SwitchTo().Frame(0);
+                        Console.WriteLine("I'm Here!!");
+                        //driver.Close();
+                        Helpers.wait(1000);
+                        Helpers.switchToBrowserByString(driver, "Watch and");
+                        closeWindows = true;
                     }
-                    catch { }
-                    finally { }
+                }
+                catch { }
+                finally { }
 
-                    try
+                //Helpers.closeWindows(driver, titles);
+
+                Helpers.switchToBrowserByString(driver, "Watch and");
+
+                if (closeWindows)
+                {
+                    Helpers.closeWindows(driver, titles);
+                    closeWindows = false;
+                }
+
+                Helpers.switchToBrowserByString(driver, "Watch and");
+                try
+                {
+                    if (driver.FindElement(By.TagName("body")).Text.Contains("No Videos available."))
                     {
-                        if (driver.FindElement(By.Id("ty_header")).Text.Contains("ZBs"))
-                        {
-                            Console.WriteLine("I'm Here!!");
-                            Console.WriteLine("Attempting Refresh");
-                            driver.Navigate().Refresh();
-                            Console.WriteLine("Refresh Complete");
-                            Helpers.wait(1000);
-                            Helpers.switchToBrowserByString(driver, "Dashboard");
-                        }
+                        watchAnd = false;
                     }
-                    catch { }
-                    finally { }
+                }
+                catch { }
+                finally { }
 
-                    //Helpers.closeWindows(driver, titles);
+                watchAnd = Helpers.lookFor(driver, "Watch and");
 
-                    watchAnd = Helpers.lookFor(driver, "Watch and");
+            } while (watchAnd);
 
-                } while (watchAnd);
+            Helpers.switchToBrowserByString(driver, "Dashboard");
+            Console.WriteLine(driver.Title);
 
-                Helpers.switchToBrowserByString(driver, "Dashboard");
-                Console.WriteLine(driver.Title);
-            }
 
             driver.Navigate().GoToUrl("http://www.zoombucks.com/offer_walls.php?t=1444653478#volume-11");
 
@@ -178,7 +227,7 @@ namespace Scrap.Models
                         Helpers.switchToBrowserByString(driver, "Offer");
                         Console.WriteLine(driver.Title);
                         Console.WriteLine("REWARD!!");
-                        Helpers.closeWindows(driver, titles);
+                        //Helpers.closeWindows(driver, titles);
                         Helpers.wait(500);
                         //driver.Navigate().Refresh();
                         //driver.Navigate().GoToUrl("http://www.zoombucks.com/offer_walls.php?t=1444653478#volume-11");

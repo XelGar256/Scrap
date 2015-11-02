@@ -44,6 +44,7 @@ namespace Scrap.Models
             catch { }
             finally { }
 
+
             try
             {
                 driver.FindElement(By.Id("loginBtn")).Click();
@@ -52,6 +53,7 @@ namespace Scrap.Models
             finally { }
 
             Helpers.wait(500);
+            Console.WriteLine("I have logged In!!");
 
             try
             {
@@ -59,13 +61,16 @@ namespace Scrap.Models
             }
             catch { }
             finally { }
+            Console.WriteLine("Please sir no swag button");
+
             Helpers.wait(500);
             while (!bw.CancellationPending && vids)
             {
                 Videos(driver, bw);
             }
+            Console.WriteLine("past the vids");
 
-            while (!bw.CancellationPending && !vids)
+            while (true)
             {
                 discoveryBreak(driver, bw);
                 Helpers.switchToBrowserByString(driver, "Home | Swagbucks");
@@ -406,6 +411,8 @@ namespace Scrap.Models
 
         void nGage(IWebDriver driver, BackgroundWorker bw)
         {
+            Random random = new Random();
+
             try
             {
                 IWebElement nGageCard = driver.FindElement(By.Id("cardContentImg-14-5"));
@@ -481,6 +488,47 @@ namespace Scrap.Models
                     {
 
                     }
+
+
+                    try
+                    {
+                        System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
+
+                        foreach (String window in windowHandles)
+                        {
+                            IWebDriver popup = driver.SwitchTo().Window(window);
+                            try
+                            {
+                                int rndClick = random.Next(2);
+
+                                driver.FindElements(By.XPath("//div[@id='nextPage']/a"))[rndClick].Click();
+                                break;
+                            }
+                            catch { }
+                            finally { }
+
+                            try
+                            {
+                                driver.FindElement(By.Id("discoverMore")).Click();
+                                break;
+                            }
+                            catch { }
+                            finally { }
+                        }
+                    }
+                    catch { }
+                    finally { }
+
+                    try
+                    {
+                        driver.FindElements(By.XPath("//div[@id='nextPage']/a"))[0].Click();
+                        //driver.FindElement(By.Id("nextPage")).FindElement(By.TagName("a")).Click();
+                    }
+                    catch { }
+                    finally { }
+
+                    Helpers.switchToBrowserByString(driver, "nGage");
+
                     try
                     {
                         System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;

@@ -237,5 +237,54 @@ namespace Scrap.Classes
                 return false;
             }
         }
+
+        public static void switchFrameByNumber(IWebDriver driver, int frameIndex)
+        {
+            try
+            {
+                driver.SwitchTo().Frame(frameIndex);
+            }
+            catch { }
+            finally { }
+        }
+
+        public static void switchToBrowserByElement(IWebDriver driver, IWebElement targetElement)
+        {
+            try
+            {
+                foreach (string defwindow in driver.WindowHandles)
+                {
+                    Console.WriteLine(driver.Title.ToString());
+                    try
+                    {
+                        driver.SwitchTo().Window(defwindow);
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Hang Up");
+                        break;
+                    }
+                    finally
+                    {
+                        Console.WriteLine("Couldn't Get Window");
+                    }
+                    try
+                    {
+                        if (targetElement.Text.Contains("You're watching"))
+                        {
+                            break;
+                        }
+                    }
+                    catch
+                    {
+                        break;
+                    }
+                    finally { }
+                }
+            }
+            catch { }
+            finally { }
+        }
+
     }
 }
