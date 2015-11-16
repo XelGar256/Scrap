@@ -1,7 +1,6 @@
 ﻿using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace Scrap.Classes
 {
@@ -184,34 +183,6 @@ namespace Scrap.Classes
             {
                 return true;
             }
-            finally { }
-        }
-
-        public static void minimizeWindows(IWebDriver driver, string[] titles)
-        {
-            try
-            {
-                System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
-
-                foreach (String window in windowHandles)
-                {
-                    IWebDriver popup = driver.SwitchTo().Window(window);
-                    try
-                    {
-                        foreach (string title in titles)
-                        {
-                            if (!popup.Title.Contains(title))
-                            {
-                                driver.SwitchTo().Window(title);
-                                driver.Manage().Window.Position = (new Point(-5000, 0));
-                            }
-                        }
-                    }
-                    catch { }
-                    finally { }
-                }
-            }
-            catch { }
             finally { }
         }
 

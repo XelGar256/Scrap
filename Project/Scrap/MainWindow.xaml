@@ -39,6 +39,26 @@
                     <Button x:Name="btnStopRebel" Content="Stop Rebel" HorizontalAlignment="Left" Margin="81,111,0,0" VerticalAlignment="Top" Width="85" RenderTransformOrigin="-0.36,-0.3" Click="btnStopRebel_Click"/>
                 </Grid>
             </TabItem>
+            <TabItem Header="PaidVerts" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="55">
+                <Grid Background="#FFE5E5E5">
+                    <Label Content="Username:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Password:" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="txtUsernameVerts" HorizontalAlignment="Left" Height="23" Margin="81,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-1.85,-4.87"/>
+                    <PasswordBox x:Name="txtPasswordVerts" HorizontalAlignment="Left" Margin="81,44,0,0" VerticalAlignment="Top" Width="120" Height="23"/>
+                    <Button x:Name="btnLoginVerts" Content="Start" HorizontalAlignment="Left" Margin="81,86,0,0" VerticalAlignment="Top" Width="85" Click="btnLoginVerts_Click"/>
+                    <Button x:Name="btnStopVerts" Content="Stop" HorizontalAlignment="Left" Margin="81,111,0,0" VerticalAlignment="Top" Width="85" RenderTransformOrigin="-0.36,-0.3" Click="btnStopVerts_Click"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="iRazoo" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="55">
+                <Grid Background="#FFE5E5E5">
+                    <Label Content="Username:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Password:" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="txtUsernameiRazoo" HorizontalAlignment="Left" Height="23" Margin="81,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-1.85,-4.87"/>
+                    <PasswordBox x:Name="txtPasswordiRazoo" HorizontalAlignment="Left" Margin="81,44,0,0" VerticalAlignment="Top" Width="120" Height="23"/>
+                    <Button x:Name="btnLoginiRazoo" Content="Start" HorizontalAlignment="Left" Margin="81,86,0,0" VerticalAlignment="Top" Width="85" Click="btnLoginiRazoo_Click"/>
+                    <Button x:Name="btnStopiRazoo" Content="Stop" HorizontalAlignment="Left" Margin="81,111,0,0" VerticalAlignment="Top" Width="85" RenderTransformOrigin="-0.36,-0.3" Click="btnStopiRazoo_Click"/>
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>

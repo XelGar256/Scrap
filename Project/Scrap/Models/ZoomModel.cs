@@ -55,6 +55,73 @@ namespace Scrap.Models
             Helpers.ByClass(driver, "widgetcontent");
             Helpers.wait(1000);
 
+            while (Helpers.lookFor(driver, "Watch and")) //testing
+            {
+                Helpers.wait(5000);
+                Helpers.switchFrameByNumber(driver, 0);
+
+                Helpers.ById(driver, "webtraffic_popup_start_button");
+                Helpers.ById(driver, "webtraffic_popup_next_button");
+                Helpers.ByClass(driver, "webtraffic_start_button");
+                Helpers.ByClass(driver, "webtraffic_next_button");
+                Helpers.ById(driver, "expository_image");
+
+                try
+                {
+                    Helpers.switchToBrowserByString(driver, "Now Exploring great content!");
+                    while (driver.Title.Contains("Now Exploring"))
+                    {
+                        Helpers.switchToBrowserByString(driver, "Now Exploring great content!");
+                        try
+                        {
+                            IWebElement greatContent = driver.FindElement(By.ClassName("nextstepimg"));
+                            greatContent.Click();
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Waiting to finish");
+                            try
+                            {
+                                driver.FindElement(By.XPath("//img[@alt='Claim your reward']")).Click();
+                                Helpers.switchToBrowserByString(driver, "Dashboard");
+                            }
+                            catch { }
+                            finally { }
+                            Helpers.wait(5000);
+                        }
+                    }
+                }
+                catch { }
+                finally { }
+
+                try
+                {
+                    Helpers.switchToBrowserByString(driver, "Watch and");
+                    Helpers.switchFrameByNumber(driver, 0);
+                    if (driver.FindElement(By.Id("ty_header")).Text.Contains("ZBs"))
+                    {
+                        Console.WriteLine("I'm Here!!");
+                        Helpers.wait(1000);
+                        driver.Navigate().Refresh();
+                        Helpers.closeWindows(driver, titles);
+                        Helpers.wait(5000);
+                    }
+                }
+                catch { }
+                finally { }
+
+                try
+                {
+                    if (driver.FindElement(By.TagName("body")).Text.Contains("No Videos available."))
+                    {
+                        driver.Close();
+                    }
+                }
+                catch { }
+                finally { }
+            }
+
+            /*
             bool watchAnd = true;
             bool closeWindows = false;
 
@@ -139,7 +206,8 @@ namespace Scrap.Models
                         //driver.Close();
                         Helpers.wait(1000);
                         Helpers.switchToBrowserByString(driver, "Watch and");
-                        closeWindows = true;
+                        driver.Navigate().Refresh();
+                        Helpers.closeWindows(driver, titles);
                     }
                 }
                 catch { }
@@ -148,12 +216,6 @@ namespace Scrap.Models
                 //Helpers.closeWindows(driver, titles);
 
                 Helpers.switchToBrowserByString(driver, "Watch and");
-
-                if (closeWindows)
-                {
-                    Helpers.closeWindows(driver, titles);
-                    closeWindows = false;
-                }
 
                 Helpers.switchToBrowserByString(driver, "Watch and");
                 try
@@ -169,7 +231,7 @@ namespace Scrap.Models
                 watchAnd = Helpers.lookFor(driver, "Watch and");
 
             } while (watchAnd);
-
+            */
             Helpers.switchToBrowserByString(driver, "Dashboard");
             Console.WriteLine(driver.Title);
 
@@ -195,6 +257,7 @@ namespace Scrap.Models
                         try
                         {
                             Console.WriteLine("Looking for Videos");
+                            Helpers.closeWindows(driver, titles);
                             Helpers.ById(driver, "next_btn");
                         }
                         catch { }
@@ -228,7 +291,7 @@ namespace Scrap.Models
                         Console.WriteLine(driver.Title);
                         Console.WriteLine("REWARD!!");
                         //Helpers.closeWindows(driver, titles);
-                        Helpers.wait(500);
+                        Helpers.wait(5000);
                         //driver.Navigate().Refresh();
                         //driver.Navigate().GoToUrl("http://www.zoombucks.com/offer_walls.php?t=1444653478#volume-11");
                         //driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#volume-11 iframe")));
@@ -243,6 +306,7 @@ namespace Scrap.Models
                     if (driver.FindElement(By.Id("offers_exhausted_message")).Displayed)
                     {
                         driver.Navigate().Refresh();
+                        Helpers.wait(5000);
                     }
                 }
                 catch { }
@@ -276,6 +340,7 @@ namespace Scrap.Models
                 catch { }
                 finally { }
 
+                Helpers.wait(5000);
                 Helpers.switchToBrowserByString(driver, "Offer Walls");
 
                 try

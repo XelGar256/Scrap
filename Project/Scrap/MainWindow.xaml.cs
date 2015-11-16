@@ -9,7 +9,7 @@ namespace Scrap
     /// </summary>
     public partial class MainWindow : Window
     {
-        private BackgroundWorker zoomBw, swagBw, rebelBw;
+        private BackgroundWorker zoomBw, swagBw, rebelBw, vertsBw, iRazooBw;
 
         public MainWindow()
         {
@@ -58,6 +58,36 @@ namespace Scrap
             zoomBw.RunWorkerAsync();
         }
 
+        private void btnStopVerts_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnStopiRazoo_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnLoginiRazoo_Click(object sender, RoutedEventArgs e)
+        {
+            string username = txtUsernameiRazoo.Text, password = txtPasswordiRazoo.Password;
+
+            iRazooBw = new BackgroundWorker();
+            iRazooBw.WorkerSupportsCancellation = true;
+            iRazooBw.DoWork += delegate (object o, DoWorkEventArgs args) { new iRazooModel(username, password, iRazooBw); };
+            iRazooBw.RunWorkerAsync();
+        }
+
+        private void btnLoginVerts_Click(object sender, RoutedEventArgs e)
+        {
+            string username = txtUsernameVerts.Text, password = txtPasswordVerts.Password;
+
+            vertsBw = new BackgroundWorker();
+            vertsBw.WorkerSupportsCancellation = true;
+            vertsBw.DoWork += delegate (object o, DoWorkEventArgs args) { new PaidVertsModel(username, password, vertsBw); };
+            vertsBw.RunWorkerAsync();
+        }
+
         private void btnLoginRebel_Click(object sender, RoutedEventArgs e)
         {
             string username = txtUsernameRebel.Text, password = txtPasswordRebel.Password;
@@ -66,7 +96,6 @@ namespace Scrap
             rebelBw.WorkerSupportsCancellation = true;
             rebelBw.DoWork += delegate (object o, DoWorkEventArgs args) { new RebelModel(username, password, rebelBw); };
             rebelBw.RunWorkerAsync();
-
         }
 
         private void btnStopSwag_Click(object sender, RoutedEventArgs e)
