@@ -506,19 +506,13 @@ namespace Scrap.Models
                             try
                             {
                                 driver.FindElement(By.Id("discoverMore")).Click();
+                                Helpers.wait(5000);
+                                Helpers.switchToBrowserByString(driver, "nGage");
                                 break;
                             }
                             catch { }
                             finally { }
                         }
-                    }
-                    catch { }
-                    finally { }
-
-                    try
-                    {
-                        driver.FindElements(By.XPath("//div[@id='nextPage']/a"))[0].Click();
-                        //driver.FindElement(By.Id("nextPage")).FindElement(By.TagName("a")).Click();
                     }
                     catch { }
                     finally { }
