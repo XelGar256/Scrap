@@ -506,8 +506,8 @@ namespace Scrap.Models
                             try
                             {
                                 driver.FindElement(By.Id("discoverMore")).Click();
+                                Helpers.closeWindows(driver, titles);
                                 Helpers.wait(5000);
-                                Helpers.switchToBrowserByString(driver, "nGage");
                                 break;
                             }
                             catch { }
