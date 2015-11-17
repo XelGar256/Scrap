@@ -10,7 +10,7 @@ namespace Scrap.Models
 {
     class SwagModel
     {
-        string[] titles = { "Home | Swagbucks", "nCrave | Swagbucks", "www.swagbucks.com/?", "Entertainmentcrave.com" };
+        string[] titles = { "Home | Swagbucks", "nCrave | Swagbucks", "www.swagbucks.com/?", "Entertainmentcrave.com", "nGage" };
         public SwagModel(string username, string password, BackgroundWorker bw, bool vids)
         {
 
@@ -441,7 +441,6 @@ namespace Scrap.Models
                         {
                             Console.WriteLine("No nGageCard found");
                         }
-                        finally { }
                     }
                 }
             }
@@ -451,34 +450,26 @@ namespace Scrap.Models
             {
                 while (driver.Title.Contains("nGage") && !bw.CancellationPending)
                 {
-                    try
-                    {
-                        driver.SwitchTo().Alert().Dismiss();
-                        Helpers.closeWindows(driver, titles);
-                    }
-                    catch { }
-                    finally { }
-
-                    Helpers.switchToBrowserByString(driver, "nGage");
+                    switchToBrowserByString(driver, "nGage");
                     try
                     {
                         IWebElement startEarningBtn = driver.FindElement(By.XPath("//*[@class=\"success\"][@id=\"startEarning\"]"));
                         startEarningBtn.Click();
                         Console.WriteLine("startEarningBtn found,Helpers.wait 5 seconds");
-                        Helpers.wait(500);
+                        Helpers.wait(2000);
                     }
                     catch
                     {
                         Console.WriteLine("stuff");
-                        Helpers.wait(500);
+                        Helpers.wait(2000);
                     }
 
                     try
                     {
                         IWebElement discoverMoreBtn = driver.FindElement(By.XPath("//*[@class=\"success\"][@id=\"discoverMore\"]"));
                         discoverMoreBtn.Click();
-                        Helpers.closeWindows(driver, titles);
-                        Helpers.wait(500);
+                        closeWindows(driver, titles);
+                        Helpers.wait(2000);
                     }
                     catch
                     {
@@ -501,23 +492,20 @@ namespace Scrap.Models
                                 break;
                             }
                             catch { }
-                            finally { }
 
                             try
                             {
                                 driver.FindElement(By.Id("discoverMore")).Click();
-                                Helpers.closeWindows(driver, titles);
-                                Helpers.wait(5000);
+                                closeWindows(driver, titles);
+                                Helpers.wait(2000);
                                 break;
                             }
                             catch { }
-                            finally { }
                         }
                     }
                     catch { }
-                    finally { }
 
-                    Helpers.switchToBrowserByString(driver, "nGage");
+                    switchToBrowserByString(driver, "nGage");
 
                     /*
                     try
@@ -543,11 +531,10 @@ namespace Scrap.Models
                     catch { }
                     finally { }
                     */
-                    Helpers.switchToBrowserByString(driver, "nGage");
+                    switchToBrowserByString(driver, "nGage");
                 }
             }
             catch { }
-            finally { }
         }
 
         void Videos(IWebDriver driver, BackgroundWorker bw)
@@ -564,7 +551,7 @@ namespace Scrap.Models
                 Console.WriteLine("Could not find Watch");
             }
 
-            Helpers.wait(1000);
+            Helpers.wait(2000);
 
             IWebElement catLinks = driver.FindElement(By.LinkText("Personal Finance"));
             if (catLinks.Displayed)
@@ -576,7 +563,7 @@ namespace Scrap.Models
                 Console.WriteLine("Couldn't click on link: " + links);
             }
 
-            Helpers.wait(1000);
+            Helpers.wait(2000);
             driver.FindElement(By.ClassName("sbTrayListItemHeader")).Click();
 
             while (true)
