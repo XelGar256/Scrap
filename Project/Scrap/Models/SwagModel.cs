@@ -125,7 +125,7 @@ namespace Scrap.Models
             Helpers.wait(5000);
             try
             {
-                while (discoBreak && !bw.CancellationPending)
+                while (discoBreak)
                 {
                     try
                     {
@@ -409,12 +409,14 @@ namespace Scrap.Models
         void nGage(IWebDriver driver, BackgroundWorker bw)
         {
             Random random = new Random();
+            bool nGageCards = false;
 
             try
             {
                 IWebElement nGageCard = driver.FindElement(By.Id("cardContentImg-14-5"));
                 nGageCard.Click();
                 Console.WriteLine("NGAGE!!!!");
+                nGageCards = true;
             }
             catch
             {
@@ -422,6 +424,7 @@ namespace Scrap.Models
                 {
                     IWebElement nGageCard = driver.FindElement(By.Id("cardContentImg-14"));
                     nGageCard.Click();
+                    nGageCards = true;
                 }
                 catch
                 {
@@ -429,6 +432,7 @@ namespace Scrap.Models
                     {
                         IWebElement nGageCard = driver.FindElement(By.Id("sbHomeCard-14-5"));
                         nGageCard.Click();
+                        nGageCards = true;
                     }
                     catch
                     {
@@ -436,6 +440,7 @@ namespace Scrap.Models
                         {
                             IWebElement nGageCard = driver.FindElement(By.Id("sbHomeCard54560-563"));
                             nGageCard.Click();
+                            nGageCards = true;
                         }
                         catch
                         {
@@ -448,7 +453,7 @@ namespace Scrap.Models
             Helpers.switchToBrowserByString(driver, "nGage");
             try
             {
-                while (driver.Title.Contains("nGage") && !bw.CancellationPending)
+                while (nGageCards)
                 {
                     switchToBrowserByString(driver, "nGage");
                     try
@@ -507,7 +512,6 @@ namespace Scrap.Models
 
                     switchToBrowserByString(driver, "nGage");
 
-                    /*
                     try
                     {
                         System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
@@ -530,7 +534,7 @@ namespace Scrap.Models
                     }
                     catch { }
                     finally { }
-                    */
+
                     switchToBrowserByString(driver, "nGage");
                 }
             }

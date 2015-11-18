@@ -58,69 +58,77 @@ namespace Scrap.Models
 
             while (lookFor(driver, "Watch and")) //testing
             {
-                Helpers.wait(5000);
-                switchFrameByNumber(driver, 0);
-
-                ById(driver, "webtraffic_popup_start_button");
-                ById(driver, "webtraffic_popup_next_button");
-                ByClass(driver, "webtraffic_start_button");
-                ByClass(driver, "webtraffic_next_button");
-                ById(driver, "expository_image");
-
                 try
                 {
-                    switchToBrowserByString(driver, "Now Exploring great content!");
-                    while (driver.Title.Contains("Now Exploring"))
+                    System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
+
+                    foreach (String window in windowHandles)
                     {
-                        switchToBrowserByString(driver, "Now Exploring great content!");
+                        IWebDriver popup = driver.SwitchTo().Window(window);
+
+                        Helpers.wait(5000);
+                        switchFrameByNumber(driver, 0);
+
+                        ById(driver, "webtraffic_popup_start_button");
+                        ById(driver, "webtraffic_popup_next_button");
+                        ByClass(driver, "webtraffic_start_button");
+                        ByClass(driver, "webtraffic_next_button");
+                        ById(driver, "expository_image");
+
                         try
                         {
-                            IWebElement greatContent = driver.FindElement(By.ClassName("nextstepimg"));
-                            greatContent.Click();
-                        }
-                        catch
-                        {
-                            Console.WriteLine("Waiting to finish");
-                            try
+                            switchToBrowserByString(driver, "Now Exploring great content!");
+                            while (driver.Title.Contains("Now Exploring"))
                             {
-                                driver.FindElement(By.XPath("//img[@alt='Claim your reward']")).Click();
-                                switchToBrowserByString(driver, "Dashboard");
+                                switchToBrowserByString(driver, "Now Exploring great content!");
+                                try
+                                {
+                                    IWebElement greatContent = driver.FindElement(By.ClassName("nextstepimg"));
+                                    greatContent.Click();
+                                }
+                                catch
+                                {
+                                    Console.WriteLine("Waiting to finish");
+                                    try
+                                    {
+                                        driver.FindElement(By.XPath("//img[@alt='Claim your reward']")).Click();
+                                        switchToBrowserByString(driver, "Dashboard");
+                                    }
+                                    catch { }
+                                    Helpers.wait(5000);
+                                }
                             }
-                            catch { }
-                            finally { }
-                            Helpers.wait(5000);
                         }
-                    }
-                }
-                catch { }
-                finally { }
+                        catch { }
 
-                try
-                {
-                    switchToBrowserByString(driver, "Watch and");
-                    switchFrameByNumber(driver, 0);
-                    if (driver.FindElement(By.Id("ty_header")).Text.Contains("ZBs"))
-                    {
-                        Console.WriteLine("I'm Here!!");
-                        Helpers.wait(1000);
-                        driver.Navigate().Refresh();
-                        closeWindows(driver, titles);
-                        Helpers.wait(5000);
-                    }
-                }
-                catch { }
-                finally { }
+                        try
+                        {
+                            switchToBrowserByString(driver, "Watch and");
+                            switchFrameByNumber(driver, 0);
+                            if (driver.FindElement(By.Id("ty_header")).Text.Contains("ZBs"))
+                            {
+                                Console.WriteLine("I'm Here!!");
+                                Helpers.wait(1000);
+                                driver.Navigate().Refresh();
+                                closeWindows(driver, titles);
+                                Helpers.wait(5000);
+                            }
+                        }
+                        catch { }
 
-                try
-                {
-                    if (driver.FindElement(By.TagName("body")).Text.Contains("No Videos available."))
-                    {
-                        driver.Close();
+                        try
+                        {
+                            if (driver.FindElement(By.TagName("body")).Text.Contains("No Videos available."))
+                            {
+                                driver.Close();
+                            }
+                        }
+                        catch { }
                     }
                 }
                 catch { }
-                finally { }
             }
+
 
             /*
             bool watchAnd = true;
@@ -234,147 +242,142 @@ namespace Scrap.Models
             } while (watchAnd);
             */
             switchToBrowserByString(driver, "Dashboard");
-            Console.WriteLine(driver.Title);
+                Console.WriteLine(driver.Title);
 
 
-            driver.Navigate().GoToUrl("http://www.zoombucks.com/offer_walls.php?t=1444653478#volume-11");
+                driver.Navigate().GoToUrl("http://www.zoombucks.com/offer_walls.php?t=1444653478#volume-11");
 
-            switchToBrowserByString(driver, "Offer Walls");
-            bool offerWall = true;
-
-            do
-            {
                 switchToBrowserByString(driver, "Offer Walls");
-                try
+                bool offerWall = true;
+
+                do
                 {
-                    driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#volume-11 iframe")));
-                }
-                catch { }
-                finally { }
-                try
-                {
-                    if (driver.FindElement(By.ClassName("video_title")).Text != "Watch this video!")
+                    try
                     {
+                        System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
+
+                        foreach (String window in windowHandles)
+                        {
+                            IWebDriver popup = driver.SwitchTo().Window(window);
+
+                            //switchToBrowserByString(driver, "Offer Walls");
+                            try
+                            {
+                                driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#volume-11 iframe")));
+                            }
+                            catch { }
+                            try
+                            {
+                                if (driver.FindElement(By.ClassName("video_title")).Text != "Watch this video!")
+                                {
+                                    try
+                                    {
+                                        Console.WriteLine("Looking for Videos");
+                                        //closeWindows(driver, titles);
+                                        ById(driver, "next_btn");
+                                    }
+                                    catch { }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Videos Found");
+                                    //if (driver.FindElement(By.Id("ty_header")).Text == "You earned 1 reward!")
+                                    Helpers.wait(500);
+                                    driver.SwitchTo().Frame(0);
+                                    driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#html_wrapper iframe")));
+                                    Console.WriteLine("Lets Get Started");
+                                    ById(driver, "expository_image");
+                                    ById(driver, "webtraffic_popup_start_button");
+                                    ById(driver, "webtraffic_popup_next_button");
+                                    ByClass(driver, "webtraffic_start_button");
+                                    ByClass(driver, "webtraffic_next_button");
+                                }
+                            }
+                            catch { }
+
+                            try
+                            {
+                                if (driver.FindElement(By.Id("offers_exhausted_message")).Displayed)
+                                {
+                                    driver.Navigate().Refresh();
+                                    Helpers.wait(5000);
+                                }
+                            }
+                            catch { }
+
+                            Helpers.wait(5000);
+                            //switchToBrowserByString(driver, "Offer Walls");
+
+                            try
+                            {
+                                Console.WriteLine("Switching to Browser");
+                                //switchToBrowserByString(driver, "Offer Walls");
+                                Console.WriteLine("Switching to Frame");
+                                driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#volume-11 iframe")));
+                                Console.WriteLine("Switching to Frame");
+                                driver.SwitchTo().Frame(0);
+                                Console.WriteLine("Switching to Frame");
+                                driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#html_wrapper iframe")));
+
+                                if (driver.FindElement(By.Id("ty_header")).Displayed)
+                                {
+                                    Console.WriteLine("refreshing....");
+                                    driver.Navigate().Refresh();
+                                    closeWindows(driver, titles);
+                                }
+                            }
+                            catch { }
+                        }
+
+
                         try
                         {
-                            Console.WriteLine("Looking for Videos");
-                            closeWindows(driver, titles);
-                            ById(driver, "next_btn");
+                            switchToBrowserByString(driver, "Now Exploring great content!");
+                            while (driver.Title.Contains("Now Exploring"))
+                            {
+                                switchToBrowserByString(driver, "Now Exploring great content!");
+                                try
+                                {
+                                    IWebElement greatContent = driver.FindElement(By.ClassName("nextstepimg"));
+                                    greatContent.Click();
+                                }
+                                catch
+                                {
+                                    Console.WriteLine("Waiting to finish");
+                                }
+                                try
+                                {
+                                    driver.FindElement(By.XPath("//img[@alt='Claim your reward']")).Click();
+                                    break;
+                                }
+                                catch { }
+                                Helpers.wait(5000);
+                            }
                         }
                         catch { }
-                        finally { }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Videos Found");
-                        //if (driver.FindElement(By.Id("ty_header")).Text == "You earned 1 reward!")
-                        Helpers.wait(500);
+
+                        Console.WriteLine("Switching to Frame");
+                        driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#volume-11 iframe")));
+                        Console.WriteLine("Switching to Frame");
                         driver.SwitchTo().Frame(0);
+                        Console.WriteLine("Switching to Frame");
                         driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#html_wrapper iframe")));
-                        Console.WriteLine("Lets Get Started");
-                        ById(driver, "expository_image");
-                        ById(driver, "webtraffic_popup_start_button");
-                        ById(driver, "webtraffic_popup_next_button");
-                        ByClass(driver, "webtraffic_start_button");
-                        ByClass(driver, "webtraffic_next_button");
-                    }
-                }
-                catch { }
-                finally { }
 
-                try
-                {
-                    Console.WriteLine(driver.FindElement(By.Id("ty_header")).Text);
-
-                    if (driver.FindElement(By.Id("ty_header")).Displayed)
-                    {
-                        switchToBrowserByString(driver, "Offer");
-                        Console.WriteLine(driver.Title);
-                        Console.WriteLine("REWARD!!");
-                        //Helpers.closeWindows(driver, titles);
-                        Helpers.wait(5000);
-                        //driver.Navigate().Refresh();
-                        //driver.Navigate().GoToUrl("http://www.zoombucks.com/offer_walls.php?t=1444653478#volume-11");
-                        //driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#volume-11 iframe")));
-                        //Helpers.ById(driver, "next_btn");
-                    }
-                }
-                catch { }
-                finally { }
-
-                try
-                {
-                    if (driver.FindElement(By.Id("offers_exhausted_message")).Displayed)
-                    {
-                        driver.Navigate().Refresh();
-                        Helpers.wait(5000);
-                    }
-                }
-                catch { }
-                finally { }
-
-                try
-                {
-                    switchToBrowserByString(driver, "Now Exploring great content!");
-                    while (driver.Title.Contains("Now Exploring"))
-                    {
-                        switchToBrowserByString(driver, "Now Exploring great content!");
-                        try
+                        if (driver.FindElement(By.Id("offers_exhausted_message")).Displayed)
                         {
-                            IWebElement greatContent = driver.FindElement(By.ClassName("nextstepimg"));
-                            greatContent.Click();
+                            offerWall = false;
                         }
-                        catch
-                        {
-                            Console.WriteLine("Waiting to finish");
-                        }
-                        try
-                        {
-                            driver.FindElement(By.XPath("//img[@alt='Claim your reward']")).Click();
-                            break;
-                        }
-                        catch { }
-                        finally { }
-                        Helpers.wait(5000);
                     }
-                }
-                catch { }
-                finally { }
+                    catch { }
 
-                Helpers.wait(5000);
-                switchToBrowserByString(driver, "Offer Walls");
+
+                } while (offerWall);
 
                 try
                 {
-                    Console.WriteLine("Switching to Browser");
-                    switchToBrowserByString(driver, "Offer Walls");
-                    Console.WriteLine("Switching to Frame");
-                    driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#volume-11 iframe")));
-                    Console.WriteLine("Switching to Frame");
-                    driver.SwitchTo().Frame(0);
-                    Console.WriteLine("Switching to Frame");
-                    driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#html_wrapper iframe")));
-
-                    if (driver.FindElement(By.Id("ty_header")).Text == "You earned 1 reward!")
-                    {
-                        Console.WriteLine("refreshing....");
-                        driver.Navigate().Refresh();
-                    }
+                    driver.Quit();
                 }
                 catch { }
-                finally { }
-
-
-
-            } while (offerWall);
-
-            /*
-            try
-            {
-                driver.Quit();
-            }
-            catch { }
-            */
         }
 
 
@@ -437,14 +440,20 @@ namespace Scrap.Models
 
         public static void switchToBrowserByString(IWebDriver driver, string targetBrowserString)
         {
+            System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
+
             try
             {
-                foreach (string defwindow in driver.WindowHandles)
+                foreach (string defwindow in windowHandles)
                 {
                     Console.WriteLine(driver.Title.ToString());
                     try
                     {
-                        driver.SwitchTo().Window(defwindow);
+                        if (defwindow != null)
+                        {
+                            driver.SwitchTo().Window(defwindow);
+                            break;
+                        }
                     }
                     catch
                     {
