@@ -49,126 +49,147 @@ namespace Scrap.Models
 
             while (true)
             {
-                switchToBrowserByString(driver, "PrizeRebel.com | Earn");
                 try
                 {
-                    driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#displayWrap iframe")));
-                }
-                catch { }
+                    System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
 
-                try
-                {
-                    IList<IWebElement> oLinks = driver.FindElements(By.ClassName("singleselectset_radio"));
-                    Random random = new Random();
-                    int rndClick = random.Next(1, oLinks.Count);
-                    Console.WriteLine(rndClick);
-                    int counterClick = 1;
-                    foreach (IWebElement oLink in oLinks)
+                    foreach (String window in windowHandles)
                     {
-                        Console.WriteLine(counterClick);
-                        if (counterClick == rndClick)
-                        {
-                            oLink.Click();
-                        }
-                        counterClick++;
-                    }
-                }
-                catch { }
+                        IWebDriver popup = driver.SwitchTo().Window(window);
 
-                try
-                {
-                    IWebElement dropDownMonth = driver.FindElement(By.Id("dob_month"));
-                    IWebElement dropDownDay = driver.FindElement(By.Id("dob_day"));
-                    IWebElement dropDownYear = driver.FindElement(By.Id("dob_year"));
-                    string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-                    Random random = new Random();
-                    int rndMonth = random.Next(0, 11);
-                    Console.WriteLine(rndMonth);
-                    SelectElement clickThis = new SelectElement(dropDownMonth);
-                    clickThis.SelectByText(months[rndMonth]);
-                    Helpers.wait(1000);
-                    int rndDay = random.Next(1, 28);
-                    clickThis = new SelectElement(dropDownDay);
-                    clickThis.SelectByText(rndDay.ToString());
-                    Helpers.wait(1000);
-                    int rndYear = random.Next(1974, 1994);
-                    clickThis = new SelectElement(dropDownYear);
-                    clickThis.SelectByText(rndYear.ToString());
-                    Helpers.wait(1000);
-                }
-                catch { }
-
-                try
-                {
-                    driver.FindElement(By.Id("demosubmitimg")).Click();
-                }
-                catch { }
-
-                try
-                {
-                    driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#displayWrap iframe")));
-                }
-                catch { }
-
-                ById(driver, "webtraffic_popup_start_button");
-                ById(driver, "webtraffic_popup_next_button");
-                ByClass(driver, "webtraffic_start_button");
-                ByClass(driver, "webtraffic_next_button");
-
-                try
-                {
-                    switchToBrowserByString(driver, "Now Exploring great content!");
-                    while (driver.Title.Contains("Now Exploring"))
-                    {
-                        switchToBrowserByString(driver, "Now Exploring great content!");
                         try
                         {
-                            IWebElement greatContent = driver.FindElement(By.ClassName("nextstepimg"));
-                            greatContent.Click();
+                            driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#displayWrap iframe")));
                         }
-                        catch
+                        catch { }
+
+                        try
                         {
-                            Console.WriteLine("Waiting to finish");
-                            try
+                            IList<IWebElement> oLinks = driver.FindElements(By.ClassName("singleselectset_radio"));
+                            Random random = new Random();
+                            int rndClick = random.Next(1, oLinks.Count);
+                            Console.WriteLine(rndClick);
+                            int counterClick = 1;
+                            foreach (IWebElement oLink in oLinks)
                             {
-                                driver.FindElement(By.XPath("//img[@alt='Claim your reward']")).Click();
-                                switchToBrowserByString(driver, "Offer Walls");
+                                Console.WriteLine(counterClick);
+                                if (counterClick == rndClick)
+                                {
+                                    oLink.Click();
+                                }
+                                counterClick++;
                             }
-                            catch { }
-                            Helpers.wait(5000);
                         }
+                        catch { }
+
+                        try
+                        {
+                            IWebElement dropDownMonth = driver.FindElement(By.Id("dob_month"));
+                            IWebElement dropDownDay = driver.FindElement(By.Id("dob_day"));
+                            IWebElement dropDownYear = driver.FindElement(By.Id("dob_year"));
+                            string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                            Random random = new Random();
+                            int rndMonth = random.Next(0, 11);
+                            Console.WriteLine(rndMonth);
+                            SelectElement clickThis = new SelectElement(dropDownMonth);
+                            clickThis.SelectByText(months[rndMonth]);
+                            Helpers.wait(1000);
+                            int rndDay = random.Next(1, 28);
+                            clickThis = new SelectElement(dropDownDay);
+                            clickThis.SelectByText(rndDay.ToString());
+                            Helpers.wait(1000);
+                            int rndYear = random.Next(1974, 1994);
+                            clickThis = new SelectElement(dropDownYear);
+                            clickThis.SelectByText(rndYear.ToString());
+                            Helpers.wait(1000);
+                        }
+                        catch { }
+
+                        try
+                        {
+                            driver.FindElement(By.Id("demosubmitimg")).Click();
+                        }
+                        catch { }
+
+                        try
+                        {
+                            driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#displayWrap iframe")));
+                        }
+                        catch { }
+
+                        ById(driver, "webtraffic_popup_start_button");
+                        ById(driver, "webtraffic_popup_next_button");
+                        ByClass(driver, "webtraffic_start_button");
+                        ByClass(driver, "webtraffic_next_button");
+
+                        try
+                        {
+                            IWebElement rewardText = driver.FindElement(By.Id("ty_header"));
+                            if (rewardText.Text == "You earned 1 Points!")
+                            {
+                                driver.Navigate().Refresh();
+                                closeWindows(driver, titles);
+                            }
+                        }
+                        catch { }
+
+                        try
+                        {
+                            switchToBrowserByString(driver, "Now Exploring great content!");
+                            while (driver.Title.Contains("Now Exploring"))
+                            {
+                                switchToBrowserByString(driver, "Now Exploring great content!");
+                                try
+                                {
+                                    IWebElement greatContent = driver.FindElement(By.ClassName("nextstepimg"));
+                                    greatContent.Click();
+                                }
+                                catch
+                                {
+                                    Console.WriteLine("Waiting to finish");
+                                    try
+                                    {
+                                        driver.FindElement(By.XPath("//img[@alt='Claim your reward']")).Click();
+                                        switchToBrowserByString(driver, "Offer Walls");
+                                    }
+                                    catch { }
+                                    Helpers.wait(5000);
+                                }
+                            }
+                        }
+                        catch { }
+
+                        try
+                        {
+                            driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#displayWrap iframe")));
+                        }
+                        catch { }
+
+                        try
+                        {
+                            if (driver.FindElement(By.Id("ty_header")).Text.Contains("Points"))
+                            {
+                                closeWindows(driver, titles);
+                                Console.WriteLine("I'm Here!!");
+                                driver.SwitchTo().ParentFrame();
+                                Console.WriteLine("Attempting Refresh");
+                                driver.Navigate().GoToUrl("http://www.prizerebel.com/ripply.php");
+                                Helpers.wait(1000);
+                                driver.Navigate().GoToUrl("http://www.prizerebel.com/dailypoints.php");
+                                driver.Navigate().Refresh();
+                                Console.WriteLine("Refresh Complete");
+                            }
+                        }
+                        catch { }
+                        try
+                        {
+                            driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#displayWrap iframe")));
+                        }
+                        catch { }
+                        Helpers.wait(5000);
                     }
                 }
                 catch { }
-
-                try
-                {
-                    driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#displayWrap iframe")));
-                }
-                catch { }
-
-                try
-                {
-                    if (driver.FindElement(By.Id("ty_header")).Text.Contains("Points"))
-                    {
-                        closeWindows(driver, titles);
-                        Console.WriteLine("I'm Here!!");
-                        driver.SwitchTo().ParentFrame();
-                        Console.WriteLine("Attempting Refresh");
-                        driver.Navigate().GoToUrl("http://www.prizerebel.com/ripply.php");
-                        Helpers.wait(1000);
-                        driver.Navigate().GoToUrl("http://www.prizerebel.com/dailypoints.php");
-                        driver.Navigate().Refresh();
-                        Console.WriteLine("Refresh Complete");
-                    }
-                }
-                catch { }
-                try
-                {
-                    driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#displayWrap iframe")));
-                }
-                catch { }
-                Helpers.wait(5000);
             }
         }
 

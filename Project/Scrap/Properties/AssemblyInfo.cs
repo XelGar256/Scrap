@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyTitle("Scrap")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Trippn dot Net")]
 [assembly: AssemblyProduct("Scrap")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
@@ -52,4 +52,4 @@ using System.Windows;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.19.0.0")]
+[assembly: AssemblyFileVersion("1.22.0.0")]
