@@ -74,10 +74,15 @@ namespace Scrap.Models
 
             while (true)
             {
-                nCrave(driver, bw);
+                //nCrave(driver, bw);
                 discoveryBreak(driver, bw);
-                //Helpers.switchToBrowserByString(driver, "Home | Swagbucks");
                 nGage(driver, bw);
+                switchToBrowserByString(driver, "Home | Swagbucks");
+                try
+                {
+                    driver.Navigate().Refresh();
+                }
+                catch { }
             }
             driver.Quit();
         }
