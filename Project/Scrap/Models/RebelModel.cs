@@ -52,73 +52,63 @@ namespace Scrap.Models
                 switchToBrowserByString(driver, "PrizeRebel.com | Earn");
                 try
                 {
-                    try
-                    {
-                        driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#displayWrap iframe")));
-                    }
-                    catch { }
-                    finally { }
-                    try
-                    {
-                        IList<IWebElement> oLinks = driver.FindElements(By.ClassName("singleselectset_radio"));
-                        Random random = new Random();
-                        int rndClick = random.Next(1, oLinks.Count);
-                        Console.WriteLine(rndClick);
-                        int counterClick = 1;
-                        foreach (IWebElement oLink in oLinks)
-                        {
-                            Console.WriteLine(counterClick);
-                            if (counterClick == rndClick)
-                            {
-                                oLink.Click();
-                            }
-                            counterClick++;
-                        }
-                    }
-                    catch { }
-                    finally { }
-
-                    try
-                    {
-                        IWebElement dropDownMonth = driver.FindElement(By.Id("dob_month"));
-                        IWebElement dropDownDay = driver.FindElement(By.Id("dob_day"));
-                        IWebElement dropDownYear = driver.FindElement(By.Id("dob_year"));
-                        string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-                        Random random = new Random();
-                        int rndMonth = random.Next(0, 11);
-                        Console.WriteLine(rndMonth);
-                        SelectElement clickThis = new SelectElement(dropDownMonth);
-                        clickThis.SelectByText(months[rndMonth]);
-                        Helpers.wait(1000);
-                        int rndDay = random.Next(1, 28);
-                        clickThis = new SelectElement(dropDownDay);
-                        clickThis.SelectByText(rndDay.ToString());
-                        Helpers.wait(1000);
-                        int rndYear = random.Next(1974, 1994);
-                        clickThis = new SelectElement(dropDownYear);
-                        clickThis.SelectByText(rndYear.ToString());
-                        Helpers.wait(1000);
-                    }
-                    catch { }
-                    finally { }
-
-                    try
-                    {
-                        driver.FindElement(By.Id("demosubmitimg")).Click();
-                    }
-                    catch { }
-                    finally { }
+                    driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#displayWrap iframe")));
                 }
                 catch { }
-                finally { }
 
-                switchToBrowserByString(driver, "PrizeRebel.com | Earn");
+                try
+                {
+                    IList<IWebElement> oLinks = driver.FindElements(By.ClassName("singleselectset_radio"));
+                    Random random = new Random();
+                    int rndClick = random.Next(1, oLinks.Count);
+                    Console.WriteLine(rndClick);
+                    int counterClick = 1;
+                    foreach (IWebElement oLink in oLinks)
+                    {
+                        Console.WriteLine(counterClick);
+                        if (counterClick == rndClick)
+                        {
+                            oLink.Click();
+                        }
+                        counterClick++;
+                    }
+                }
+                catch { }
+
+                try
+                {
+                    IWebElement dropDownMonth = driver.FindElement(By.Id("dob_month"));
+                    IWebElement dropDownDay = driver.FindElement(By.Id("dob_day"));
+                    IWebElement dropDownYear = driver.FindElement(By.Id("dob_year"));
+                    string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                    Random random = new Random();
+                    int rndMonth = random.Next(0, 11);
+                    Console.WriteLine(rndMonth);
+                    SelectElement clickThis = new SelectElement(dropDownMonth);
+                    clickThis.SelectByText(months[rndMonth]);
+                    Helpers.wait(1000);
+                    int rndDay = random.Next(1, 28);
+                    clickThis = new SelectElement(dropDownDay);
+                    clickThis.SelectByText(rndDay.ToString());
+                    Helpers.wait(1000);
+                    int rndYear = random.Next(1974, 1994);
+                    clickThis = new SelectElement(dropDownYear);
+                    clickThis.SelectByText(rndYear.ToString());
+                    Helpers.wait(1000);
+                }
+                catch { }
+
+                try
+                {
+                    driver.FindElement(By.Id("demosubmitimg")).Click();
+                }
+                catch { }
+
                 try
                 {
                     driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#displayWrap iframe")));
                 }
                 catch { }
-                finally { }
 
                 ById(driver, "webtraffic_popup_start_button");
                 ById(driver, "webtraffic_popup_next_button");
@@ -145,22 +135,17 @@ namespace Scrap.Models
                                 switchToBrowserByString(driver, "Offer Walls");
                             }
                             catch { }
-                            finally { }
                             Helpers.wait(5000);
                         }
                     }
                 }
                 catch { }
-                finally { }
-
-                switchToBrowserByString(driver, "PrizeRebel.com | Earn");
 
                 try
                 {
                     driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#displayWrap iframe")));
                 }
                 catch { }
-                finally { }
 
                 try
                 {
@@ -178,14 +163,11 @@ namespace Scrap.Models
                     }
                 }
                 catch { }
-                finally { }
-                switchToBrowserByString(driver, "PrizeRebel.com | Earn");
                 try
                 {
                     driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#displayWrap iframe")));
                 }
                 catch { }
-                finally { }
                 Helpers.wait(5000);
             }
         }

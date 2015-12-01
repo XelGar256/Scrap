@@ -63,6 +63,8 @@ namespace Scrap.Models
             finally { }
             Console.WriteLine("Please sir no swag button");
 
+            dailys(driver, bw);
+
             Helpers.wait(500);
             while (!bw.CancellationPending && vids)
             {
@@ -72,12 +74,140 @@ namespace Scrap.Models
 
             while (true)
             {
+                nCrave(driver, bw);
                 discoveryBreak(driver, bw);
                 //Helpers.switchToBrowserByString(driver, "Home | Swagbucks");
                 nGage(driver, bw);
             }
-
             driver.Quit();
+        }
+
+        void dailys(IWebDriver driver, BackgroundWorker bw)
+        {
+            try
+            {
+                driver.FindElement(By.LinkText("Daily Poll")).Click();
+            }
+            catch { }
+            Helpers.wait(1000);
+            try
+            {
+                IList<IWebElement> pollCheckboxes = driver.FindElements(By.ClassName("pollCheckbox"));
+                Random random = new Random();
+                int rndClick = random.Next(1, pollCheckboxes.Count);
+                Console.WriteLine(rndClick);
+                int counterClick = 1;
+                foreach (IWebElement pollCheckbox in pollCheckboxes)
+                {
+                    Console.WriteLine(counterClick);
+                    if (counterClick == rndClick)
+                    {
+                        pollCheckbox.Click();
+                    }
+                    counterClick++;
+                }
+            }
+            catch { }
+            Helpers.wait(1000);
+            ByClass(driver, "todayPoll");
+            Helpers.wait(1000);
+            ByClass(driver, "logoTopbar");
+            Helpers.wait(1000);
+        }
+
+        void nCrave(IWebDriver driver, BackgroundWorker bw)
+        {
+            bool craveMe = false;
+            try
+            {
+                driver.FindElement(By.LinkText("Daily Crave")).Click();
+                craveMe = true;
+            }
+            catch { }
+            Helpers.wait(1000);
+            try
+            {
+                driver.SwitchTo().Frame(driver.FindElement(By.XPath("//iframe[contains(@name, 'easyXDM')]")));
+            }
+            catch { }
+            finally { }
+            switchToBrowserFrameByString(driver, "parentiframe");
+            try
+            {
+                /*
+                IList<IWebElement> encraveTasks = driver.FindElements(By.ClassName("disableText"));
+                int counter = 0;
+                foreach (IWebElement encraveTask in encraveTasks)
+                {
+                    if (counter == encraveTasks.Count - 1)
+                    {
+                        encraveTask.Click();
+                    }
+                    counter++;
+                }
+                */
+                driver.FindElement(By.ClassName("disableText")).Click();
+                Helpers.wait(5000);
+            }
+            catch { }
+
+            Helpers.wait(1000);
+            switchToBrowserByString(driver, "Entertainmentcrave");
+            //ById(driver, "crave_on");
+            Helpers.wait(1000);
+            while (craveMe)
+            {
+                bool someSwitch = false;
+                closeWindows(driver, titles);
+
+                try
+                {
+                    System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
+
+                    foreach (String window in windowHandles)
+                    {
+                        driver.SwitchTo().Window(window);
+                        driver.SwitchTo().DefaultContent();
+
+                        try
+                        {
+                            IList<IWebElement> urlLinks = driver.FindElements(By.ClassName("url-link"));
+                            Console.WriteLine("Found url-link");
+                            Console.WriteLine(urlLinks.Count);
+                            Helpers.wait(1000);
+                            foreach (IWebElement urlLink in urlLinks)
+                            {
+                                Console.WriteLine("Fuck Off Swagbucks");
+                                urlLink.Click();
+                                try
+                                {
+                                    if (driver.FindElement(By.ClassName("switch")).Displayed && !someSwitch)
+                                    {
+                                        ByClass(driver, "switch");
+                                        someSwitch = true;
+                                    }
+                                }
+                                catch { }
+                                ById(driver, "link_down");
+                                Helpers.wait(60000);
+                                switchToBrowserFrameByString(driver, "contIframe");
+                                ByClass(driver, "owl-next");
+                                switchToBrowserByString(driver, "Entertainmentcrave");
+                                driver.SwitchTo().DefaultContent();
+                            }
+                        }
+                        catch { }
+                        ById(driver, "link_down");
+                        ByClass(driver, "keepCraving");
+
+                        //switchToBrowserFrameByString(driver, "contIframe");
+                        //driver.FindElement(By.ClassName("beforeswfanchor3")).Click();
+                    }
+                }
+                catch { }
+            }
+            Helpers.wait(1000);
+            ByClass(driver, "logoTopbar");
         }
 
         void discoveryBreak(IWebDriver driver, BackgroundWorker bw)

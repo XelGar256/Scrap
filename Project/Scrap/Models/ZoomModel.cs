@@ -58,6 +58,24 @@ namespace Scrap.Models
 
             while (lookFor(driver, "Watch and")) //testing
             {
+                if (hour != DateTime.Now.Hour)
+                {
+                    try
+                    {
+                        Helpers.switchToBrowserByString(driver, "Dashboard");
+                        driver.FindElement(By.XPath("//a[contains(@href, 'hourly_offer_contest')]")).Click();
+                        //MessageBox.Show(driver.Title);
+                        hour = DateTime.Now.Hour;
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Couldn't Click Contest");
+                    }
+                    finally { }
+
+                    Helpers.ByClass(driver, "brand");
+                }
+
                 try
                 {
                     System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
@@ -66,7 +84,7 @@ namespace Scrap.Models
                     {
                         IWebDriver popup = driver.SwitchTo().Window(window);
 
-                        Helpers.wait(5000);
+                        Helpers.wait(1000);
                         switchFrameByNumber(driver, 0);
 
                         ById(driver, "webtraffic_popup_start_button");
@@ -74,6 +92,33 @@ namespace Scrap.Models
                         ByClass(driver, "webtraffic_start_button");
                         ByClass(driver, "webtraffic_next_button");
                         ById(driver, "expository_image");
+
+                        try
+                        {
+                            IWebElement rewardText = driver.FindElement(By.Id("ty_header"));
+                            if (rewardText.Text == "You earned 2 ZBs!")
+                            {
+
+                                driver.Navigate().Refresh();
+
+                                Helpers.closeWindows(driver, titles);
+                            }
+                            else if (rewardText.Text == "You've earned 2 ZBs!")
+                            {
+
+                                driver.Navigate().Refresh();
+
+                                Helpers.closeWindows(driver, titles);
+                            }
+                            else if (rewardText.Text == "You earned 1 ZBs!")
+                            {
+
+                                driver.Navigate().Refresh();
+
+                                Helpers.closeWindows(driver, titles);
+                            }
+                        }
+                        catch { }
 
                         try
                         {
@@ -95,40 +140,55 @@ namespace Scrap.Models
                                         switchToBrowserByString(driver, "Dashboard");
                                     }
                                     catch { }
-                                    Helpers.wait(5000);
+                                    Helpers.wait(1000);
                                 }
                             }
                         }
                         catch { }
-
-                        try
-                        {
-                            //switchToBrowserByString(driver, "Watch and");
-                            switchFrameByNumber(driver, 0);
-                            if (driver.FindElement(By.Id("ty_header")).Displayed)
-                            {
-                                Console.WriteLine("I'm Here!!");
-                                Helpers.wait(1000);
-                                driver.Navigate().Refresh();
-                                closeWindows(driver, titles);
-                                Helpers.wait(5000);
-                            }
-                        }
-                        catch { }
-
-                        try
-                        {
-                            if (driver.FindElement(By.TagName("body")).Text.Contains("No Videos available."))
-                            {
-                                driver.Close();
-                            }
-                        }
-                        catch { }
                     }
+
+                    Helpers.switchToBrowserByString(driver, "Watch and");
+                    driver.SwitchTo().DefaultContent();
+                    try
+                    {
+                        IWebElement rewardText = driver.FindElement(By.Id("ty_header"));
+                        if (rewardText.Text == "You earned 2 ZBs!")
+                        {
+
+                            driver.Navigate().Refresh();
+
+                            Helpers.closeWindows(driver, titles);
+                        }
+                        else if (rewardText.Text == "You've earned 2 ZBs!")
+                        {
+
+                            driver.Navigate().Refresh();
+
+                            Helpers.closeWindows(driver, titles);
+                        }
+                        else if (rewardText.Text == "You earned 1 ZBs!")
+                        {
+
+                            driver.Navigate().Refresh();
+
+                            Helpers.closeWindows(driver, titles);
+                        }
+                    }
+                    catch { }
+
+                    Helpers.switchToBrowserByString(driver, "Watch and");
+                    IList<IWebElement> stackedFrames = driver.FindElements(By.TagName("iframe"));
+                    Console.WriteLine("Current Number Of IFrames " + stackedFrames.Count);
+                    switchFrameByNumber(driver, stackedFrames.Count);
+                    if (driver.FindElement(By.TagName("error")).Text.Contains("AccessDeniedAccess"))
+                    {
+                        Console.WriteLine("HOLY SHIT DUDE");
+                        driver.Close();
+                    }
+
                 }
                 catch { }
             }
-
 
             /*
             bool watchAnd = true;
@@ -319,15 +379,28 @@ namespace Scrap.Models
                             Console.WriteLine("Switching to Frame");
                             driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#html_wrapper iframe")));
 
-                            if (driver.FindElement(By.Id("ty_header")).Displayed)
-                            {
-                                Console.WriteLine("refreshing....");
-                                driver.Navigate().Refresh();
-                                closeWindows(driver, titles);
-                            }
                         }
                         catch { }
                     }
+
+                    try
+                    {
+                        Console.WriteLine("Switching to Browser");
+                        switchToBrowserByString(driver, "Offer Walls");
+                        Console.WriteLine("Switching to Frame");
+                        driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#volume-11 iframe")));
+                        driver.SwitchTo().Frame(0);
+                        driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#html_wrapper iframe")));
+
+                        IWebElement volume11reward = driver.FindElement(By.Id("ty_header"));
+                        if (volume11reward.Text == "You earned 1 reward!")
+                        {
+                            Console.WriteLine("refreshing....");
+                            driver.Navigate().Refresh();
+                            closeWindows(driver, titles);
+                        }
+                    }
+                    catch { }
 
 
                     try
