@@ -117,6 +117,12 @@ namespace Scrap.Models
 
                                 Helpers.closeWindows(driver, titles);
                             }
+                            else if (rewardText.Text.Contains("2 ZBs"))
+                            {
+                                driver.Navigate().Refresh();
+
+                                Helpers.closeWindows(driver, titles);
+                            }
                         }
                         catch { }
 
