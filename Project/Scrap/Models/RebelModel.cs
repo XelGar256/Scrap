@@ -135,6 +135,18 @@ namespace Scrap.Models
 
                         try
                         {
+
+                            if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
+                            {
+                                driver.Navigate().Refresh();
+                                closeWindows(driver, titles);
+                            }
+                        }
+
+                        catch { }
+
+                        try
+                        {
                             switchToBrowserByString(driver, "Now Exploring great content!");
                             while (driver.Title.Contains("Now Exploring"))
                             {

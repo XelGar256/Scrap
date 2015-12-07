@@ -9,7 +9,7 @@ namespace Scrap
     /// </summary>
     public partial class MainWindow : Window
     {
-        private BackgroundWorker zoomBw, swagBw, rebelBw, vertsBw, iRazooBw;
+        private BackgroundWorker zoomBw, swagBw, rebelBw, vertsBw, iRazooBw, giftHulkBw;
 
         public MainWindow()
         {
@@ -64,6 +64,21 @@ namespace Scrap
         }
 
         private void btnStopiRazoo_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnLoginGiftHulk_Click(object sender, RoutedEventArgs e)
+        {
+            string username = txtUsernameGiftHulk.Text, password = txtPasswordGiftHulk.Password;
+
+            giftHulkBw = new BackgroundWorker();
+            giftHulkBw.WorkerSupportsCancellation = true;
+            giftHulkBw.DoWork += delegate (object o, DoWorkEventArgs args) { new GiftHulkModel(username, password, giftHulkBw); };
+            giftHulkBw.RunWorkerAsync();
+        }
+
+        private void btnStopGiftHulk_Click(object sender, RoutedEventArgs e)
         {
 
         }

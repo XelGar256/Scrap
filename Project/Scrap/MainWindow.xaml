@@ -59,6 +59,16 @@
                     <Button x:Name="btnStopiRazoo" Content="Stop" HorizontalAlignment="Left" Margin="81,111,0,0" VerticalAlignment="Top" Width="85" RenderTransformOrigin="-0.36,-0.3" Click="btnStopiRazoo_Click"/>
                 </Grid>
             </TabItem>
+            <TabItem Header="GiftHulk" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="55">
+                <Grid Background="#FFE5E5E5">
+                    <Label Content="Username:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Password:" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="txtUsernameGiftHulk" HorizontalAlignment="Left" Height="23" Margin="81,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-1.85,-4.87"/>
+                    <PasswordBox x:Name="txtPasswordGiftHulk" HorizontalAlignment="Left" Margin="81,44,0,0" VerticalAlignment="Top" Width="120" Height="23"/>
+                    <Button x:Name="btnLoginGiftHulk" Content="Start Hulking" HorizontalAlignment="Left" Margin="81,86,0,0" VerticalAlignment="Top" Width="85" Click="btnLoginGiftHulk_Click"/>
+                    <Button x:Name="btnStopGiftHulk" Content="Stop Hulking" HorizontalAlignment="Left" Margin="81,111,0,0" VerticalAlignment="Top" Width="85" RenderTransformOrigin="-0.36,-0.3" Click="btnStopGiftHulk_Click"/>
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>

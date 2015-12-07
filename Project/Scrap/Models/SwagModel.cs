@@ -335,7 +335,22 @@ namespace Scrap.Models
                         IWebElement earned2Swag = driver.FindElement(By.Id("ty_header"));
                         string earn2;
                         earn2 = earned2Swag.Text;
+                        /*
                         if (earned2Swag.Text == "You earned 2 Swag Bucks!")
+                        {
+                            Console.WriteLine("This is a test to find earned2Swag.Text");
+                            Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                            using (var destination = File.AppendText("pointsLog.txt"))
+                            {
+                                destination.WriteLine(Regex.Match(earn2, @"\d+").Value);
+                            }
+                            IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
+                            viewMoreContent.Click();
+                            Helpers.closeWindows(driver, titles);
+                        }
+                        */
+
+                        if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
                         {
                             Console.WriteLine("This is a test to find earned2Swag.Text");
                             Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
@@ -349,7 +364,6 @@ namespace Scrap.Models
                             viewMoreContent.Click();
                             Helpers.closeWindows(driver, titles);
                         }
-
                     }
                     catch
                     {

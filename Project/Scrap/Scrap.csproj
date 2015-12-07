@@ -101,6 +101,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\GiftHulkModel.cs" />
     <Compile Include="Models\iRazooModel.cs" />
     <Compile Include="Models\PaidVertsModel.cs" />
     <Compile Include="Models\RebelModel.cs" />
