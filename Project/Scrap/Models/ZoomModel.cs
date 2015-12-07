@@ -430,6 +430,12 @@ namespace Scrap.Models
 
                     try
                     {
+                        Console.WriteLine("Switching to Browser");
+                        switchToBrowserByString(driver, "Offer Walls");
+                        Console.WriteLine("Switching to Frame");
+                        driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#volume-11 iframe")));
+                        driver.SwitchTo().Frame(0);
+                        driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#html_wrapper iframe")));
 
                         if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
                         {
