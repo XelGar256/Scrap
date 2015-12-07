@@ -349,6 +349,15 @@ namespace Scrap.Models
                             Helpers.closeWindows(driver, titles);
                         }
                         */
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Waiting 5 Seconds!!");
+                        Helpers.wait(500);
+                    }
+                    finally { }
+                    try
+                    {
 
                         if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
                         {
@@ -365,12 +374,7 @@ namespace Scrap.Models
                             Helpers.closeWindows(driver, titles);
                         }
                     }
-                    catch
-                    {
-                        Console.WriteLine("Waiting 5 Seconds!!");
-                        Helpers.wait(500);
-                    }
-                    finally { }
+                    catch { }
 
                     Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
                     try
