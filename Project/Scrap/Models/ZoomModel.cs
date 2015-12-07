@@ -95,6 +95,17 @@ namespace Scrap.Models
 
                         try
                         {
+                            if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
+                            {
+                                driver.Navigate().Refresh();
+                                closeWindows(driver, titles);
+                            }
+                        }
+                        catch { }
+
+                        /*
+                        try
+                        {
                             IWebElement rewardText = driver.FindElement(By.Id("ty_header"));
                             if (rewardText.Text == "You earned 2 ZBs!")
                             {
@@ -125,6 +136,7 @@ namespace Scrap.Models
                             }
                         }
                         catch { }
+                        */
 
 
 
@@ -155,6 +167,7 @@ namespace Scrap.Models
                     }
                     catch { }
 
+                    /*
                     Helpers.switchToBrowserByString(driver, "Watch and");
                     driver.SwitchTo().DefaultContent();
                     try
@@ -183,9 +196,14 @@ namespace Scrap.Models
                         }
                     }
                     catch { }
+                    */
 
+                    Console.WriteLine("Switching to Browser");
+                    switchToBrowserByString(driver, "Offer Walls");
                     try
                     {
+                        Console.WriteLine("Switching to Frame");
+                        driver.SwitchTo().Frame(1);
 
                         if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
                         {
@@ -433,9 +451,7 @@ namespace Scrap.Models
                         Console.WriteLine("Switching to Browser");
                         switchToBrowserByString(driver, "Offer Walls");
                         Console.WriteLine("Switching to Frame");
-                        driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#volume-11 iframe")));
                         driver.SwitchTo().Frame(0);
-                        driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#html_wrapper iframe")));
 
                         if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
                         {
