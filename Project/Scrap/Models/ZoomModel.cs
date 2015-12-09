@@ -430,6 +430,16 @@ namespace Scrap.Models
                         driver.SwitchTo().Frame(0);
                         driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#html_wrapper iframe")));
 
+                        try
+                        {
+                            if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
+                            {
+                                driver.Navigate().Refresh();
+                                closeWindows(driver, titles);
+                            }
+                        }
+                        catch { }
+
                         IWebElement volume11reward = driver.FindElement(By.Id("ty_header"));
                         if (volume11reward.Text == "You earned 1 reward!")
                         {

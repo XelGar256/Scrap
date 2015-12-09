@@ -9,7 +9,7 @@ namespace Scrap.Models
 {
     class GiftHulkModel
     {
-        string[] titles = { "Dashboard", "Offer Walls", "Watch and" };
+        string[] titles = { "nothing is" };
         public GiftHulkModel(string username, string password, BackgroundWorker bw)
         {
             int hour = -1;
@@ -39,40 +39,58 @@ namespace Scrap.Models
             IList<IWebElement> iframes = driver.FindElements(By.TagName("iframe"));
             Console.WriteLine(iframes.Count);
             //Find Videos Link in My Reward Box
-            IList<IWebElement> messages = driver.FindElements(By.ClassName("message-link"));
-            Console.WriteLine("You have " + messages.Count + " message-links");
-            foreach (IWebElement message in messages)
-            {
-                Console.WriteLine(message.Text);
-                if (message.Text.Contains("videos to watch!"))
-                {
-                    message.Click();
-                    break;
-                }
-            }
-
-            Helpers.wait(5000);
             bool videoWatching = false;
-            IList<IWebElement> videos = driver.FindElements(By.LinkText("Watch this video!"));
-            foreach (IWebElement video in videos)
+            videoWatching = true;
+            while (videoWatching)
             {
+                switchToBrowserByString(driver, "nothing is");
+                /*
+                IList<IWebElement> messages = driver.FindElements(By.ClassName("message-link"));
+                Console.WriteLine("You have " + messages.Count + " message-links");
+                foreach (IWebElement message in messages)
+                {
+                    Console.WriteLine(message.Text);
+                    if (message.Text.Contains("videos to watch!"))
+                    {
+                        message.Click();
+                        break;
+                    }
+                }
+                */
                 try
                 {
-                    video.Click();
-                    videoWatching = true;
-                    while (videoWatching)
+                    driver.FindElement(By.PartialLinkText("videos to watch")).Click();
+                }
+                catch { }
+
+                Helpers.wait(5000);
+                driver.FindElement(By.LinkText("Watch this video!")).Click();
+                bool videoWatchings = false;
+                try
+                {
+                    videoWatchings = true;
+                    while (videoWatchings)
                     {
                         try
                         {
-                            System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
+                            System.Collections.ObjectModel.ReadOnlyCollection<string> MorewindowHandles = driver.WindowHandles;
 
-                            foreach (String window in windowHandles)
+                            foreach (String window in MorewindowHandles)
                             {
+
                                 IWebDriver popup = driver.SwitchTo().Window(window);
 
                                 Helpers.wait(500);
                                 driver.SwitchTo().Frame(driver.FindElement(By.Id("stick-video-popup-video")));
                                 driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#html_wrapper iframe")));
+                                if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
+                                {
+                                    Console.WriteLine("Rewarded");
+                                    videoWatchings = false;
+                                    switchToBrowserByString(driver, "nothing is");
+                                    driver.Navigate().GoToUrl("http://www.gifthulk.com/");
+                                    closeWindows(driver, titles);
+                                }
                                 Console.WriteLine("Lets Get Started");
                                 ById(driver, "expository_image");
                                 ById(driver, "webtraffic_popup_start_button");
@@ -83,40 +101,29 @@ namespace Scrap.Models
                                 IWebElement volume11reward = driver.FindElement(By.Id("ty_header"));
                                 if (volume11reward.Text == "You earned 1 reward!")
                                 {
-                                    Console.WriteLine(volume11reward.Text);
-                                    videoWatching = false;
-                                    Helpers.wait(2000);
+                                    Console.WriteLine("Rewarded");
+                                    videoWatchings = false;
                                     switchToBrowserByString(driver, "nothing is");
-                                    driver.SwitchTo().DefaultContent();
-                                    ByClass(driver, "close-popup");
-                                    Helpers.wait(2000);
+                                    driver.Navigate().GoToUrl("http://www.gifthulk.com/");
+                                    closeWindows(driver, titles);
                                 }
                                 else if (volume11reward.Text.Contains("1 reward"))
                                 {
-                                    Console.WriteLine(volume11reward.Text);
-                                    videoWatching = false;
-                                    Helpers.wait(2000);
+                                    Console.WriteLine("Rewarded");
+                                    videoWatchings = false;
                                     switchToBrowserByString(driver, "nothing is");
-                                    driver.SwitchTo().DefaultContent();
-                                    ByClass(driver, "close-popup");
-                                    Helpers.wait(2000);
+                                    driver.Navigate().GoToUrl("http://www.gifthulk.com/");
+                                    closeWindows(driver, titles);
                                 }
 
-                                if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
-                                {
-                                    videoWatching = false;
-                                    Helpers.wait(2000);
-                                    switchToBrowserByString(driver, "nothing is");
-                                    driver.SwitchTo().DefaultContent();
-                                    ByClass(driver, "close-popup");
-                                    Helpers.wait(2000);
-                                }
+                                driver.SwitchTo().Frame(driver.FindElement(By.Id("stick-video-popup-video")));
+                                driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#html_wrapper iframe")));
 
                                 try
                                 {
                                     if (driver.FindElement(By.Id("offers_exhausted_message")).Displayed)
                                     {
-                                        driver.Navigate().Refresh();
+                                        driver.Navigate().GoToUrl("http://www.gifthulk.com/");
                                         Helpers.wait(5000);
                                     }
                                 }
@@ -125,6 +132,7 @@ namespace Scrap.Models
                         }
                         catch { }
                     }
+                    driver.Navigate().Refresh();
                 }
                 catch { }
             }
