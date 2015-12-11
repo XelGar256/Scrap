@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 using Scrap.Classes;
 using System;
 using System.Collections.Generic;
@@ -44,45 +45,104 @@ namespace Scrap.Models
             while (videoWatching)
             {
                 switchToBrowserByString(driver, "nothing is");
-                /*
-                IList<IWebElement> messages = driver.FindElements(By.ClassName("message-link"));
-                Console.WriteLine("You have " + messages.Count + " message-links");
-                foreach (IWebElement message in messages)
-                {
-                    Console.WriteLine(message.Text);
-                    if (message.Text.Contains("videos to watch!"))
-                    {
-                        message.Click();
-                        break;
-                    }
-                }
-                */
                 try
                 {
-                    driver.FindElement(By.PartialLinkText("videos to watch")).Click();
-                }
-                catch { }
+                    System.Collections.ObjectModel.ReadOnlyCollection<string> MorewindowHandles = driver.WindowHandles;
 
-                Helpers.wait(5000);
-                driver.FindElement(By.LinkText("Watch this video!")).Click();
-                bool videoWatchings = false;
-                try
-                {
-                    videoWatchings = true;
-                    while (videoWatchings)
+                    foreach (String window in MorewindowHandles)
                     {
+                        IWebDriver popup = driver.SwitchTo().Window(window);
+
                         try
                         {
-                            System.Collections.ObjectModel.ReadOnlyCollection<string> MorewindowHandles = driver.WindowHandles;
+                            driver.FindElement(By.PartialLinkText("videos to watch")).Click();
+                        }
+                        catch { }
+                        //                    }
+                        //                }
+                        //                catch { }
 
-                            foreach (String window in MorewindowHandles)
+                        Helpers.wait(5000);
+                        try
+                        {
+                            driver.FindElement(By.LinkText("Watch this video!")).Click();
+                        }
+                        catch { }
+                        ByClass(driver, "nextstepimg");
+                        try
+                        {
+                            driver.FindElement(By.XPath("//img[@alt='Claim your reward']")).Click();
+                        }
+                        catch { }
+                        bool videoWatchings = false;
+                        try
+                        {
+                            //                    videoWatchings = true;
+                            //                  while (videoWatchings)
+                            //                    {
+                            try
                             {
+                                //                            System.Collections.ObjectModel.ReadOnlyCollection<string> MorewindowHandles = driver.WindowHandles;
 
-                                IWebDriver popup = driver.SwitchTo().Window(window);
+                                //                            foreach (String window in MorewindowHandles)
+                                //                            {
+
+                                //                                IWebDriver popup = driver.SwitchTo().Window(window);
 
                                 Helpers.wait(500);
                                 driver.SwitchTo().Frame(driver.FindElement(By.Id("stick-video-popup-video")));
                                 driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#html_wrapper iframe")));
+                                //
+
+                                try
+                                {
+                                    IList<IWebElement> oLinks = driver.FindElements(By.ClassName("singleselectset_radio"));
+                                    Random random = new Random();
+                                    int rndClick = random.Next(1, oLinks.Count);
+                                    Console.WriteLine(rndClick);
+                                    int counterClick = 1;
+                                    foreach (IWebElement oLink in oLinks)
+                                    {
+                                        Console.WriteLine(counterClick);
+                                        if (counterClick == rndClick)
+                                        {
+                                            oLink.Click();
+                                        }
+                                        counterClick++;
+                                    }
+                                }
+                                catch { }
+
+                                try
+                                {
+                                    IWebElement dropDownMonth = driver.FindElement(By.Id("dob_month"));
+                                    IWebElement dropDownDay = driver.FindElement(By.Id("dob_day"));
+                                    IWebElement dropDownYear = driver.FindElement(By.Id("dob_year"));
+                                    string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                                    Random random = new Random();
+                                    int rndMonth = random.Next(0, 11);
+                                    Console.WriteLine(rndMonth);
+                                    SelectElement clickThis = new SelectElement(dropDownMonth);
+                                    clickThis.SelectByText(months[rndMonth]);
+                                    Helpers.wait(1000);
+                                    int rndDay = random.Next(1, 28);
+                                    clickThis = new SelectElement(dropDownDay);
+                                    clickThis.SelectByText(rndDay.ToString());
+                                    Helpers.wait(1000);
+                                    int rndYear = random.Next(1974, 1994);
+                                    clickThis = new SelectElement(dropDownYear);
+                                    clickThis.SelectByText(rndYear.ToString());
+                                    Helpers.wait(1000);
+                                }
+                                catch { }
+
+                                try
+                                {
+                                    driver.FindElement(By.Id("demosubmitimg")).Click();
+                                }
+                                catch { }
+
+                                //
                                 if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
                                 {
                                     Console.WriteLine("Rewarded");
@@ -98,8 +158,9 @@ namespace Scrap.Models
                                 ByClass(driver, "webtraffic_start_button");
                                 ByClass(driver, "webtraffic_next_button");
 
+
                                 IWebElement volume11reward = driver.FindElement(By.Id("ty_header"));
-                                if (volume11reward.Text == "You earned 1 reward!")
+                                if (volume11reward.Text.Contains("Learn More") || volume11reward.Displayed)
                                 {
                                     Console.WriteLine("Rewarded");
                                     videoWatchings = false;
@@ -107,7 +168,7 @@ namespace Scrap.Models
                                     driver.Navigate().GoToUrl("http://www.gifthulk.com/");
                                     closeWindows(driver, titles);
                                 }
-                                else if (volume11reward.Text.Contains("1 reward"))
+                                if (driver.FindElement(By.ClassName("header")).Text.Contains("reward")) ;
                                 {
                                     Console.WriteLine("Rewarded");
                                     videoWatchings = false;
@@ -116,6 +177,73 @@ namespace Scrap.Models
                                     closeWindows(driver, titles);
                                 }
 
+                                if (driver.FindElement(By.Id("compositor_placed_innerclip_cta")).Displayed)
+                                {
+                                    Console.WriteLine("Rewarded");
+                                    videoWatchings = false;
+                                    switchToBrowserByString(driver, "nothing is");
+                                    driver.Navigate().GoToUrl("http://www.gifthulk.com/");
+                                    closeWindows(driver, titles);
+                                }
+
+                                try
+                                {
+                                    driver.FindElement(By.ClassName("ytp-large-play-button")).Click();
+                                }
+                                catch { }
+
+                                if (driver.FindElement(By.Id("compositor_placed_innerclip_cta")).Displayed)
+                                {
+                                    Console.WriteLine("Rewarded");
+                                    videoWatchings = false;
+                                    switchToBrowserByString(driver, "nothing is");
+                                    driver.Navigate().GoToUrl("http://www.gifthulk.com/");
+                                    closeWindows(driver, titles);
+                                }
+
+                                switchToBrowserByString(driver, "Now Exploring great content!");
+                                try
+                                {
+                                    while (driver.Title.Contains("Now Exploring"))
+                                    {
+                                        Helpers.switchToBrowserByString(driver, "Now Exploring great content!");
+                                        try
+                                        {
+                                            IWebElement greatContent = driver.FindElement(By.ClassName("nextstepimg"));
+                                            greatContent.Click();
+                                        }
+                                        catch
+                                        {
+                                            Console.WriteLine("Waiting to finish");
+                                        }
+                                        try
+                                        {
+                                            driver.FindElement(By.XPath("//img[@alt='Claim your reward']")).Click();
+                                            Helpers.switchToBrowserByString(driver, "Watch and Get");
+                                        }
+                                        catch { }
+                                        Helpers.wait(5000);
+                                    }
+                                }
+                                catch { }
+                                /*
+                                                                if (volume11reward.Text == "You earned 1 reward!")
+                                                                {
+                                                                    Console.WriteLine("Rewarded");
+                                                                    videoWatchings = false;
+                                                                    switchToBrowserByString(driver, "nothing is");
+                                                                    driver.Navigate().GoToUrl("http://www.gifthulk.com/");
+                                                                    //closeWindows(driver, titles);
+                                                                }
+                                                                else if (volume11reward.Text.Contains("1 reward"))
+                                                                {
+                                                                    Console.WriteLine("Rewarded");
+                                                                    videoWatchings = false;
+                                                                    switchToBrowserByString(driver, "nothing is");
+                                                                    driver.Navigate().GoToUrl("http://www.gifthulk.com/");
+                                                                    //closeWindows(driver, titles);
+                                                                }
+                                */
                                 driver.SwitchTo().Frame(driver.FindElement(By.Id("stick-video-popup-video")));
                                 driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#html_wrapper iframe")));
 
@@ -128,11 +256,15 @@ namespace Scrap.Models
                                     }
                                 }
                                 catch { }
+
+                                //                            }
+
                             }
+                            catch { }
                         }
                         catch { }
                     }
-                    driver.Navigate().Refresh();
+                    //                    driver.Navigate().Refresh();
                 }
                 catch { }
             }
@@ -630,47 +762,51 @@ namespace Scrap.Models
 
         public static void switchToBrowserByString(IWebDriver driver, string targetBrowserString)
         {
-            System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
-
             try
             {
-                foreach (string defwindow in windowHandles)
+                System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
+
+                try
                 {
-                    Console.WriteLine(driver.Title.ToString());
-                    try
+                    foreach (string defwindow in windowHandles)
                     {
-                        if (defwindow != null)
+                        Console.WriteLine(driver.Title.ToString());
+                        try
                         {
-                            driver.SwitchTo().Window(defwindow);
+                            if (defwindow != null)
+                            {
+                                driver.SwitchTo().Window(defwindow);
+                                break;
+                            }
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Hang Up");
                             break;
                         }
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Hang Up");
-                        break;
-                    }
-                    finally
-                    {
-                        Console.WriteLine("Couldn't Get Window");
-                    }
-                    try
-                    {
-                        if (driver.Title.Contains(targetBrowserString))
+                        finally
                         {
-                            Console.WriteLine("You are now in " + driver.Title);
+                            Console.WriteLine("Couldn't Get Window");
+                        }
+                        try
+                        {
+                            if (driver.Title.Contains(targetBrowserString))
+                            {
+                                Console.WriteLine("You are now in " + driver.Title);
+                                break;
+                            }
+                        }
+                        catch
+                        {
                             break;
                         }
+                        finally { }
                     }
-                    catch
-                    {
-                        break;
-                    }
-                    finally { }
                 }
+                catch { }
+                finally { }
             }
             catch { }
-            finally { }
         }
 
         public static void closeWindows(IWebDriver driver, string[] titles)

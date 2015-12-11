@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 using Scrap.Classes;
 using System;
 using System.Collections.Generic;
@@ -87,6 +88,57 @@ namespace Scrap.Models
                         Helpers.wait(1000);
                         switchFrameByNumber(driver, 0);
 
+                        //
+
+                        try
+                        {
+                            IList<IWebElement> oLinks = driver.FindElements(By.ClassName("singleselectset_radio"));
+                            Random random = new Random();
+                            int rndClick = random.Next(1, oLinks.Count);
+                            Console.WriteLine(rndClick);
+                            int counterClick = 1;
+                            foreach (IWebElement oLink in oLinks)
+                            {
+                                Console.WriteLine(counterClick);
+                                if (counterClick == rndClick)
+                                {
+                                    oLink.Click();
+                                }
+                                counterClick++;
+                            }
+                        }
+                        catch { }
+
+                        try
+                        {
+                            IWebElement dropDownMonth = driver.FindElement(By.Id("dob_month"));
+                            IWebElement dropDownDay = driver.FindElement(By.Id("dob_day"));
+                            IWebElement dropDownYear = driver.FindElement(By.Id("dob_year"));
+                            string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                            Random random = new Random();
+                            int rndMonth = random.Next(0, 11);
+                            Console.WriteLine(rndMonth);
+                            SelectElement clickThis = new SelectElement(dropDownMonth);
+                            clickThis.SelectByText(months[rndMonth]);
+                            Helpers.wait(1000);
+                            int rndDay = random.Next(1, 28);
+                            clickThis = new SelectElement(dropDownDay);
+                            clickThis.SelectByText(rndDay.ToString());
+                            Helpers.wait(1000);
+                            int rndYear = random.Next(1974, 1994);
+                            clickThis = new SelectElement(dropDownYear);
+                            clickThis.SelectByText(rndYear.ToString());
+                            Helpers.wait(1000);
+                        }
+                        catch { }
+
+                        try
+                        {
+                            driver.FindElement(By.Id("demosubmitimg")).Click();
+                        }
+                        catch { }
+
+                        //
                         ById(driver, "webtraffic_popup_start_button");
                         ById(driver, "webtraffic_popup_next_button");
                         ByClass(driver, "webtraffic_start_button");
@@ -103,7 +155,16 @@ namespace Scrap.Models
                         }
                         catch { }
 
-                        /*
+                        try
+                        {
+                            if (driver.FindElement(By.Id("compositor_placed_innerclip_cta")).Displayed)
+                            {
+                                driver.Navigate().Refresh();
+                                closeWindows(driver, titles);
+                            }
+                        }
+                        catch { }
+
                         try
                         {
                             IWebElement rewardText = driver.FindElement(By.Id("ty_header"));
@@ -136,7 +197,6 @@ namespace Scrap.Models
                             }
                         }
                         catch { }
-                        */
 
 
 
@@ -384,6 +444,57 @@ namespace Scrap.Models
                                 driver.SwitchTo().Frame(0);
                                 driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#html_wrapper iframe")));
                                 Console.WriteLine("Lets Get Started");
+                                //
+
+                                try
+                                {
+                                    IList<IWebElement> oLinks = driver.FindElements(By.ClassName("singleselectset_radio"));
+                                    Random random = new Random();
+                                    int rndClick = random.Next(1, oLinks.Count);
+                                    Console.WriteLine(rndClick);
+                                    int counterClick = 1;
+                                    foreach (IWebElement oLink in oLinks)
+                                    {
+                                        Console.WriteLine(counterClick);
+                                        if (counterClick == rndClick)
+                                        {
+                                            oLink.Click();
+                                        }
+                                        counterClick++;
+                                    }
+                                }
+                                catch { }
+
+                                try
+                                {
+                                    IWebElement dropDownMonth = driver.FindElement(By.Id("dob_month"));
+                                    IWebElement dropDownDay = driver.FindElement(By.Id("dob_day"));
+                                    IWebElement dropDownYear = driver.FindElement(By.Id("dob_year"));
+                                    string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                                    Random random = new Random();
+                                    int rndMonth = random.Next(0, 11);
+                                    Console.WriteLine(rndMonth);
+                                    SelectElement clickThis = new SelectElement(dropDownMonth);
+                                    clickThis.SelectByText(months[rndMonth]);
+                                    Helpers.wait(1000);
+                                    int rndDay = random.Next(1, 28);
+                                    clickThis = new SelectElement(dropDownDay);
+                                    clickThis.SelectByText(rndDay.ToString());
+                                    Helpers.wait(1000);
+                                    int rndYear = random.Next(1974, 1994);
+                                    clickThis = new SelectElement(dropDownYear);
+                                    clickThis.SelectByText(rndYear.ToString());
+                                    Helpers.wait(1000);
+                                }
+                                catch { }
+
+                                try
+                                {
+                                    driver.FindElement(By.Id("demosubmitimg")).Click();
+                                }
+                                catch { }
+
+                                //
                                 ById(driver, "expository_image");
                                 ById(driver, "webtraffic_popup_start_button");
                                 ById(driver, "webtraffic_popup_next_button");
@@ -402,6 +513,17 @@ namespace Scrap.Models
                             }
                         }
                         catch { }
+
+                        try
+                        {
+                            if (driver.FindElement(By.Id("compositor_placed_innerclip_cta")).Displayed)
+                            {
+                                driver.Navigate().Refresh();
+                                closeWindows(driver, titles);
+                            }
+                        }
+                        catch { }
+
 
                         Helpers.wait(5000);
                         //switchToBrowserByString(driver, "Offer Walls");
@@ -510,6 +632,62 @@ namespace Scrap.Models
                     {
                         offerWall = false;
                     }
+
+                    try
+                    {
+                        driver.SwitchTo().DefaultContent();
+                        switchFrameByNumber(driver, 0);
+                    }
+                    catch { }
+
+                    try
+                    {
+                        IList<IWebElement> oLinks = driver.FindElements(By.ClassName("singleselectset_radio"));
+                        Random random = new Random();
+                        int rndClick = random.Next(1, oLinks.Count);
+                        Console.WriteLine(rndClick);
+                        int counterClick = 1;
+                        foreach (IWebElement oLink in oLinks)
+                        {
+                            Console.WriteLine(counterClick);
+                            if (counterClick == rndClick)
+                            {
+                                oLink.Click();
+                            }
+                            counterClick++;
+                        }
+                    }
+                    catch { }
+
+                    try
+                    {
+                        IWebElement dropDownMonth = driver.FindElement(By.Id("dob_month"));
+                        IWebElement dropDownDay = driver.FindElement(By.Id("dob_day"));
+                        IWebElement dropDownYear = driver.FindElement(By.Id("dob_year"));
+                        string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                        Random random = new Random();
+                        int rndMonth = random.Next(0, 11);
+                        Console.WriteLine(rndMonth);
+                        SelectElement clickThis = new SelectElement(dropDownMonth);
+                        clickThis.SelectByText(months[rndMonth]);
+                        Helpers.wait(1000);
+                        int rndDay = random.Next(1, 28);
+                        clickThis = new SelectElement(dropDownDay);
+                        clickThis.SelectByText(rndDay.ToString());
+                        Helpers.wait(1000);
+                        int rndYear = random.Next(1974, 1994);
+                        clickThis = new SelectElement(dropDownYear);
+                        clickThis.SelectByText(rndYear.ToString());
+                        Helpers.wait(1000);
+                    }
+                    catch { }
+
+                    try
+                    {
+                        driver.FindElement(By.Id("demosubmitimg")).Click();
+                    }
+                    catch { }
+
                 }
                 catch { }
 
