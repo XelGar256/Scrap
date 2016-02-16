@@ -106,6 +106,7 @@
     <Compile Include="Models\PaidVertsModel.cs" />
     <Compile Include="Models\RebelModel.cs" />
     <Compile Include="Models\SwagModel.cs" />
+    <Compile Include="Models\LootPalaceModel.cs" />
     <Compile Include="Models\ZoomModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -135,7 +136,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

@@ -176,6 +176,82 @@ namespace Scrap.Models
                             driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#displayWrap iframe")));
                         }
                         catch { }
+                        /*
+                        try
+                        {
+                            if (driver.FindElement(By.ClassName("reward_text")).Displayed)
+                            {
+                            */
+
+                        try
+                        {
+                            if (driver.FindElement(By.Id("ty_header")).Text.Contains("Points"))
+                            {
+                                closeWindows(driver, titles);
+                                Console.WriteLine("I'm Here!!");
+                                driver.SwitchTo().ParentFrame();
+                                Console.WriteLine("Attempting Refresh");
+                                driver.Navigate().GoToUrl("http://www.prizerebel.com/ripply.php");
+                                Helpers.wait(1000);
+                                driver.Navigate().GoToUrl("http://www.prizerebel.com/dailypoints.php");
+                                driver.Navigate().Refresh();
+                                Console.WriteLine("Refresh Complete");
+                            }
+                        }
+                        catch { }
+
+                        IList<IWebElement> testIframes = driver.FindElements(By.TagName("iframe"));
+                        Console.WriteLine("How many iFrames are avaible = " + testIframes.Count);
+                        Console.WriteLine("*********************************************");
+                        foreach (IWebElement testIframe in testIframes)
+                        {
+                            Console.WriteLine(testIframe.Displayed);
+                            Console.WriteLine(testIframe.Text);
+                            Console.WriteLine(testIframe.GetAttribute("id"));
+                        }
+                        Console.WriteLine("*********************************************");
+
+                        //* *************** Remove Me ***************************
+                        try
+                        {
+                            driver.SwitchTo().Frame(driver.FindElement(By.Id("vgPlayer")));
+                        }
+                        catch { }
+                        testIframes = driver.FindElements(By.TagName("iframe"));
+                        Console.WriteLine("Number of iFrames after vgPlayer = " + testIframes.Count);
+                        foreach (IWebElement testIframe in testIframes)
+                        {
+                            Console.WriteLine(testIframe.Displayed);
+                            Console.WriteLine(testIframe.Text);
+                            Console.WriteLine(testIframe.GetAttribute("id"));
+                        }
+
+                        try
+                        {
+                            switchFrameByNumber(driver, 0);
+                            testIframes = driver.FindElements(By.TagName("iframe"));
+                            Console.WriteLine("Number of iFrames after vgPlayer = " + testIframes.Count);
+                            foreach (IWebElement testIframe in testIframes)
+                            {
+                                Console.WriteLine(testIframe.Displayed);
+                                Console.WriteLine(testIframe.Text);
+                                Console.WriteLine(testIframe.GetAttribute("id"));
+                            }
+                        }
+                        catch { }
+                        try
+                        {
+                            driver.SwitchTo().Frame(driver.FindElement(By.Id("player")));
+                            driver.SwitchTo().Frame(driver.FindElement(By.Id("player")));
+                        }
+                        catch { }
+                        //*/
+
+                        try
+                        {
+                            driver.FindElement(By.ClassName("ytp-large-play-button")).Click();
+                        }
+                        catch { }
 
                         try
                         {

@@ -1,5 +1,7 @@
 ﻿using Scrap.Models;
+using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 
 namespace Scrap
@@ -9,11 +11,27 @@ namespace Scrap
     /// </summary>
     public partial class MainWindow : Window
     {
-        private BackgroundWorker zoomBw, swagBw, rebelBw, vertsBw, iRazooBw, giftHulkBw;
+        private BackgroundWorker zoomBw, swagBw, rebelBw, giftHulkBw, lpBw;
 
         public MainWindow()
         {
+            chromeDriverKiller();
             InitializeComponent();
+        }
+
+        private void chromeDriverKiller()
+        {
+            try
+            {
+                foreach (Process proc in Process.GetProcessesByName("chromedriver"))
+                {
+                    proc.Kill();
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void btnLoginSwag_Click(object sender, RoutedEventArgs e)
@@ -58,16 +76,6 @@ namespace Scrap
             zoomBw.RunWorkerAsync();
         }
 
-        private void btnStopVerts_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnStopiRazoo_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void btnLoginGiftHulk_Click(object sender, RoutedEventArgs e)
         {
             string username = txtUsernameGiftHulk.Text, password = txtPasswordGiftHulk.Password;
@@ -83,24 +91,19 @@ namespace Scrap
 
         }
 
-        private void btnLoginiRazoo_Click(object sender, RoutedEventArgs e)
+        private void btnLoginPalace_Click(object sender, RoutedEventArgs e)
         {
-            string username = txtUsernameiRazoo.Text, password = txtPasswordiRazoo.Password;
+            string username = txtUsernamePalace.Text, password = txtPasswordPalace.Password;
 
-            iRazooBw = new BackgroundWorker();
-            iRazooBw.WorkerSupportsCancellation = true;
-            iRazooBw.DoWork += delegate (object o, DoWorkEventArgs args) { new iRazooModel(username, password, iRazooBw); };
-            iRazooBw.RunWorkerAsync();
+            lpBw = new BackgroundWorker();
+            lpBw.WorkerSupportsCancellation = true;
+            lpBw.DoWork += delegate (object o, DoWorkEventArgs args) { new LootPalaceModel(username, password, lpBw); };
+            lpBw.RunWorkerAsync();
         }
 
-        private void btnLoginVerts_Click(object sender, RoutedEventArgs e)
+        private void btnStopPalace_Click(object sender, RoutedEventArgs e)
         {
-            string username = txtUsernameVerts.Text, password = txtPasswordVerts.Password;
 
-            vertsBw = new BackgroundWorker();
-            vertsBw.WorkerSupportsCancellation = true;
-            vertsBw.DoWork += delegate (object o, DoWorkEventArgs args) { new PaidVertsModel(username, password, vertsBw); };
-            vertsBw.RunWorkerAsync();
         }
 
         private void btnLoginRebel_Click(object sender, RoutedEventArgs e)

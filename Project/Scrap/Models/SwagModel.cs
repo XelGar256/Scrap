@@ -75,6 +75,7 @@ namespace Scrap.Models
             while (true)
             {
                 //nCrave(driver, bw);
+                swago(driver, bw);
                 discoveryBreak(driver, bw);
                 nGage(driver, bw);
                 switchToBrowserByString(driver, "Home | Swagbucks");
@@ -85,6 +86,18 @@ namespace Scrap.Models
                 catch { }
             }
             driver.Quit();
+        }
+
+        void swago(IWebDriver driver, BackgroundWorker bw)
+        {
+            ById(driver, "promoBannerIcon");
+            switchToBrowserByString(driver, "Swagbucks.com");
+            ById(driver, "swagoJoinNowCta");
+            try
+            {
+                driver.Close();
+            }
+            catch { }
         }
 
         void dailys(IWebDriver driver, BackgroundWorker bw)
@@ -696,7 +709,8 @@ namespace Scrap.Models
 
         void Videos(IWebDriver driver, BackgroundWorker bw)
         {
-            string links = "Wedding";
+            string[] links = { "Editor's Pick", "Careers", "Comedy", "Entertainment", "Fashion", "Fitness", "Food", "Health", "Hobbies", "Home & Garden", "Music", "News & Politics", "Parenting", "Personal Finance", "Pets & Animals", "Shopping", "Sports", "Technology", "Travel", "Wedding" };
+            int videoCount = 0;
             Helpers.wait(1000);
             IWebElement findWatch = driver.FindElement(By.LinkText("Watch"));
             if (findWatch.Displayed)
@@ -710,7 +724,8 @@ namespace Scrap.Models
 
             Helpers.wait(2000);
 
-            IWebElement catLinks = driver.FindElement(By.LinkText("Personal Finance"));
+            // This is to click a link on left //
+            IWebElement catLinks = driver.FindElement(By.LinkText(links[0].ToString()));
             if (catLinks.Displayed)
             {
                 catLinks.Click();
@@ -725,6 +740,19 @@ namespace Scrap.Models
 
             while (true)
             {
+                IList<IWebElement> vidLinks = driver.FindElements(By.ClassName("sbPlaylistVideoImage"));
+                videoCount = vidLinks.Count - 1;
+                Console.WriteLine(vidLinks.Count);
+                foreach (IWebElement vidLink in vidLinks)
+                {
+                    Helpers.wait(120000);
+                    try
+                    {
+                        vidLink.Click();
+                    }
+                    catch { }
+                    finally { }
+                }
                 try
                 {
                     if (driver.FindElement(By.ClassName("showPlaylists")).Displayed)
@@ -736,6 +764,22 @@ namespace Scrap.Models
                 catch { }
                 finally { }
             }
+
+            /*
+            while (true)
+            {
+                try
+                {
+                    if (driver.FindElement(By.ClassName("showPlaylists")).Displayed)
+                    {
+                        Helpers.wait(1000);
+                        driver.FindElement(By.ClassName("playlistsShowImage")).Click();
+                    }
+                }
+                catch { }
+                finally { }
+            }
+            */
         }
 
         public static void ById(IWebDriver driver, string targetID)

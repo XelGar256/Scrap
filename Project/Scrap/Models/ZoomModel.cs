@@ -143,6 +143,7 @@ namespace Scrap.Models
                         ById(driver, "webtraffic_popup_next_button");
                         ByClass(driver, "webtraffic_start_button");
                         ByClass(driver, "webtraffic_next_button");
+                        ByClass(driver, "webtraffic_button");
                         ById(driver, "expository_image");
 
                         try
@@ -224,6 +225,60 @@ namespace Scrap.Models
                             catch { }
                             Helpers.wait(5000);
                         }
+                    }
+                    catch { }
+
+                    switchFrameByNumber(driver, 0);
+
+                    IList<IWebElement> testIframes = driver.FindElements(By.TagName("iframe"));
+                    Console.WriteLine("How many iFrames are avaible = " + testIframes.Count);
+                    Console.WriteLine("*********************************************");
+                    foreach (IWebElement testIframe in testIframes)
+                    {
+                        Console.WriteLine(testIframe.Displayed);
+                        Console.WriteLine(testIframe.Text);
+                        Console.WriteLine(testIframe.GetAttribute("id"));
+                    }
+                    Console.WriteLine("*********************************************");
+                    //* *************** Remove Me ***************************
+                    try
+                    {
+                        driver.SwitchTo().Frame(driver.FindElement(By.Id("vgPlayer")));
+                    }
+                    catch { }
+                    testIframes = driver.FindElements(By.TagName("iframe"));
+                    Console.WriteLine("Number of iFrames after vgPlayer = " + testIframes.Count);
+                    foreach (IWebElement testIframe in testIframes)
+                    {
+                        Console.WriteLine(testIframe.Displayed);
+                        Console.WriteLine(testIframe.Text);
+                        Console.WriteLine(testIframe.GetAttribute("id"));
+                    }
+
+                    try
+                    {
+                        switchFrameByNumber(driver, 0);
+                        testIframes = driver.FindElements(By.TagName("iframe"));
+                        Console.WriteLine("Number of iFrames after vgPlayer = " + testIframes.Count);
+                        foreach (IWebElement testIframe in testIframes)
+                        {
+                            Console.WriteLine(testIframe.Displayed);
+                            Console.WriteLine(testIframe.Text);
+                            Console.WriteLine(testIframe.GetAttribute("id"));
+                        }
+                    }
+                    catch { }
+                    try
+                    {
+                        driver.SwitchTo().Frame(driver.FindElement(By.Id("player")));
+                        driver.SwitchTo().Frame(driver.FindElement(By.Id("player")));
+                    }
+                    catch { }
+                    //*/
+
+                    try
+                    {
+                        driver.FindElement(By.ClassName("ytp-large-play-button")).Click();
                     }
                     catch { }
 
@@ -688,6 +743,58 @@ namespace Scrap.Models
                     }
                     catch { }
 
+                }
+                catch { }
+
+                IList<IWebElement> testIframes = driver.FindElements(By.TagName("iframe"));
+                Console.WriteLine("How many iFrames are avaible = " + testIframes.Count);
+                Console.WriteLine("*********************************************");
+                foreach (IWebElement testIframe in testIframes)
+                {
+                    Console.WriteLine(testIframe.Displayed);
+                    Console.WriteLine(testIframe.Text);
+                    Console.WriteLine(testIframe.GetAttribute("id"));
+                }
+                Console.WriteLine("*********************************************");
+                /* *************** Remove Me ***************************
+                try
+                {
+                    driver.SwitchTo().Frame(driver.FindElement(By.Id("vgPlayer")));
+                }
+                catch { }
+                testIframes = driver.FindElements(By.TagName("iframe"));
+                Console.WriteLine("Number of iFrames after vgPlayer = " + testIframes.Count);
+                foreach (IWebElement testIframe in testIframes)
+                {
+                    Console.WriteLine(testIframe.Displayed);
+                    Console.WriteLine(testIframe.Text);
+                    Console.WriteLine(testIframe.GetAttribute("id"));
+                }
+
+                try
+                {
+                    switchFrameByNumber(driver, 0);
+                    testIframes = driver.FindElements(By.TagName("iframe"));
+                    Console.WriteLine("Number of iFrames after vgPlayer = " + testIframes.Count);
+                    foreach (IWebElement testIframe in testIframes)
+                    {
+                        Console.WriteLine(testIframe.Displayed);
+                        Console.WriteLine(testIframe.Text);
+                        Console.WriteLine(testIframe.GetAttribute("id"));
+                    }
+                }
+                catch { }
+                try
+                {
+                    driver.SwitchTo().Frame(driver.FindElement(By.Id("player")));
+                    driver.SwitchTo().Frame(driver.FindElement(By.Id("player")));
+                }
+                catch { }
+                */
+
+                try
+                {
+                    driver.FindElement(By.ClassName("ytp-large-play-button")).Click();
                 }
                 catch { }
 
