@@ -93,11 +93,6 @@ namespace Scrap.Models
             ById(driver, "promoBannerIcon");
             switchToBrowserByString(driver, "Swagbucks.com");
             ById(driver, "swagoJoinNowCta");
-            try
-            {
-                driver.Close();
-            }
-            catch { }
         }
 
         void dailys(IWebDriver driver, BackgroundWorker bw)
