@@ -10,8 +10,12 @@ namespace Scrap.Models
 {
     class LootPalaceModel
     {
+        bool hyprMX = false;
+        string[] titles = { "Earn Free Gift" };
+
         public LootPalaceModel(string username, string password, BackgroundWorker bw)
         {
+
             ChromeDriverService service = ChromeDriverService.CreateDefaultService(App.Folder);
             service.HideCommandPromptWindow = true;
 
@@ -35,6 +39,8 @@ namespace Scrap.Models
             catch { }
             finally { }
 
+            Helpers.wait(5000);
+
             try
             {
                 driver.FindElement(By.ClassName("checkin")).Click();
@@ -42,24 +48,150 @@ namespace Scrap.Models
             catch { }
             finally { }
 
-            int offerCount = 0;
-            IList<IWebElement> offerBoxes = driver.FindElements(By.ClassName("offerbox"));
-            foreach (IWebElement offerBox in offerBoxes)
+            while (true)
             {
-                if (offerCount == 7)
+                int offerCount = 0;
+                IList<IWebElement> offerBoxes = driver.FindElements(By.ClassName("offerbox"));
+                foreach (IWebElement offerBox in offerBoxes)
                 {
-                    offerBox.Click();
-                    hyperMX(driver, bw);
+                    if (offerCount == 7 && !hyprMX)
+                    //if (offerBox.GetAttribute("alt").Contains("HyprMX"))
+                    {
+                        offerBox.Click();
+                        hyperMX(driver, bw);
+                        break;
+                    }
+                    else if (offerCount == 12)
+                    //else if (offerBox.GetAttribute("alt").Contains("Super Rewards"))
+                    {
+                        offerBox.Click();
+                        superRewards(driver, bw);
+                        break;
+                    }
+                    offerCount++;
                 }
-                offerCount++;
             }
         }
 
-        public static void hyperMX(IWebDriver driver, BackgroundWorker bw)
+        void superRewards(IWebDriver driver, BackgroundWorker bw)
         {
-            string[] titles = { "Earn Free Gift" };
+            bool loop = true;
 
-            while (true)
+            try
+            {
+                driver.SwitchTo().Frame(driver.FindElement(By.ClassName("fancybox-iframe")));
+            }
+            catch { }
+
+            Helpers.wait(5000);
+
+            try
+            {
+                driver.FindElement(By.LinkText("Video")).Click();
+            }
+            catch { }
+
+            Helpers.wait(5000);
+
+            try
+            {
+                IList<IWebElement> h2s = driver.FindElements(By.TagName("h2"));
+                foreach (IWebElement h2 in h2s)
+                {
+                    if (h2.Text.Contains("HyprMX"))
+                    {
+                        h2.Click();
+                    }
+                }
+            }
+            catch { }
+            while (loop)
+            {
+                try
+                {
+                    driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#view7-frame iframe")));
+                }
+                catch { }
+
+                try
+                {
+                    driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#video_main iframe")));
+                }
+                catch { }
+
+                try
+                {
+                    IList<IWebElement> oLinks = driver.FindElements(By.ClassName("singleselectset_radio"));
+                    Random random = new Random();
+                    int rndClick = random.Next(1, oLinks.Count);
+                    Console.WriteLine(rndClick);
+                    int counterClick = 1;
+                    foreach (IWebElement oLink in oLinks)
+                    {
+                        Console.WriteLine(counterClick);
+                        if (counterClick == rndClick)
+                        {
+                            oLink.Click();
+                        }
+                        counterClick++;
+                    }
+                }
+                catch { }
+                finally { }
+
+                try
+                {
+                    IWebElement dropDownMonth = driver.FindElement(By.Id("dob_month"));
+                    IWebElement dropDownDay = driver.FindElement(By.Id("dob_day"));
+                    IWebElement dropDownYear = driver.FindElement(By.Id("dob_year"));
+                    string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                    Random random = new Random();
+                    int rndMonth = random.Next(0, 11);
+                    Console.WriteLine(rndMonth);
+                    SelectElement clickThis = new SelectElement(dropDownMonth);
+                    clickThis.SelectByText(months[rndMonth]);
+                    Helpers.wait(1000);
+                    int rndDay = random.Next(1, 28);
+                    clickThis = new SelectElement(dropDownDay);
+                    clickThis.SelectByText(rndDay.ToString());
+                    Helpers.wait(1000);
+                    int rndYear = random.Next(1974, 1994);
+                    clickThis = new SelectElement(dropDownYear);
+                    clickThis.SelectByText(rndYear.ToString());
+                    Helpers.wait(1000);
+                }
+                catch { }
+                finally { }
+
+                try
+                {
+                    driver.FindElement(By.Id("demosubmitimg")).Click();
+                }
+                catch { }
+                finally { }
+
+                try
+                {
+                    if (driver.FindElement(By.Id("ty_body_text")).Displayed)
+                    {
+                        driver.Navigate().GoToUrl("http://lootpalace.com/");
+                        loop = false;
+                    }
+                }
+                catch { }
+
+                if (driver.FindElement(By.ClassName("no-offers")).Displayed)
+                {
+                    driver.Quit();
+                }
+            }
+        }
+
+        void hyperMX(IWebDriver driver, BackgroundWorker bw)
+        {
+            bool loop = true;
+
+            while (loop)
             {
                 System.Collections.ObjectModel.ReadOnlyCollection<string> MorewindowHandles = driver.WindowHandles;
 
@@ -68,22 +200,6 @@ namespace Scrap.Models
                     try
                     {
                         IWebDriver popup = driver.SwitchTo().Window(window);
-                    }
-                    catch { }
-
-                    try
-                    {
-                        int offerCount = 0;
-                        IList<IWebElement> offerBoxes = driver.FindElements(By.ClassName("offerbox"));
-                        foreach (IWebElement offerBox in offerBoxes)
-                        {
-                            if (offerCount == 7)
-                            {
-                                offerBox.Click();
-                                hyperMX(driver, bw);
-                            }
-                            offerCount++;
-                        }
                     }
                     catch { }
 
@@ -178,7 +294,10 @@ namespace Scrap.Models
                     {
                         if (driver.FindElement(By.Id("offers_exhausted_message")).Displayed)
                         {
-                            driver.Quit();
+                            driver.Navigate().GoToUrl("http://lootpalace.com/");
+                            hyprMX = true;
+                            Helpers.wait(5000);
+                            loop = false;
                         }
                     }
                     catch { }

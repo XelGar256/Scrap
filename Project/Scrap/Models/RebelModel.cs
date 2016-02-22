@@ -281,6 +281,24 @@ namespace Scrap.Models
                             }
                         }
                         catch { }
+
+                        try
+                        {
+                            if (driver.FindElement(By.Id("ty_body_text")).Displayed)
+                            {
+                                closeWindows(driver, titles);
+                                Console.WriteLine("I'm Here!!");
+                                driver.SwitchTo().ParentFrame();
+                                Console.WriteLine("Attempting Refresh");
+                                driver.Navigate().GoToUrl("http://www.prizerebel.com/ripply.php");
+                                Helpers.wait(1000);
+                                driver.Navigate().GoToUrl("http://www.prizerebel.com/dailypoints.php");
+                                driver.Navigate().Refresh();
+                                Console.WriteLine("Refresh Complete");
+                            }
+                        }
+                        catch { }
+
                         try
                         {
                             driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#displayWrap iframe")));

@@ -11,6 +11,7 @@ namespace Scrap.Models
     class GiftHulkModel
     {
         string[] titles = { "nothing is" };
+
         public GiftHulkModel(string username, string password, BackgroundWorker bw)
         {
             ChromeDriverService service = ChromeDriverService.CreateDefaultService(App.Folder);
@@ -47,7 +48,7 @@ namespace Scrap.Models
                 IList<IWebElement> asideButtons = driver.FindElements(By.ClassName("aside-button"));
                 foreach (IWebElement asideButton in asideButtons)
                 {
-                    if (asideButton.Text == "Guess to Win")
+                    if (asideButton.Text.Contains("Guess to"))
                     {
                         asideButton.Click();
                         break;
