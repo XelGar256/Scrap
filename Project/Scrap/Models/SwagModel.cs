@@ -13,7 +13,6 @@ namespace Scrap.Models
         string[] titles = { "Home | Swagbucks", "nCrave | Swagbucks", "www.swagbucks.com/?", "Entertainmentcrave.com", "nGage" };
         public SwagModel(string username, string password, BackgroundWorker bw, bool vids)
         {
-
             ChromeDriverService service = ChromeDriverService.CreateDefaultService(App.Folder);
             service.HideCommandPromptWindow = true;
 
@@ -75,7 +74,7 @@ namespace Scrap.Models
             while (true)
             {
                 //nCrave(driver, bw);
-                swago(driver, bw);
+                //swago(driver, bw);
                 discoveryBreak(driver, bw);
                 nGage(driver, bw);
                 switchToBrowserByString(driver, "Home | Swagbucks");
@@ -402,6 +401,17 @@ namespace Scrap.Models
                         Helpers.wait(500);
                     }
                     finally { }
+
+                    // Chips Ad
+                    ById(driver, "compositor_placed_innerclip_cheddar");
+                    ById(driver, "compositor_placed_innerclip_gouda");
+                    ById(driver, "compositor_placed_innerclip_habanero");
+                    ById(driver, "compositor_placed_innerclip_flamin");
+                    ById(driver, "compositor_placed_innerclip_honeybbq");
+                    ById(driver, "compositor_placed_innerclip_korean");
+                    ById(driver, "compositor_placed_innerclip_oliveoil");
+                    ById(driver, "compositor_placed_innerclip_seasalt");
+                    //
 
                     Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
                     try

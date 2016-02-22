@@ -94,6 +94,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Application\Current\MainWindow.cs" />
     <Compile Include="Classes\Helpers.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -102,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\GiftHulkModel.cs" />
+    <Compile Include="Models\InstaGCModel.cs" />
     <Compile Include="Models\iRazooModel.cs" />
     <Compile Include="Models\PaidVertsModel.cs" />
     <Compile Include="Models\RebelModel.cs" />

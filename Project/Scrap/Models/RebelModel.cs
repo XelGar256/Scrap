@@ -122,6 +122,18 @@ namespace Scrap.Models
                         ByClass(driver, "webtraffic_start_button");
                         ByClass(driver, "webtraffic_next_button");
 
+                        // Chips Ad
+                        ById(driver, "compositor_placed_innerclip_cheddar");
+                        ById(driver, "compositor_placed_innerclip_gouda");
+                        ById(driver, "compositor_placed_innerclip_habanero");
+                        ById(driver, "compositor_placed_innerclip_flamin");
+                        ById(driver, "compositor_placed_innerclip_honeybbq");
+                        ById(driver, "compositor_placed_innerclip_korean");
+                        ById(driver, "compositor_placed_innerclip_oliveoil");
+                        ById(driver, "compositor_placed_innerclip_seasalt");
+                        //
+
+
                         try
                         {
                             IWebElement rewardText = driver.FindElement(By.Id("ty_header"));

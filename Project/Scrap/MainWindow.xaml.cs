@@ -11,7 +11,7 @@ namespace Scrap
     /// </summary>
     public partial class MainWindow : Window
     {
-        private BackgroundWorker zoomBw, swagBw, rebelBw, giftHulkBw, lpBw;
+        private BackgroundWorker zoomBw, swagBw, rebelBw, giftHulkBw, lpBw, instaGCBw;
 
         public MainWindow()
         {
@@ -87,6 +87,21 @@ namespace Scrap
         }
 
         private void btnStopGiftHulk_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnLoginGC_Click(object sender, RoutedEventArgs e)
+        {
+            string username = txtUsernameGiftHulk.Text, password = txtPasswordGiftHulk.Password;
+
+            instaGCBw = new BackgroundWorker();
+            instaGCBw.WorkerSupportsCancellation = true;
+            instaGCBw.DoWork += delegate (object o, DoWorkEventArgs args) { new InstaGCModel(username, password, instaGCBw); };
+            instaGCBw.RunWorkerAsync();
+        }
+
+        private void btnStopGC_Click(object sender, RoutedEventArgs e)
         {
 
         }

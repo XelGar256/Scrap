@@ -59,6 +59,16 @@
                     <Button x:Name="btnStopPalace" Content="Stop Looting" HorizontalAlignment="Left" Margin="81,111,0,0" VerticalAlignment="Top" Width="85" RenderTransformOrigin="-0.36,-0.3" Click="btnStopPalace_Click"/>
                 </Grid>
             </TabItem>
+            <TabItem Header="instaGC" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Margin="-2,-2,0,0">
+                <Grid Background="#FFE5E5E5">
+                    <Label Content="Username:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Password:" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="txtUsernameGC" HorizontalAlignment="Left" Height="23" Margin="81,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-1.85,-4.87"/>
+                    <PasswordBox x:Name="txtPasswordGC" HorizontalAlignment="Left" Margin="81,44,0,0" VerticalAlignment="Top" Width="120" Height="23"/>
+                    <Button x:Name="btnLoginGC" Content="Start instaGC" HorizontalAlignment="Left" Margin="81,86,0,0" VerticalAlignment="Top" Width="85" Click="btnLoginGC_Click"/>
+                    <Button x:Name="btnStopGC" Content="Stop instaGC" HorizontalAlignment="Left" Margin="81,111,0,0" VerticalAlignment="Top" Width="85" RenderTransformOrigin="-0.36,-0.3" Click="btnStopGC_Click"/>
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>
