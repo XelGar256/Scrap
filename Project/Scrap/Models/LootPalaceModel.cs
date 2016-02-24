@@ -301,6 +301,18 @@ namespace Scrap.Models
                         }
                     }
                     catch { }
+
+                    switchToBrowserFrameByString(driver, "vgPlayer");
+
+                    switchFrameByNumber(driver, 0);
+                    switchFrameByNumber(driver, 0);
+
+                    switchToBrowserFrameByString(driver, "player");
+                    try
+                    {
+                        driver.FindElement(By.ClassName("ytp-large-play-button")).Click();
+                    }
+                    catch { }
                 }
             }
         }

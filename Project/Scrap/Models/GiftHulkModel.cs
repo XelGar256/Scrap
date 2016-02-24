@@ -50,6 +50,7 @@ namespace Scrap.Models
                 {
                     if (asideButton.Text.Contains("Guess to"))
                     {
+                        asideButton.SendKeys(Keys.PageDown);
                         asideButton.Click();
                         break;
                     }
