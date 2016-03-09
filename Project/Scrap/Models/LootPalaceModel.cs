@@ -48,29 +48,56 @@ namespace Scrap.Models
             catch { }
             finally { }
 
+            IList<IWebElement> offerBoxes = driver.FindElements(By.ClassName("offerbox"));
+
             while (true)
             {
-                int offerCount = 0;
-                IList<IWebElement> offerBoxes = driver.FindElements(By.ClassName("offerbox"));
-                foreach (IWebElement offerBox in offerBoxes)
+                System.Collections.ObjectModel.ReadOnlyCollection<string> MorewindowHandles = driver.WindowHandles;
+                foreach (String window in MorewindowHandles)
                 {
-                    if (offerCount == 7 && !hyprMX)
-                    //if (offerBox.GetAttribute("alt").Contains("HyprMX"))
+                    try
                     {
-                        offerBox.Click();
-                        hyperMX(driver, bw);
-                        break;
+                        IWebDriver popup = driver.SwitchTo().Window(window);
                     }
-                    else if (offerCount == 12)
-                    //else if (offerBox.GetAttribute("alt").Contains("Super Rewards"))
+                    catch { }
+
+                    try
                     {
-                        offerBox.Click();
-                        superRewards(driver, bw);
-                        break;
+                        //driver.FindElement(By.CssSelector("a[src='http://lootpalace.com/wp-content/uploads/2013/07/offers-hypermx.jpg']")).Click();
+                        if (!hyprMX)
+                        {
+                            driver.FindElement(By.XPath("//a[contains(@href, 'hyprmx')]/img")).Click();
+                            hyperMX(driver, bw);
+                        }
                     }
-                    offerCount++;
+                    catch { }
+                    try
+                    {
+                        //driver.FindElement(By.CssSelector("a[src='http://lootpalace.com/wp-content/uploads/2013/07/offers-hypermx.jpg']")).Click();
+                        if (hyprMX)
+                        {
+                            driver.FindElement(By.XPath("//a[contains(@href, 'virool')]/img")).Click();
+                            virool(driver, bw);
+                        }
+                    }
+                    catch { }
+                    try
+                    {
+                        //driver.FindElement(By.CssSelector("a[src='http://lootpalace.com/wp-content/uploads/2013/07/offers-hypermx.jpg']")).Click();
+                        if (hyprMX)
+                        {
+                            driver.FindElement(By.XPath("//a[contains(@href, 'superrewards')]/img")).Click();
+                            superRewards(driver, bw);
+                        }
+                    }
+                    catch { }
                 }
             }
+        }
+
+        void virool(IWebDriver driver, BackgroundWorker bw)
+        {
+            driver.FindElement(By.XPath("//a[contains(@href, 'thumbnail')]/img")).Click();
         }
 
         void superRewards(IWebDriver driver, BackgroundWorker bw)
@@ -93,6 +120,11 @@ namespace Scrap.Models
 
             Helpers.wait(5000);
 
+            if (driver.FindElement(By.ClassName("no-offers")).Displayed)
+            {
+                driver.Quit();
+            }
+
             try
             {
                 IList<IWebElement> h2s = driver.FindElements(By.TagName("h2"));
@@ -109,81 +141,115 @@ namespace Scrap.Models
             {
                 try
                 {
-                    driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#view7-frame iframe")));
-                }
-                catch { }
-
-                try
-                {
-                    driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#video_main iframe")));
-                }
-                catch { }
-
-                try
-                {
-                    IList<IWebElement> oLinks = driver.FindElements(By.ClassName("singleselectset_radio"));
-                    Random random = new Random();
-                    int rndClick = random.Next(1, oLinks.Count);
-                    Console.WriteLine(rndClick);
-                    int counterClick = 1;
-                    foreach (IWebElement oLink in oLinks)
+                    System.Collections.ObjectModel.ReadOnlyCollection<string> MorewindowHandles = driver.WindowHandles;
+                    foreach (String window in MorewindowHandles)
                     {
-                        Console.WriteLine(counterClick);
-                        if (counterClick == rndClick)
+                        try
                         {
-                            oLink.Click();
+                            IWebDriver popup = driver.SwitchTo().Window(window);
                         }
-                        counterClick++;
+                        catch { }
+
+                        try
+                        {
+                            driver.SwitchTo().Frame(driver.FindElement(By.ClassName("fancybox-iframe")));
+                        }
+                        catch { }
+
+                        try
+                        {
+                            driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#view7-frame iframe")));
+                        }
+                        catch { }
+
+                        try
+                        {
+                            driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#video_main iframe")));
+                        }
+                        catch { }
+
+                        try
+                        {
+                            IList<IWebElement> oLinks = driver.FindElements(By.ClassName("singleselectset_radio"));
+                            Random random = new Random();
+                            int rndClick = random.Next(1, oLinks.Count);
+                            Console.WriteLine(rndClick);
+                            int counterClick = 1;
+                            foreach (IWebElement oLink in oLinks)
+                            {
+                                Console.WriteLine(counterClick);
+                                if (counterClick == rndClick)
+                                {
+                                    oLink.Click();
+                                }
+                                counterClick++;
+                            }
+                        }
+                        catch { }
+                        finally { }
+
+                        try
+                        {
+                            IWebElement dropDownMonth = driver.FindElement(By.Id("dob_month"));
+                            IWebElement dropDownDay = driver.FindElement(By.Id("dob_day"));
+                            IWebElement dropDownYear = driver.FindElement(By.Id("dob_year"));
+                            string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                            Random random = new Random();
+                            int rndMonth = random.Next(0, 11);
+                            Console.WriteLine(rndMonth);
+                            SelectElement clickThis = new SelectElement(dropDownMonth);
+                            clickThis.SelectByText(months[rndMonth]);
+                            Helpers.wait(1000);
+                            int rndDay = random.Next(1, 28);
+                            clickThis = new SelectElement(dropDownDay);
+                            clickThis.SelectByText(rndDay.ToString());
+                            Helpers.wait(1000);
+                            int rndYear = random.Next(1974, 1994);
+                            clickThis = new SelectElement(dropDownYear);
+                            clickThis.SelectByText(rndYear.ToString());
+                            Helpers.wait(1000);
+                        }
+                        catch { }
+                        finally { }
+
+                        try
+                        {
+                            driver.FindElement(By.Id("demosubmitimg")).Click();
+                        }
+                        catch { }
+                        finally { }
+
+                        ById(driver, "webtraffic_popup_start_button");
+                        ById(driver, "webtraffic_popup_next_button");
+                        ByClass(driver, "webtraffic_start_button");
+                        ByClass(driver, "webtraffic_next_button");
+                        ByClass(driver, "webtraffic_button");
+                        ById(driver, "expository_image");
+
+                        // Chips Ad
+                        ById(driver, "compositor_placed_innerclip_cheddar");
+                        ById(driver, "compositor_placed_innerclip_gouda");
+                        ById(driver, "compositor_placed_innerclip_habanero");
+                        ById(driver, "compositor_placed_innerclip_flamin");
+                        ById(driver, "compositor_placed_innerclip_honeybbq");
+                        ById(driver, "compositor_placed_innerclip_korean");
+                        ById(driver, "compositor_placed_innerclip_oliveoil");
+                        ById(driver, "compositor_placed_innerclip_seasalt");
+                        //
+
+                        try
+                        {
+                            if (driver.FindElement(By.Id("ty_headline")).Displayed)
+                            {
+                                driver.Navigate().GoToUrl("http://lootpalace.com/");
+                                loop = false;
+                                closeWindows(driver, titles);
+                            }
+                        }
+                        catch { }
                     }
                 }
                 catch { }
-                finally { }
-
-                try
-                {
-                    IWebElement dropDownMonth = driver.FindElement(By.Id("dob_month"));
-                    IWebElement dropDownDay = driver.FindElement(By.Id("dob_day"));
-                    IWebElement dropDownYear = driver.FindElement(By.Id("dob_year"));
-                    string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-                    Random random = new Random();
-                    int rndMonth = random.Next(0, 11);
-                    Console.WriteLine(rndMonth);
-                    SelectElement clickThis = new SelectElement(dropDownMonth);
-                    clickThis.SelectByText(months[rndMonth]);
-                    Helpers.wait(1000);
-                    int rndDay = random.Next(1, 28);
-                    clickThis = new SelectElement(dropDownDay);
-                    clickThis.SelectByText(rndDay.ToString());
-                    Helpers.wait(1000);
-                    int rndYear = random.Next(1974, 1994);
-                    clickThis = new SelectElement(dropDownYear);
-                    clickThis.SelectByText(rndYear.ToString());
-                    Helpers.wait(1000);
-                }
-                catch { }
-                finally { }
-
-                try
-                {
-                    driver.FindElement(By.Id("demosubmitimg")).Click();
-                }
-                catch { }
-                finally { }
-
-                try
-                {
-                    if (driver.FindElement(By.Id("ty_body_text")).Displayed)
-                    {
-                        driver.Navigate().GoToUrl("http://lootpalace.com/");
-                        loop = false;
-                    }
-                }
-                catch { }
-
-                if (driver.FindElement(By.ClassName("no-offers")).Displayed)
-                {
-                    driver.Quit();
-                }
             }
         }
 
@@ -286,6 +352,7 @@ namespace Scrap.Models
                             switchToBrowserByString(driver, "Earn Free Gift");
                             driver.Navigate().GoToUrl("http://www.lootpalace.com");
                             closeWindows(driver, titles);
+                            loop = false;
                         }
                     }
                     catch { }
@@ -311,6 +378,70 @@ namespace Scrap.Models
                     try
                     {
                         driver.FindElement(By.ClassName("ytp-large-play-button")).Click();
+                    }
+                    catch { }
+
+
+                    try
+                    {
+                        driver.FindElement(By.ClassName("nextstepimg")).Click();
+                    }
+                    catch { }
+                    try
+                    {
+                        driver.FindElement(By.XPath("//img[@alt='Claim your reward']")).Click();
+                    }
+                    catch { }
+
+                    //switchToBrowserByString(driver, "Now Exploring");
+                    try
+                    {
+                        bool exploring = false;
+                        if (driver.Title.Contains("Now Exploring"))
+                        {
+                            exploring = true;
+                        }
+                        while (exploring)
+                        {
+                            System.Collections.ObjectModel.ReadOnlyCollection<string> aMorewindowHandles = driver.WindowHandles;
+
+                            foreach (String windower in aMorewindowHandles)
+                            {
+                                try
+                                {
+                                    IWebDriver popup = driver.SwitchTo().Window(windower);
+                                }
+                                catch { }
+
+                                //switchToBrowserByString(driver, "Now Exploring great content!");
+                                try
+                                {
+                                    IWebElement greatContent = driver.FindElement(By.ClassName("nextstepimg"));
+                                    greatContent.Click();
+                                }
+                                catch
+                                {
+                                    Console.WriteLine("Waiting to finish");
+                                }
+                                try
+                                {
+                                    driver.FindElement(By.XPath("//a[contains(@href, 'hyprmx')]/img")).Click();
+                                }
+                                catch { }
+                                try
+                                {
+                                    driver.FindElement(By.XPath("//img[@alt='Next Page']")).Click();
+                                }
+                                catch { }
+                                try
+                                {
+                                    driver.FindElement(By.XPath("//img[@alt='Claim your reward']")).Click();
+                                    exploring = false;
+                                }
+                                catch { }
+                                Helpers.wait(5000);
+                            }
+                        }
                     }
                     catch { }
                 }
