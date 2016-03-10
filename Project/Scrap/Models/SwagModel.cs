@@ -712,6 +712,28 @@ namespace Scrap.Models
             catch { }
         }
 
+        void video(IWebDriver driver)
+        {
+            string[] links = { "Editor's Pick", "Careers", "Comedy", "Entertainment", "Fashion", "Fitness", "Food", "Health", "Hobbies", "Home & Garden", "Music", "News & Politics", "Parenting", "Personal Finance", "Pets & Animals", "Shopping", "Sports", "Technology", "Travel", "Wedding" };
+            int videoCount = 0;
+            Helpers.wait(1000);
+
+            IWebElement findWatch = driver.FindElement(By.LinkText("Watch"));
+            if (findWatch.Displayed)
+            {
+                findWatch.Click();
+            }
+            else
+            {
+                Console.WriteLine("Could not find Watch");
+            }
+
+            while (true)
+            {
+
+            }
+        }
+
         void Videos(IWebDriver driver, BackgroundWorker bw)
         {
             string[] links = { "Editor's Pick", "Careers", "Comedy", "Entertainment", "Fashion", "Fitness", "Food", "Health", "Hobbies", "Home & Garden", "Music", "News & Politics", "Parenting", "Personal Finance", "Pets & Animals", "Shopping", "Sports", "Technology", "Travel", "Wedding" };

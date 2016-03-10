@@ -180,7 +180,7 @@ namespace Scrap.Models
 
                     IList<IWebElement> tests = driver.FindElements(By.ClassName("playHover"));
                     Console.WriteLine("playHover: " + tests.Count);
-                    foreach(IWebElement test in tests)
+                    foreach (IWebElement test in tests)
                     {
                         try
                         {
@@ -194,7 +194,8 @@ namespace Scrap.Models
 
                     try
                     {
-                        if (driver.FindElement(By.TagName("strong")).Text == "There are no videos available at this Time. Please try back later.")
+                        if(tests.Count < 1)
+                        //if (driver.FindElement(By.TagName("strong")).Text == "There are no videos available at this Time. Please try back later.")
                         {
                             driver.Navigate().GoToUrl("http://www.prizerebel.com/members.php");
                             looping = false;
@@ -203,14 +204,17 @@ namespace Scrap.Models
                     catch { }
                 }
 
+                driver.Navigate().Refresh();
             }
 
         }
 
         public static void virool(IWebDriver driver)
         {
+            int points = 0, newpoints = 0;
             int currentHour = DateTime.Now.Hour;
-            bool looping = true;
+            bool looping = true, looped = false;
+            int counter = 0;
             while (looping)
             {
                 try
@@ -222,55 +226,112 @@ namespace Scrap.Models
                         IWebDriver popup = driver.SwitchTo().Window(window);
                     }
 
-                    switchFrameByNumber(driver, 0);
-
-                    ByClass(driver, "thumbnail");
-
-                    switchFrameByNumber(driver, 0);
-                    switchToBrowserFrameByString(driver, "widgetPlayer");
-                    switchToBrowserFrameByString(driver, "player-container");
-
-                    ByClass(driver, "ytp-large-play-button");
-
-                    driver.SwitchTo().DefaultContent();
-                    switchFrameByNumber(driver, 0);
-                    switchFrameByNumber(driver, 0);
-
                     try
                     {
-                        if (driver.FindElement(By.Id("share-overlay-facebook")).Displayed)
-                        {
-                            driver.SwitchTo().DefaultContent();
-                            switchFrameByNumber(driver, 0);
-                            ByClass(driver, "close");
-                        }
+                        driver.SwitchTo().DefaultContent();
                     }
                     catch { }
 
                     try
                     {
-                        if (driver.FindElement(By.Id("yt-subscribe-btn")).Displayed)
+                        int.TryParse(driver.FindElement(By.ClassName("navigation-account-points-value")).Text, out points);
+                    }
+                    catch { }
+
+                    try
+                    {
+                        if (driver.FindElement(By.Id("offerWallContent")).Text == "Please try back later.")
                         {
-                            driver.SwitchTo().DefaultContent();
-                            switchFrameByNumber(driver, 0);
-                            ByClass(driver, "close");
                             looping = false;
                         }
                     }
                     catch { }
 
-                    try
+                    switchFrameByNumber(driver, 0);
+                    counter = 0;
+                    //ByClass(driver, "thumbnail");
+                    IList<IWebElement> thumbnails = driver.FindElements(By.ClassName("thumbnail"));
+                    foreach (IWebElement thumbnail in thumbnails)
                     {
-                        if (currentHour != DateTime.Now.Hour)
+                        if (counter > thumbnails.Count - 2)
                         {
+                            thumbnail.Click();
+                            looped = true;
+                        }
+
+                        counter++;
+
+
+                        while (looped)
+                        {
+                            switchFrameByNumber(driver, 0);
+                            switchToBrowserFrameByString(driver, "widgetPlayer");
+                            switchToBrowserFrameByString(driver, "player-container");
+
+                            
+                            ByClass(driver, "ytp-large-play-button");
+
                             driver.SwitchTo().DefaultContent();
                             switchFrameByNumber(driver, 0);
-                            ByClass(driver, "close");
-                            driver.Navigate().GoToUrl("http://www.prizerebel.com/members.php");
-                            looping = false;
+                            switchFrameByNumber(driver, 0);
+
+                            try
+                            {
+                                if (driver.FindElement(By.ClassName("close")).Displayed)
+                                {
+
+                                }
+                            }
+                            catch { }
+
+                            try
+                            {
+                                if (driver.FindElement(By.Id("share-overlay-facebook")).Displayed)
+                                {
+                                    //driver.FindElement(By.Id("share-overlay-facebook")).SendKeys(Keys.PageUp);
+                                    driver.SwitchTo().DefaultContent();
+                                    switchFrameByNumber(driver, 0);
+                                    ByClass(driver, "close");
+                                    looped = false;
+                                }
+                            }
+                            catch { }
+
+                            try
+                            {
+                                if (driver.FindElement(By.Id("yt-subscribe-btn")).Displayed)
+                                {
+                                    driver.SwitchTo().DefaultContent();
+                                    switchFrameByNumber(driver, 0);
+                                    ByClass(driver, "close");
+                                    //looping = false;
+                                    looped = false;
+                                }
+                            }
+                            catch { }
+
+                            try
+                            {
+                                if (currentHour != DateTime.Now.Hour)
+                                {
+                                    driver.SwitchTo().DefaultContent();
+                                    switchFrameByNumber(driver, 0);
+                                    ByClass(driver, "close");
+                                    driver.Navigate().GoToUrl("http://www.prizerebel.com/members.php");
+                                    looping = false;
+                                    looped = false;
+                                }
+                            }
+                            catch { }
                         }
+
+                        driver.SwitchTo().DefaultContent();
+                        switchFrameByNumber(driver, 0);
+                        switchFrameByNumber(driver, 0);
+
+                        ByClass(driver, "close");
+
                     }
-                    catch { }
                 }
                 catch { }
             }
@@ -545,6 +606,15 @@ namespace Scrap.Models
                         }
                         catch { }
                         Helpers.wait(5000);
+                    }
+                }
+                catch { }
+
+                try
+                {
+                    if (driver.FindElement(By.CssSelector("div:contains('You have reached the limit for the day, please check back in 24 hrs.')")).Displayed)
+                    {
+                        loop = false;
                     }
                 }
                 catch { }
