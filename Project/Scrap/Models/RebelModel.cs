@@ -46,30 +46,34 @@ namespace Scrap.Models
                 driver.Navigate().GoToUrl("http://www.prizerebel.com/offerwalls.php");
                 Helpers.wait(5000);
 
-                IList<IWebElement> virools = driver.FindElements(By.ClassName("filter-tab-btn"));
-                /*
-                foreach (IWebElement virool in virools)
+                try
                 {
-                    if (virool.Text == "Encrave")
+                    IList<IWebElement> virools = driver.FindElements(By.ClassName("filter-tab-btn"));
+                    /*
+                    foreach (IWebElement virool in virools)
                     {
-                        virool.Click();
-                        break;
+                        if (virool.Text == "Encrave")
+                        {
+                            virool.Click();
+                            break;
+                        }
                     }
-                }
-                encrave(driver);
+                    encrave(driver);
 
-                virools = driver.FindElements(By.ClassName("filter-tab-btn"));
-                */
-                foreach (IWebElement virool in virools)
-                {
-                    if (virool.Text == "Virool")
+                    virools = driver.FindElements(By.ClassName("filter-tab-btn"));
+                    */
+                    foreach (IWebElement virool in virools)
                     {
-                        virool.Click();
-                        break;
+                        if (virool.Text == "Virool")
+                        {
+                            virool.Click();
+                            break;
+                        }
                     }
+                    virool(driver);
+                    videos(driver);
                 }
-                virool(driver);
-                videos(driver);
+                catch { }
             }
         }
 
@@ -194,7 +198,7 @@ namespace Scrap.Models
 
                     try
                     {
-                        if(tests.Count < 1)
+                        if (tests.Count < 1)
                         //if (driver.FindElement(By.TagName("strong")).Text == "There are no videos available at this Time. Please try back later.")
                         {
                             driver.Navigate().GoToUrl("http://www.prizerebel.com/members.php");
@@ -265,10 +269,16 @@ namespace Scrap.Models
                         while (looped)
                         {
                             switchFrameByNumber(driver, 0);
+                            try
+                            {
+                                driver.FindElement(By.Id("widgetPlayer")).SendKeys(Keys.PageUp);
+                                driver.FindElement(By.Id("widgetPlayer")).SendKeys(Keys.PageUp);
+                            }
+                            catch { }
                             switchToBrowserFrameByString(driver, "widgetPlayer");
                             switchToBrowserFrameByString(driver, "player-container");
 
-                            
+
                             ByClass(driver, "ytp-large-play-button");
 
                             driver.SwitchTo().DefaultContent();
@@ -296,6 +306,20 @@ namespace Scrap.Models
                                 }
                             }
                             catch { }
+
+                            try
+                            {
+                                if (driver.FindElement(By.PartialLinkText("2 Gems")).Displayed)
+                                {
+                                    driver.SwitchTo().DefaultContent();
+                                    switchFrameByNumber(driver, 0);
+                                    ByClass(driver, "close");
+                                    looped = false;
+                                    looping = false;
+                                }
+                            }
+                            catch { }
+
 
                             try
                             {
@@ -610,14 +634,34 @@ namespace Scrap.Models
                 }
                 catch { }
 
+                driver.SwitchTo().DefaultContent();
+
                 try
                 {
-                    if (driver.FindElement(By.CssSelector("div:contains('You have reached the limit for the day, please check back in 24 hrs.')")).Displayed)
+                    IList<IWebElement> divs = driver.FindElements(By.TagName("div"));
+                    Console.WriteLine(divs.Count);
+                    foreach (IWebElement div in divs)
+                    {
+                        if(div.Text == "You have reached the limit for the day, please check back in 24 hrs.")
+                        {
+                            loop = false;
+                        }
+                    }
+                }
+                catch { }
+
+                /*
+                try
+                {
+                    if (driver.FindElement(By.ClassName("inner-wrap")).Text == "You have reached the limit for the day, please check back in 24 hrs.")
+                    //if (driver.FindElement(By.TagName("body")).Text == "You have reached the limit for the day, please check back in 24 hrs.")
+                    //if (driver.FindElement(By.CssSelector("div:contains('You have reached the limit for the day, please check back in 24 hrs.')")).Displayed)
                     {
                         loop = false;
                     }
                 }
                 catch { }
+                */
             }
         }
 
