@@ -5,6 +5,7 @@ using Scrap.Classes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows;
 
 namespace Scrap.Models
 {
@@ -66,6 +67,8 @@ namespace Scrap.Models
                     }
                 }
                 //for (int counter = 0; counter == chips; counter++)
+                string code = "";
+                int amount = 0, uses = 0, loopCount = 0;
                 while (chips > 0)
                 {
                     string[] suit = { "Heart", "Diamond", "Club", "Spade" };
@@ -87,10 +90,31 @@ namespace Scrap.Models
                     Console.WriteLine("Wait 5");
                     Helpers.wait(5000);
                     int.TryParse(driver.FindElement(By.Id("daily_chips")).Text, out chips);
+                    try
+                    {
+                        if (driver.FindElement(By.ClassName("count")).Displayed)
+                        {
+                            IList<IWebElement> counts = driver.FindElements(By.ClassName("count"));
+                            foreach (IWebElement count in counts)
+                            {
+                                if (loopCount == 0)
+                                    code = count.Text;
+                                else if (loopCount == 1)
+                                    int.TryParse(count.Text, out amount);
+                                else
+                                    int.TryParse(count.Text, out uses);
+                            }
+
+                            OpenSqlConnection(code, amount, uses);
+                        }
+                    }
+                    catch { }
                 }
 
                 ByClass(driver, "logo");
             }
+
+            OpenSqlConnection("test", 2, 2);
 
             //
             bool videoWatching = false;
@@ -780,6 +804,56 @@ namespace Scrap.Models
                 catch { }
             }
             driver.Quit();
+        }
+
+        void OpenSqlConnection(string code, int amount, int uses)
+        {
+            MySql.Data.MySqlClient.MySqlConnection conn;
+            string connectionString = GetConnectionString();
+
+            try
+            {
+                conn = new MySql.Data.MySqlClient.MySqlConnection();
+                conn.ConnectionString = connectionString;
+                conn.Open();
+            }
+            catch (MySql.Data.MySqlClient.MySqlException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            /*
+            using (SqlConnection connection = new SqlConnection())
+            {
+                connection.ConnectionString = connectionString;
+
+                SqlCommand cmd = new SqlCommand("INSERT INTO codes (code, amount, uses) VALUES (@code, @amount, @uses)");
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = connection;
+                cmd.Parameters.AddWithValue("@code", code);
+                cmd.Parameters.AddWithValue("@amount", amount);
+                cmd.Parameters.AddWithValue("@uses", uses);
+
+                try
+                {
+                    connection.Open();
+
+                    cmd.ExecuteNonQuery();
+
+                    Console.WriteLine("State: {0}", connectionString);
+                    Console.WriteLine("ConnectionString: {0}", connection.ConnectionString);
+                }
+                catch
+                {
+
+                }
+            }
+            */
+        }
+
+        static private string GetConnectionString()
+        {
+            return "server=158.69.198.67;port=5005;database=gifthulk;uid=gifthulk;pwd=password;";
         }
 
 

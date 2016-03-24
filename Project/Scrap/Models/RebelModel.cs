@@ -12,6 +12,8 @@ namespace Scrap.Models
     {
         public RebelModel(string username, string password, BackgroundWorker bw)
         {
+            int currentHour = DateTime.Now.Hour;
+
 
             ChromeDriverService service = ChromeDriverService.CreateDefaultService(App.Folder);
             service.HideCommandPromptWindow = true;
@@ -49,19 +51,6 @@ namespace Scrap.Models
                 try
                 {
                     IList<IWebElement> virools = driver.FindElements(By.ClassName("filter-tab-btn"));
-                    /*
-                    foreach (IWebElement virool in virools)
-                    {
-                        if (virool.Text == "Encrave")
-                        {
-                            virool.Click();
-                            break;
-                        }
-                    }
-                    encrave(driver);
-
-                    virools = driver.FindElements(By.ClassName("filter-tab-btn"));
-                    */
                     foreach (IWebElement virool in virools)
                     {
                         if (virool.Text == "Virool")
@@ -74,87 +63,122 @@ namespace Scrap.Models
                     videos(driver);
                 }
                 catch { }
+
+                driver.Navigate().GoToUrl("http://www.prizerebel.com/offerwalls.php");
+                Helpers.wait(5000);
+
+                /*
+                try
+                {
+                    IList<IWebElement> virools = driver.FindElements(By.ClassName("filter-tab-btn"));
+                    foreach (IWebElement virool in virools)
+                    {
+                        if (virool.Text == "Encrave")
+                        {
+                            virool.Click();
+                            break;
+                        }
+                    }
+                    encrave(driver);
+                }
+                catch { }
+                */
+
+                /*
+                try
+                {
+                    while (currentHour != DateTime.Now.Hour)
+                    {
+                    }
+                }
+                catch { }
+                */
+
+                currentHour = DateTime.Now.Hour;
+            }
+            driver.Quit();
+        }
+
+        void encrave(IWebDriver driver)
+        {
+            while(true)
+            {
+
             }
         }
 
-        public static void encrave(IWebDriver driver)
+        void trialPay(IWebDriver driver)
         {
-            bool videoPlaying = false;
+            string[] titles = { "PrizeRebel.com | Earn" };
+            int currentHour = DateTime.Now.Hour;
+            bool loop = true;
 
-            while (true)
+            while (loop)
             {
-                System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
 
-                foreach (String window in windowHandles)
-                {
-                    IWebDriver popup = driver.SwitchTo().Window(window);
-
-                    Helpers.wait(5000);
-
-                    switchFrameByNumber(driver, 0);
-                    try
-                    {
-                        driver.FindElement(By.ClassName("disableText")).Click();
-                        break;
-                    }
-                    catch { }
-                }
-
-                switchToBrowserByString(driver, "Entertainmentcrave");
+                Helpers.wait(2000);
+                switchFrameByNumber(driver, 0);
                 try
                 {
-                    driver.SwitchTo().DefaultContent();
+                    driver.FindElement(By.LinkText("Videos")).Click();
                 }
                 catch { }
 
-                IList<IWebElement> iframes = driver.FindElements(By.TagName("iframe"));
-                foreach (IWebElement iframe in iframes)
+                try
                 {
-                    Console.WriteLine(iframe.Text);
-                    Console.WriteLine(iframe.GetCssValue("name"));
+                    if (currentHour != DateTime.Now.Hour)
+                    {
+                        driver.Navigate().GoToUrl("http://www.prizerebel.com/offerwalls.php");
+                        closeWindows(driver, titles);
+                        loop = false;
+                    }
                 }
+                catch { }
+
+                //ByClass(driver, "offer_row");
+                try
+                {
+                    IList<IWebElement> offerRows = driver.FindElements(By.ClassName("largeOffer"));
+                    foreach (IWebElement offerRow in offerRows)
+                    {
+                        Helpers.wait(1000);
+
+                        if (offerRow.FindElement(By.ClassName("summary")).FindElement(By.ClassName("information")).FindElement(By.ClassName("requirements")).Text.Contains("video"))
+                        {
+                            offerRow.Click();
+                            break;
+                        }
+                    }
+                }
+                catch { }
+
+                switchToBrowserByString(driver, "TrialPay");
+                Helpers.wait(1000);
+                switchToBrowserFrameByString(driver, "tp-video-player");
+                ByClass(driver, "btn-text");
+
                 Helpers.wait(5000);
 
-                while (true)
+                switchToBrowserByString(driver, "Social Ingot");
+
+                try
                 {
-                    switchToBrowserFrameByString(driver, "contIframe");
-                    //switchToBrowserFrameByString(driver, "tynt-gpt-iframe-1");
-                    if (!videoPlaying)
-                    {
-                        try
-                        {
-                            driver.FindElement(By.Id("o2player_1")).Click();
-                            videoPlaying = true;
-                        }
-                        catch { }
-                    }
-
-                    ById(driver, "gallery_thumbnail_nav_arrow_right");
-                    ByClass(driver, "owl-next");
-
-
-                    try
-                    {
-                        driver.SwitchTo().DefaultContent();
-                    }
-                    catch { }
-
-                    //ById(driver, "link_down");
-                    try
-                    {
-                        if (driver.FindElement(By.Id("link_down")).Displayed)
-                        {
-                            driver.FindElement(By.Id("link_down")).Click();
-                        }
-                    }
-                    catch { }
-                    try
-                    {
-                        driver.FindElement(By.ClassName("keepCraving")).Click();
-                    }
-                    catch { }
-
+                    driver.FindElement(By.TagName("img")).Click();
                 }
+                catch { }
+
+                Helpers.wait(90000);
+
+                closeWindows(driver, titles);
+
+                driver.Close();
+                switchToBrowserByString(driver, "Social Ingot");
+                driver.Close();
+                switchToBrowserByString(driver, "TrialPay");
+                driver.Close();
+                switchToBrowserByString(driver, "PrizeRebel.com");
+
+                closeWindows(driver, titles);
             }
         }
 
@@ -196,16 +220,6 @@ namespace Scrap.Models
 
                     Helpers.wait(5000);
 
-                    try
-                    {
-                        if (tests.Count < 1)
-                        //if (driver.FindElement(By.TagName("strong")).Text == "There are no videos available at this Time. Please try back later.")
-                        {
-                            driver.Navigate().GoToUrl("http://www.prizerebel.com/members.php");
-                            looping = false;
-                        }
-                    }
-                    catch { }
                 }
 
                 driver.Navigate().Refresh();
@@ -255,6 +269,11 @@ namespace Scrap.Models
                     counter = 0;
                     //ByClass(driver, "thumbnail");
                     IList<IWebElement> thumbnails = driver.FindElements(By.ClassName("thumbnail"));
+                    Console.WriteLine("Thumbnails Count: " + thumbnails.Count);
+                    /*                    if (thumbnails.Count == 0)
+                                        {
+                                            looping = false;
+                                        }*/
                     foreach (IWebElement thumbnail in thumbnails)
                     {
                         if (counter > thumbnails.Count - 2)
@@ -264,100 +283,139 @@ namespace Scrap.Models
                         }
 
                         counter++;
+                    }
 
 
-                        while (looped)
+                    while (looped)
+                    {
+                        //switchFrameByNumber(driver, 0);
+                        switchFrameByNumber(driver, 0);
+                        switchToBrowserFrameByString(driver, "widgetPlayer");
+                        //driver.FindElement(By.Id("player-wrapper")).SendKeys(Keys.PageUp);
+                        //driver.FindElement(By.Id("player-wrapper")).SendKeys(Keys.PageUp);
+
+                        try
                         {
-                            switchFrameByNumber(driver, 0);
-                            try
+                            if (driver.FindElement(By.LinkText("Opt out")).Displayed)
                             {
-                                driver.FindElement(By.Id("widgetPlayer")).SendKeys(Keys.PageUp);
-                                driver.FindElement(By.Id("widgetPlayer")).SendKeys(Keys.PageUp);
+                                driver.FindElement(By.LinkText("Opt out")).Click();
+                                driver.SwitchTo().DefaultContent();
+                                switchFrameByNumber(driver, 0);
+                                ByClass(driver, "close");
+                                looped = false;
+                                looping = false;
                             }
-                            catch { }
-                            switchToBrowserFrameByString(driver, "widgetPlayer");
-                            switchToBrowserFrameByString(driver, "player-container");
-
-
-                            ByClass(driver, "ytp-large-play-button");
-
-                            driver.SwitchTo().DefaultContent();
-                            switchFrameByNumber(driver, 0);
-                            switchFrameByNumber(driver, 0);
-
-                            try
-                            {
-                                if (driver.FindElement(By.ClassName("close")).Displayed)
-                                {
-
-                                }
-                            }
-                            catch { }
-
-                            try
-                            {
-                                if (driver.FindElement(By.Id("share-overlay-facebook")).Displayed)
-                                {
-                                    //driver.FindElement(By.Id("share-overlay-facebook")).SendKeys(Keys.PageUp);
-                                    driver.SwitchTo().DefaultContent();
-                                    switchFrameByNumber(driver, 0);
-                                    ByClass(driver, "close");
-                                    looped = false;
-                                }
-                            }
-                            catch { }
-
-                            try
-                            {
-                                if (driver.FindElement(By.PartialLinkText("2 Gems")).Displayed)
-                                {
-                                    driver.SwitchTo().DefaultContent();
-                                    switchFrameByNumber(driver, 0);
-                                    ByClass(driver, "close");
-                                    looped = false;
-                                    looping = false;
-                                }
-                            }
-                            catch { }
-
-
-                            try
-                            {
-                                if (driver.FindElement(By.Id("yt-subscribe-btn")).Displayed)
-                                {
-                                    driver.SwitchTo().DefaultContent();
-                                    switchFrameByNumber(driver, 0);
-                                    ByClass(driver, "close");
-                                    //looping = false;
-                                    looped = false;
-                                }
-                            }
-                            catch { }
-
-                            try
-                            {
-                                if (currentHour != DateTime.Now.Hour)
-                                {
-                                    driver.SwitchTo().DefaultContent();
-                                    switchFrameByNumber(driver, 0);
-                                    ByClass(driver, "close");
-                                    driver.Navigate().GoToUrl("http://www.prizerebel.com/members.php");
-                                    looping = false;
-                                    looped = false;
-                                }
-                            }
-                            catch { }
                         }
+                        catch { }
+                        switchToBrowserFrameByString(driver, "player-container");
+
+
+                        ByClass(driver, "ytp-large-play-button");
 
                         driver.SwitchTo().DefaultContent();
                         switchFrameByNumber(driver, 0);
                         switchFrameByNumber(driver, 0);
 
-                        ByClass(driver, "close");
+                        try
+                        {
+                            if (driver.FindElement(By.LinkText("Opt out")).Displayed)
+                            {
+                                driver.SwitchTo().DefaultContent();
+                                switchFrameByNumber(driver, 0);
+                                ByClass(driver, "close");
+                                looped = false;
+                            }
+                        }
+                        catch { }
 
+                        try
+                        {
+                            if (driver.FindElement(By.ClassName("close")).Displayed)
+                            {
+
+                            }
+                        }
+                        catch { }
+
+                        try
+                        {
+                            if (driver.FindElement(By.Id("share-overlay-facebook")).Displayed)
+                            {
+                                //driver.FindElement(By.Id("share-overlay-facebook")).SendKeys(Keys.PageUp);
+                                driver.SwitchTo().DefaultContent();
+                                switchFrameByNumber(driver, 0);
+                                ByClass(driver, "close");
+                                looped = false;
+                            }
+                        }
+                        catch { }
+
+                        try
+                        {
+                            if (driver.FindElement(By.PartialLinkText("2 Gems")).Displayed)
+                            {
+                                driver.SwitchTo().DefaultContent();
+                                switchFrameByNumber(driver, 0);
+                                ByClass(driver, "close");
+                                looped = false;
+                                looping = false;
+                            }
+                        }
+                        catch { }
+
+
+                        try
+                        {
+                            if (driver.FindElement(By.Id("yt-subscribe-btn")).Displayed)
+                            {
+                                driver.SwitchTo().DefaultContent();
+                                switchFrameByNumber(driver, 0);
+                                ByClass(driver, "close");
+                                looping = false;
+                                looped = false;
+                            }
+                        }
+                        catch { }
+
+                        try
+                        {
+                            if (currentHour != DateTime.Now.Hour)
+                            {
+                                driver.SwitchTo().DefaultContent();
+                                switchFrameByNumber(driver, 0);
+                                ByClass(driver, "close");
+                                driver.Navigate().GoToUrl("http://www.prizerebel.com/members.php");
+                                looping = false;
+                                looped = false;
+                            }
+                        }
+                        catch { }
+                    }
+
+                    driver.SwitchTo().DefaultContent();
+                    switchFrameByNumber(driver, 0);
+                    switchFrameByNumber(driver, 0);
+
+                    ByClass(driver, "close");
+
+
+                }
+                catch { }
+
+                try
+                {
+                    if (currentHour != DateTime.Now.Hour)
+                    {
+                        driver.SwitchTo().DefaultContent();
+                        switchFrameByNumber(driver, 0);
+                        ByClass(driver, "close");
+                        driver.Navigate().GoToUrl("http://www.prizerebel.com/members.php");
+                        looping = false;
+                        looped = false;
                     }
                 }
                 catch { }
+
             }
 
         }
@@ -369,299 +427,335 @@ namespace Scrap.Models
 
             while (loop)
             {
-                try
-                {
-                    System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
+                System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
 
-                    foreach (String window in windowHandles)
+                foreach (String window in windowHandles)
+                {
+                    try
                     {
                         IWebDriver popup = driver.SwitchTo().Window(window);
+                    }
+                    catch { }
 
+                    try
+                    {
                         if (driver.FindElement(By.Id("noDisplay")).Displayed)
                         {
                             loop = false;
                         }
+                    }
+                    catch { }
 
-                        try
-                        {
-                            driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#displayWrap iframe")));
-                        }
-                        catch { }
+                    try
+                    {
+                        driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#displayWrap iframe")));
+                    }
+                    catch { }
 
-                        try
+                    try
+                    {
+                        IList<IWebElement> oLinks = driver.FindElements(By.ClassName("singleselectset_radio"));
+                        Random random = new Random();
+                        int rndClick = random.Next(1, oLinks.Count);
+                        Console.WriteLine(rndClick);
+                        int counterClick = 1;
+                        foreach (IWebElement oLink in oLinks)
                         {
-                            IList<IWebElement> oLinks = driver.FindElements(By.ClassName("singleselectset_radio"));
-                            Random random = new Random();
-                            int rndClick = random.Next(1, oLinks.Count);
-                            Console.WriteLine(rndClick);
-                            int counterClick = 1;
-                            foreach (IWebElement oLink in oLinks)
+                            Console.WriteLine(counterClick);
+                            if (counterClick == rndClick)
                             {
-                                Console.WriteLine(counterClick);
-                                if (counterClick == rndClick)
-                                {
-                                    oLink.Click();
-                                }
-                                counterClick++;
+                                oLink.Click();
                             }
+                            counterClick++;
                         }
-                        catch { }
+                    }
+                    catch { }
 
-                        try
+                    try
+                    {
+                        IWebElement dropDownMonth = driver.FindElement(By.Id("dob_month"));
+                        IWebElement dropDownDay = driver.FindElement(By.Id("dob_day"));
+                        IWebElement dropDownYear = driver.FindElement(By.Id("dob_year"));
+                        string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                        Random random = new Random();
+                        int rndMonth = random.Next(0, 11);
+                        Console.WriteLine(rndMonth);
+                        SelectElement clickThis = new SelectElement(dropDownMonth);
+                        clickThis.SelectByText(months[rndMonth]);
+                        Helpers.wait(1000);
+                        int rndDay = random.Next(1, 28);
+                        clickThis = new SelectElement(dropDownDay);
+                        clickThis.SelectByText(rndDay.ToString());
+                        Helpers.wait(1000);
+                        int rndYear = random.Next(1974, 1994);
+                        clickThis = new SelectElement(dropDownYear);
+                        clickThis.SelectByText(rndYear.ToString());
+                        Helpers.wait(1000);
+                    }
+                    catch { }
+
+                    try
+                    {
+                        driver.FindElement(By.Id("demosubmitimg")).Click();
+                    }
+                    catch { }
+
+                    try
+                    {
+                        driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#displayWrap iframe")));
+                    }
+                    catch { }
+
+                    ById(driver, "webtraffic_popup_start_button");
+                    ById(driver, "webtraffic_popup_next_button");
+                    ByClass(driver, "webtraffic_start_button");
+                    ByClass(driver, "webtraffic_next_button");
+
+                    // Chips Ad
+                    ById(driver, "compositor_placed_innerclip_cheddar");
+                    ById(driver, "compositor_placed_innerclip_gouda");
+                    ById(driver, "compositor_placed_innerclip_habanero");
+                    ById(driver, "compositor_placed_innerclip_flamin");
+                    ById(driver, "compositor_placed_innerclip_honeybbq");
+                    ById(driver, "compositor_placed_innerclip_korean");
+                    ById(driver, "compositor_placed_innerclip_oliveoil");
+                    ById(driver, "compositor_placed_innerclip_seasalt");
+                    //
+                    try
+                    {
+                        IWebElement rewardText = driver.FindElement(By.Id("ty_header"));
+                        if (rewardText.Text == "You earned 1 Points!")
                         {
-                            IWebElement dropDownMonth = driver.FindElement(By.Id("dob_month"));
-                            IWebElement dropDownDay = driver.FindElement(By.Id("dob_day"));
-                            IWebElement dropDownYear = driver.FindElement(By.Id("dob_year"));
-                            string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-                            Random random = new Random();
-                            int rndMonth = random.Next(0, 11);
-                            Console.WriteLine(rndMonth);
-                            SelectElement clickThis = new SelectElement(dropDownMonth);
-                            clickThis.SelectByText(months[rndMonth]);
-                            Helpers.wait(1000);
-                            int rndDay = random.Next(1, 28);
-                            clickThis = new SelectElement(dropDownDay);
-                            clickThis.SelectByText(rndDay.ToString());
-                            Helpers.wait(1000);
-                            int rndYear = random.Next(1974, 1994);
-                            clickThis = new SelectElement(dropDownYear);
-                            clickThis.SelectByText(rndYear.ToString());
-                            Helpers.wait(1000);
+                            driver.Navigate().Refresh();
+                            closeWindows(driver, titles);
                         }
-                        catch { }
+                    }
+                    catch { }
 
-                        try
+                    try
+                    {
+
+                        if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
                         {
-                            driver.FindElement(By.Id("demosubmitimg")).Click();
+                            driver.Navigate().Refresh();
+                            closeWindows(driver, titles);
                         }
-                        catch { }
+                    }
 
-                        try
-                        {
-                            driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#displayWrap iframe")));
-                        }
-                        catch { }
+                    catch { }
 
-                        ById(driver, "webtraffic_popup_start_button");
-                        ById(driver, "webtraffic_popup_next_button");
-                        ByClass(driver, "webtraffic_start_button");
-                        ByClass(driver, "webtraffic_next_button");
-
-                        // Chips Ad
-                        ById(driver, "compositor_placed_innerclip_cheddar");
-                        ById(driver, "compositor_placed_innerclip_gouda");
-                        ById(driver, "compositor_placed_innerclip_habanero");
-                        ById(driver, "compositor_placed_innerclip_flamin");
-                        ById(driver, "compositor_placed_innerclip_honeybbq");
-                        ById(driver, "compositor_placed_innerclip_korean");
-                        ById(driver, "compositor_placed_innerclip_oliveoil");
-                        ById(driver, "compositor_placed_innerclip_seasalt");
-                        //
-
-
-                        try
-                        {
-                            IWebElement rewardText = driver.FindElement(By.Id("ty_header"));
-                            if (rewardText.Text == "You earned 1 Points!")
-                            {
-                                driver.Navigate().Refresh();
-                                closeWindows(driver, titles);
-                            }
-                        }
-                        catch { }
-
-                        try
-                        {
-
-                            if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
-                            {
-                                driver.Navigate().Refresh();
-                                closeWindows(driver, titles);
-                            }
-                        }
-
-                        catch { }
-
-                        try
+                    try
+                    {
+                        switchToBrowserByString(driver, "Now Exploring great content!");
+                        while (driver.Title.Contains("Now Exploring"))
                         {
                             switchToBrowserByString(driver, "Now Exploring great content!");
-                            while (driver.Title.Contains("Now Exploring"))
+                            try
                             {
-                                switchToBrowserByString(driver, "Now Exploring great content!");
+                                IWebElement greatContent = driver.FindElement(By.ClassName("nextstepimg"));
+                                greatContent.Click();
+                            }
+                            catch
+                            {
+                                Console.WriteLine("Waiting to finish");
                                 try
                                 {
-                                    IWebElement greatContent = driver.FindElement(By.ClassName("nextstepimg"));
-                                    greatContent.Click();
+                                    driver.FindElement(By.XPath("//img[@alt='Claim your reward']")).Click();
+                                    switchToBrowserByString(driver, "Offer Walls");
                                 }
-                                catch
-                                {
-                                    Console.WriteLine("Waiting to finish");
-                                    try
-                                    {
-                                        driver.FindElement(By.XPath("//img[@alt='Claim your reward']")).Click();
-                                        switchToBrowserByString(driver, "Offer Walls");
-                                    }
-                                    catch { }
-                                    Helpers.wait(5000);
-                                }
+                                catch { }
+                                Helpers.wait(5000);
                             }
                         }
-                        catch { }
-
-                        try
-                        {
-                            driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#displayWrap iframe")));
-                        }
-                        catch { }
-                        /*
-                        try
-                        {
-                            if (driver.FindElement(By.ClassName("reward_text")).Displayed)
-                            {
-                            */
-
-                        try
-                        {
-                            if (driver.FindElement(By.Id("ty_header")).Text.Contains("Points"))
-                            {
-                                closeWindows(driver, titles);
-                                Console.WriteLine("I'm Here!!");
-                                driver.SwitchTo().ParentFrame();
-                                Console.WriteLine("Attempting Refresh");
-                                driver.Navigate().GoToUrl("http://www.prizerebel.com/ripply.php");
-                                Helpers.wait(1000);
-                                driver.Navigate().GoToUrl("http://www.prizerebel.com/dailypoints.php");
-                                driver.Navigate().Refresh();
-                                Console.WriteLine("Refresh Complete");
-                            }
-                        }
-                        catch { }
-
-                        IList<IWebElement> testIframes = driver.FindElements(By.TagName("iframe"));
-                        Console.WriteLine("How many iFrames are avaible = " + testIframes.Count);
-                        Console.WriteLine("*********************************************");
-                        foreach (IWebElement testIframe in testIframes)
-                        {
-                            Console.WriteLine(testIframe.Displayed);
-                            Console.WriteLine(testIframe.Text);
-                            Console.WriteLine(testIframe.GetAttribute("id"));
-                        }
-                        Console.WriteLine("*********************************************");
-
-                        //* *************** Remove Me ***************************
-                        try
-                        {
-                            driver.SwitchTo().Frame(driver.FindElement(By.Id("vgPlayer")));
-                        }
-                        catch { }
-                        testIframes = driver.FindElements(By.TagName("iframe"));
-                        Console.WriteLine("Number of iFrames after vgPlayer = " + testIframes.Count);
-                        foreach (IWebElement testIframe in testIframes)
-                        {
-                            Console.WriteLine(testIframe.Displayed);
-                            Console.WriteLine(testIframe.Text);
-                            Console.WriteLine(testIframe.GetAttribute("id"));
-                        }
-
-                        try
-                        {
-                            switchFrameByNumber(driver, 0);
-                            testIframes = driver.FindElements(By.TagName("iframe"));
-                            Console.WriteLine("Number of iFrames after vgPlayer = " + testIframes.Count);
-                            foreach (IWebElement testIframe in testIframes)
-                            {
-                                Console.WriteLine(testIframe.Displayed);
-                                Console.WriteLine(testIframe.Text);
-                                Console.WriteLine(testIframe.GetAttribute("id"));
-                            }
-                        }
-                        catch { }
-                        try
-                        {
-                            driver.SwitchTo().Frame(driver.FindElement(By.Id("player")));
-                            driver.SwitchTo().Frame(driver.FindElement(By.Id("player")));
-                        }
-                        catch { }
-                        //*/
-
-                        try
-                        {
-                            driver.FindElement(By.ClassName("ytp-large-play-button")).Click();
-                        }
-                        catch { }
-
-                        try
-                        {
-                            if (driver.FindElement(By.Id("ty_header")).Text.Contains("Points"))
-                            {
-                                closeWindows(driver, titles);
-                                Console.WriteLine("I'm Here!!");
-                                driver.SwitchTo().ParentFrame();
-                                Console.WriteLine("Attempting Refresh");
-                                driver.Navigate().GoToUrl("http://www.prizerebel.com/ripply.php");
-                                Helpers.wait(1000);
-                                driver.Navigate().GoToUrl("http://www.prizerebel.com/dailypoints.php");
-                                driver.Navigate().Refresh();
-                                Console.WriteLine("Refresh Complete");
-                            }
-                        }
-                        catch { }
-
-                        try
-                        {
-                            if (driver.FindElement(By.Id("ty_body_text")).Displayed)
-                            {
-                                closeWindows(driver, titles);
-                                Console.WriteLine("I'm Here!!");
-                                driver.SwitchTo().ParentFrame();
-                                Console.WriteLine("Attempting Refresh");
-                                driver.Navigate().GoToUrl("http://www.prizerebel.com/ripply.php");
-                                Helpers.wait(1000);
-                                driver.Navigate().GoToUrl("http://www.prizerebel.com/dailypoints.php");
-                                driver.Navigate().Refresh();
-                                Console.WriteLine("Refresh Complete");
-                            }
-                        }
-                        catch { }
-
-                        try
-                        {
-                            driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#displayWrap iframe")));
-                        }
-                        catch { }
-                        Helpers.wait(5000);
                     }
-                }
-                catch { }
+                    catch { }
 
-                driver.SwitchTo().DefaultContent();
-
-                try
-                {
-                    IList<IWebElement> divs = driver.FindElements(By.TagName("div"));
-                    Console.WriteLine(divs.Count);
-                    foreach (IWebElement div in divs)
+                    try
                     {
-                        if(div.Text == "You have reached the limit for the day, please check back in 24 hrs.")
+                        driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#displayWrap iframe")));
+                    }
+                    catch { }
+                    /*
+                    try
+                    {
+                        if (driver.FindElement(By.ClassName("reward_text")).Displayed)
+                        {
+                        */
+
+                    try
+                    {
+                        if (driver.FindElement(By.Id("ty_header")).Text.Contains("Points"))
+                        {
+                            closeWindows(driver, titles);
+                            Console.WriteLine("I'm Here!!");
+                            driver.SwitchTo().ParentFrame();
+                            Console.WriteLine("Attempting Refresh");
+                            driver.Navigate().GoToUrl("http://www.prizerebel.com/ripply.php");
+                            Helpers.wait(1000);
+                            driver.Navigate().GoToUrl("http://www.prizerebel.com/dailypoints.php");
+                            driver.Navigate().Refresh();
+                            Console.WriteLine("Refresh Complete");
+                        }
+                    }
+                    catch { }
+
+                    try
+                    {
+                        driver.SwitchTo().Frame(driver.FindElement(By.Id("vgPlayer")));
+                    }
+                    catch { }
+
+                    switchFrameByNumber(driver, 0);
+
+                    try
+                    {
+                        driver.SwitchTo().Frame(driver.FindElement(By.Id("player")));
+                        driver.SwitchTo().Frame(driver.FindElement(By.Id("player")));
+                    }
+                    catch { }
+                    //*/
+
+                    try
+                    {
+                        driver.FindElement(By.ClassName("ytp-large-play-button")).Click();
+                    }
+                    catch { }
+
+                    try
+                    {
+                        if (driver.FindElement(By.Id("ty_header")).Text.Contains("Points"))
+                        {
+                            closeWindows(driver, titles);
+                            Console.WriteLine("I'm Here!!");
+                            driver.SwitchTo().ParentFrame();
+                            Console.WriteLine("Attempting Refresh");
+                            driver.Navigate().GoToUrl("http://www.prizerebel.com/ripply.php");
+                            Helpers.wait(1000);
+                            driver.Navigate().GoToUrl("http://www.prizerebel.com/dailypoints.php");
+                            driver.Navigate().Refresh();
+                            Console.WriteLine("Refresh Complete");
+                        }
+                    }
+                    catch { }
+
+                    try
+                    {
+                        if (driver.FindElement(By.Id("ty_body_text")).Displayed)
+                        {
+                            closeWindows(driver, titles);
+                            Console.WriteLine("I'm Here!!");
+                            driver.SwitchTo().ParentFrame();
+                            Console.WriteLine("Attempting Refresh");
+                            driver.Navigate().GoToUrl("http://www.prizerebel.com/ripply.php");
+                            Helpers.wait(1000);
+                            driver.Navigate().GoToUrl("http://www.prizerebel.com/dailypoints.php");
+                            driver.Navigate().Refresh();
+                            Console.WriteLine("Refresh Complete");
+                        }
+                    }
+                    catch { }
+
+                    try
+                    {
+                        driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#displayWrap iframe")));
+                    }
+                    catch { }
+                    Helpers.wait(5000);
+
+                    try
+                    {
+                        driver.SwitchTo().DefaultContent();
+                    }
+                    catch { }
+
+                    try
+                    {
+                        IList<IWebElement> divs = driver.FindElements(By.TagName("div"));
+                        Console.WriteLine(divs.Count);
+                        foreach (IWebElement div in divs)
+                        {
+                            if (div.Text == "You have reached the limit for the day, please check back in 24 hrs.")
+                            {
+                                loop = false;
+                            }
+                        }
+                    }
+                    catch { }
+
+
+                    switchFrameByNumber(driver, 0);
+                    try
+                    {
+                        if (driver.FindElement(By.ClassName("jw-icon")).Displayed)
                         {
                             loop = false;
                         }
                     }
-                }
-                catch { }
-
-                /*
-                try
-                {
-                    if (driver.FindElement(By.ClassName("inner-wrap")).Text == "You have reached the limit for the day, please check back in 24 hrs.")
-                    //if (driver.FindElement(By.TagName("body")).Text == "You have reached the limit for the day, please check back in 24 hrs.")
-                    //if (driver.FindElement(By.CssSelector("div:contains('You have reached the limit for the day, please check back in 24 hrs.')")).Displayed)
+                    catch { }
+                    switchFrameByNumber(driver, 0);
+                    switchFrameByNumber(driver, 0);
+                    switchFrameByNumber(driver, 0);
+                    switchToBrowserFrameByString(driver, "player");
+                    switchToBrowserFrameByString(driver, "player");
+                    try
                     {
-                        loop = false;
+                        driver.FindElement(By.ClassName("ytp-large-play-button")).Click();
                     }
+                    catch { }
+
+                    try
+                    {
+                        driver.SwitchTo().DefaultContent();
+                    }
+                    catch { }
+
+                    switchFrameByNumber(driver, 0);
+                    switchFrameByNumber(driver, 0);
+
+                    try
+                    {
+                        if (driver.FindElement(By.ClassName("splash-divider")).Displayed)
+                        {
+                            driver.Navigate().Refresh();
+                        }
+                    }
+                    catch { }
+
+                    try
+                    {
+                        driver.SwitchTo().DefaultContent();
+                    }
+                    catch { }
+
+                    switchFrameByNumber(driver, 0);
+                    IList<IWebElement> bolds = driver.FindElements(By.TagName("b"));
+                    foreach (IWebElement bold in bolds)
+                    {
+                        if (bold.Text.Contains("No videos"))
+                        {
+                            loop = false;
+                        }
+                    }
+
+                    try
+                    {
+                        driver.SwitchTo().DefaultContent();
+                    }
+                    catch { }
+
+                    /*
+                    try
+                    {
+                        if (driver.FindElement(By.ClassName("inner-wrap")).Text == "You have reached the limit for the day, please check back in 24 hrs.")
+                        //if (driver.FindElement(By.TagName("body")).Text == "You have reached the limit for the day, please check back in 24 hrs.")
+                        //if (driver.FindElement(By.CssSelector("div:contains('You have reached the limit for the day, please check back in 24 hrs.')")).Displayed)
+                        {
+                            loop = false;
+                        }
+                    }
+                    catch { }
+                    */
                 }
-                catch { }
-                */
             }
         }
 

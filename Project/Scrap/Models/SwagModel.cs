@@ -1,10 +1,12 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using Scrap.Classes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 
 namespace Scrap.Models
 {
@@ -19,7 +21,6 @@ namespace Scrap.Models
             ChromeOptions options = new ChromeOptions();
             options.AddArgument("start-maximized");
             options.AddArgument("user-data-dir=" + App.Folder + "profileSB");
-
 
             IWebDriver driver = new ChromeDriver(service, options);
 
@@ -67,7 +68,8 @@ namespace Scrap.Models
             Helpers.wait(500);
             while (!bw.CancellationPending && vids)
             {
-                Videos(driver, bw);
+                //Videos(driver, bw);
+                video(driver);
             }
             Console.WriteLine("past the vids");
 
@@ -714,8 +716,106 @@ namespace Scrap.Models
 
         void video(IWebDriver driver)
         {
+            bool setComplete = false;
+            int linkArray = 0, videoGroupWatched = 0, vidCount = 0, currentVideo = 0, totalVid = 0;
+            string[] linkText = { "Editor's Pick", "Careers", "Comedy", "Entertainment", "Fashion", "Fitness", "Food", "Health", "Hobbies", "Home & Garden", "Music", "News & Politics", "Parenting", "Pets & Animals", "Shopping", "Sports", "Technology", "Travel", "Wedding" };
+            string[] holdMe = new string[100];
+
+            driver.FindElement(By.LinkText("Watch")).Click();
+            Helpers.wait(1000);
+            while (!setComplete)
+            {
+                driver.FindElement(By.LinkText(linkText[linkArray])).Click();
+                Actions builder = new Actions(driver);
+                Helpers.wait(1000);
+                IList<IWebElement> videoLinks = driver.FindElements(By.ClassName("watchCard"));
+                Helpers.wait(1000);
+                foreach (IWebElement vidLink in videoLinks)
+                {
+                    try
+                    {
+                        builder.MoveToElement(vidLink).Build().Perform();
+                        vidCount++;
+                        Helpers.wait(1000);
+                        builder.MoveToElement(driver.FindElement(By.LinkText("nCrave"))).Build().Perform();
+                        Helpers.wait(1000);
+                    }
+                    catch { }
+                    finally { }
+                }
+                Helpers.wait(5000);
+                Console.WriteLine(vidCount);
+                Console.WriteLine(currentVideo);
+                Console.WriteLine(videoGroupWatched);
+                while (videoGroupWatched <= vidCount)
+                {
+                    try
+                    {
+                        Console.WriteLine("Video Group Watched: " + videoGroupWatched);
+                        IList<IWebElement> vidLinks = driver.FindElements(By.ClassName("watchCard"));
+                        Helpers.wait(1000);
+                        foreach (IWebElement vidLink in vidLinks)
+                        {
+                            Console.WriteLine("Searching Group of Videos: " + currentVideo);
+                            if (vidCount - videoGroupWatched - 1 == currentVideo)
+                            {
+                                try
+                                {
+                                    builder = new Actions(driver);
+                                    builder.MoveToElement(vidLink).Click().Build().Perform();
+                                    Helpers.wait(1000);
+                                    driver.FindElement(By.ClassName("iconWatch")).Click();
+                                    Helpers.wait(1000);
+                                }
+                                catch { }
+                                finally { }
+                                int watchingVideos = 0;
+                                int videosEarn = 0;
+                                int.TryParse(Regex.Match(driver.FindElement(By.Id("watchVideosEarn")).Text, @"\d+").Value, out videosEarn);
+                                Console.WriteLine("watchingVideos " + watchingVideos);
+                                Console.WriteLine("videosEarn" + videosEarn);
+                                Console.WriteLine("watchingVideos " + watchingVideos);
+                                Console.WriteLine("videosEarn" + videosEarn);
+                                IList<IWebElement> oLinks = driver.FindElements(By.ClassName("sbPlaylistVideoNumber"));
+                                foreach (IWebElement oLink in oLinks)
+                                {
+                                    try
+                                    {
+                                        Helpers.wait(2000);
+                                        Random rnd = new Random();
+                                        oLink.Click();
+                                        Console.WriteLine("Link Clicked");
+                                        watchingVideos++;
+                                        Helpers.wait(1000 * rnd.Next(40, 60));
+                                    }
+                                    catch { }
+                                    finally { }
+                                }
+                                Helpers.wait(1000);
+                                driver.FindElement(By.LinkText(linkText[linkArray])).Click();
+                            }
+                            Helpers.wait(1000);
+                            currentVideo++;
+                        }
+                        Helpers.wait(1000);
+                        currentVideo = 0;
+                        videoGroupWatched++;
+                    }
+                    catch { }
+                    finally { }
+                }
+                currentVideo = 0;
+                linkArray += 1;
+                totalVid++;
+                if (linkArray == 19)
+                    setComplete = true;
+            }
+            /*
             string[] links = { "Editor's Pick", "Careers", "Comedy", "Entertainment", "Fashion", "Fitness", "Food", "Health", "Hobbies", "Home & Garden", "Music", "News & Politics", "Parenting", "Personal Finance", "Pets & Animals", "Shopping", "Sports", "Technology", "Travel", "Wedding" };
             int videoCount = 0;
+            int newVidCount, oldVidCount;
+            int cat = 0;
+            int aNumber = 0;
             Helpers.wait(1000);
 
             IWebElement findWatch = driver.FindElement(By.LinkText("Watch"));
@@ -728,10 +828,63 @@ namespace Scrap.Models
                 Console.WriteLine("Could not find Watch");
             }
 
+            Helpers.wait(2000);
+
             while (true)
             {
+                bool watching = true;
 
+                try
+                {
+                    driver.FindElement(By.LinkText(links[cat])).Click();
+                }
+                catch { }
+
+                Helpers.wait(2000);
+
+                try
+                {
+                    IList<IWebElement> watchCards = driver.FindElements(By.ClassName("sbTryListItemHeader"));
+                    foreach (IWebElement watchCard in watchCards)
+                    {
+                        if (watchCards.Count == watchCards.Count - videoCount)
+                        {
+                            watchCard.Click();
+                            break;
+                        }
+                    }
+                }
+                catch { }
+
+                Helpers.wait(2000);
+
+                int.TryParse(Regex.Match(driver.FindElement(By.Id("watchVideosEarn")).Text, @"\d+").Value, out videoCount);
+                oldVidCount = videoCount;
+                newVidCount = videoCount;
+
+                while (watching)
+                {
+                    try
+                    {
+                        IList<IWebElement> playLists = driver.FindElements(By.ClassName("sbWatchCardPanel"));
+                        foreach (IWebElement playList in playLists)
+                        {
+                            int.TryParse(Regex.Match(playList.Text, @"\d+").Value, out aNumber);
+
+                            if (oldVidCount != newVidCount)
+                                {
+                                int.TryParse(Regex.Match(driver.FindElement(By.Id("watchVideosEarn")).Text, @"\d+").Value, out newVidCount);
+                                playList.Click();
+                            }
+                        }
+                        watching = false;
+                    }
+                    catch { }
+                }
+                videoCount++;
+                //cat++;
             }
+            */
         }
 
         void Videos(IWebDriver driver, BackgroundWorker bw)
