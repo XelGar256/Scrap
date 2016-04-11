@@ -79,6 +79,7 @@ namespace Scrap.Models
                 //swago(driver, bw);
                 discoveryBreak(driver, bw);
                 nGage(driver, bw);
+                bestOf(driver, bw);
                 switchToBrowserByString(driver, "Home | Swagbucks");
                 try
                 {
@@ -620,6 +621,123 @@ namespace Scrap.Models
                             Console.WriteLine("No nGageCard found");
                         }
                     }
+                }
+            }
+            Helpers.wait(5000);
+            Helpers.switchToBrowserByString(driver, "nGage");
+            try
+            {
+                while (nGageCards)
+                {
+                    switchToBrowserByString(driver, "nGage");
+                    try
+                    {
+                        IWebElement startEarningBtn = driver.FindElement(By.XPath("//*[@class=\"success\"][@id=\"startEarning\"]"));
+                        startEarningBtn.Click();
+                        Console.WriteLine("startEarningBtn found,Helpers.wait 5 seconds");
+                        Helpers.wait(2000);
+                    }
+                    catch
+                    {
+                        Console.WriteLine("stuff");
+                        Helpers.wait(2000);
+                    }
+
+                    try
+                    {
+                        IWebElement discoverMoreBtn = driver.FindElement(By.XPath("//*[@class=\"success\"][@id=\"discoverMore\"]"));
+                        discoverMoreBtn.Click();
+                        closeWindows(driver, titles);
+                        Helpers.wait(2000);
+                    }
+                    catch
+                    {
+
+                    }
+
+
+                    try
+                    {
+                        System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
+
+                        foreach (String window in windowHandles)
+                        {
+                            IWebDriver popup = driver.SwitchTo().Window(window);
+                            try
+                            {
+                                int rndClick = random.Next(2);
+
+                                driver.FindElements(By.XPath("//div[@id='nextPage']/a"))[rndClick].Click();
+                                break;
+                            }
+                            catch { }
+
+                            try
+                            {
+                                driver.FindElement(By.Id("discoverMore")).Click();
+                                closeWindows(driver, titles);
+                                Helpers.wait(2000);
+                                break;
+                            }
+                            catch { }
+                        }
+                    }
+                    catch { }
+
+                    switchToBrowserByString(driver, "nGage");
+
+                    try
+                    {
+                        System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
+
+                        foreach (String window in windowHandles)
+                        {
+                            IWebDriver popup = driver.SwitchTo().Window(window);
+                            try
+                            {
+                                if (popup.Title.Contains("Not Available"))
+                                {
+                                    driver.SwitchTo().Window(window);
+                                    driver.Close();
+                                    break;
+                                }
+                            }
+                            catch { }
+                            finally { }
+                        }
+                    }
+                    catch { }
+                    finally { }
+
+                    switchToBrowserByString(driver, "nGage");
+                }
+            }
+            catch { }
+        }
+
+        void bestOf(IWebDriver driver, BackgroundWorker bw)
+        {
+            Random random = new Random();
+            bool nGageCards = false;
+
+            try
+            {
+                IWebElement nGageCard = driver.FindElement(By.Id("cardContentImg-14-5"));
+                nGageCard.Click();
+                Console.WriteLine("NGAGE!!!!");
+                nGageCards = true;
+            }
+            catch
+            {
+                try
+                {
+                    IWebElement nGageCard = driver.FindElement(By.Id("sbHomeCard62658-563"));
+                    nGageCard.Click();
+                    nGageCards = true;
+                }
+                catch
+                {
+                            Console.WriteLine("No nGageCard found");
                 }
             }
             Helpers.wait(5000);

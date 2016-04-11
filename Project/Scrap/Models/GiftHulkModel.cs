@@ -5,7 +5,6 @@ using Scrap.Classes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows;
 
 namespace Scrap.Models
 {
@@ -104,8 +103,6 @@ namespace Scrap.Models
                                 else
                                     int.TryParse(count.Text, out uses);
                             }
-
-                            OpenSqlConnection(code, amount, uses);
                         }
                     }
                     catch { }
@@ -113,8 +110,6 @@ namespace Scrap.Models
 
                 ByClass(driver, "logo");
             }
-
-            OpenSqlConnection("test", 2, 2);
 
             //
             bool videoWatching = false;
@@ -804,51 +799,6 @@ namespace Scrap.Models
                 catch { }
             }
             driver.Quit();
-        }
-
-        void OpenSqlConnection(string code, int amount, int uses)
-        {
-            MySql.Data.MySqlClient.MySqlConnection conn;
-            string connectionString = GetConnectionString();
-
-            try
-            {
-                conn = new MySql.Data.MySqlClient.MySqlConnection();
-                conn.ConnectionString = connectionString;
-                conn.Open();
-            }
-            catch (MySql.Data.MySqlClient.MySqlException ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-            /*
-            using (SqlConnection connection = new SqlConnection())
-            {
-                connection.ConnectionString = connectionString;
-
-                SqlCommand cmd = new SqlCommand("INSERT INTO codes (code, amount, uses) VALUES (@code, @amount, @uses)");
-                cmd.CommandType = CommandType.Text;
-                cmd.Connection = connection;
-                cmd.Parameters.AddWithValue("@code", code);
-                cmd.Parameters.AddWithValue("@amount", amount);
-                cmd.Parameters.AddWithValue("@uses", uses);
-
-                try
-                {
-                    connection.Open();
-
-                    cmd.ExecuteNonQuery();
-
-                    Console.WriteLine("State: {0}", connectionString);
-                    Console.WriteLine("ConnectionString: {0}", connection.ConnectionString);
-                }
-                catch
-                {
-
-                }
-            }
-            */
         }
 
         static private string GetConnectionString()

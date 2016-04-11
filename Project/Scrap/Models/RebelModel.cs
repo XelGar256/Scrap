@@ -101,7 +101,7 @@ namespace Scrap.Models
 
         void encrave(IWebDriver driver)
         {
-            while(true)
+            while (true)
             {
 
             }
