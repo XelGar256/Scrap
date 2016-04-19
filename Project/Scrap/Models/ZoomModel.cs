@@ -179,6 +179,16 @@ namespace Scrap.Models
 
                         try
                         {
+                            if (driver.FindElement(By.Id("compositor_placed_innerclip_youtube")).Displayed)
+                            {
+                                driver.Navigate().Refresh();
+                                closeWindows(driver, titles);
+                            }
+                        }
+                        catch { }
+
+                        try
+                        {
                             IWebElement rewardText = driver.FindElement(By.Id("ty_header"));
                             if (rewardText.Text == "You earned 2 ZBs!")
                             {
@@ -240,6 +250,16 @@ namespace Scrap.Models
                     catch { }
 
                     switchFrameByNumber(driver, 0);
+
+                    try
+                    {
+                        if (driver.FindElement(By.Id("compositor_placed_innerclip_youtube")).Displayed)
+                        {
+                            driver.Navigate().Refresh();
+                            closeWindows(driver, titles);
+                        }
+                    }
+                    catch { }
 
                     IList<IWebElement> testIframes = driver.FindElements(By.TagName("iframe"));
                     Console.WriteLine("How many iFrames are avaible = " + testIframes.Count);
@@ -338,6 +358,24 @@ namespace Scrap.Models
                         }
                     }
 
+                    catch { }
+
+                    switchToBrowserByString(driver, "Offer Walls");
+                    try
+                    {
+                        driver.SwitchTo().DefaultContent();
+                        switchFrameByNumber(driver, 0);
+                    }
+                    catch { }
+
+                    try
+                    {
+                        if (driver.FindElement(By.Id("offers_exhausted_message")).Displayed)
+                        {
+                            driver.Close();
+                            Helpers.wait(5000);
+                        }
+                    }
                     catch { }
 
 
@@ -574,7 +612,7 @@ namespace Scrap.Models
                         {
                             if (driver.FindElement(By.Id("offers_exhausted_message")).Displayed)
                             {
-                                driver.Navigate().Refresh();
+                                driver.Close();
                                 Helpers.wait(5000);
                             }
                         }

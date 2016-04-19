@@ -379,7 +379,6 @@ namespace Scrap.Models
                     }
                     catch { }
 
-
                     try
                     {
                         if (driver.FindElement(By.ClassName("reward_text")).Displayed)
@@ -471,7 +470,9 @@ namespace Scrap.Models
                 //catch { }
             }
 
-            while (true) /// New Stuff
+            bool someLoop = true;
+
+            while (someLoop) /// New Stuff
             {
 
                 switchToBrowserByString(driver, "nothing is");
@@ -702,22 +703,18 @@ namespace Scrap.Models
 
                     try
                     {
-                        driver.FindElement(By.ClassName("ytp-large-play-button")).Click();
+                        driver.SwitchTo().DefaultContent();
+                        switchToBrowserFrameByString(driver, "stick-video-popup-video");
+                        switchToBrowserFrameByString(driver, "vgPlayer");
+                        switchFrameByNumber(driver, 0);
+                        switchToBrowserFrameByString(driver, "player");
+                        switchToBrowserFrameByString(driver, "player");
                     }
                     catch { }
 
-                    //switchToBrowserByString(driver, "Now Exploring great content!");
-
-
                     try
                     {
-                        if (driver.FindElement(By.ClassName("reward_text")).Displayed)
-                        {
-                            Console.WriteLine("Rewarded");
-                            switchToBrowserByString(driver, "nothing is");
-                            driver.Navigate().GoToUrl("http://www.gifthulk.com/");
-                            closeWindows(driver, titles);
-                        }
+                        driver.FindElement(By.ClassName("ytp-large-play-button")).Click();
                     }
                     catch { }
 
@@ -737,6 +734,30 @@ namespace Scrap.Models
                     try
                     {
                         driver.SwitchTo().Frame(driver.FindElement(By.Id("stick-video-popup-video")));
+                    }
+                    catch { }
+
+                    try
+                    {
+                        driver.SwitchTo().DefaultContent();
+                        switchToBrowserFrameByString(driver, "stick-video-popup-video");
+                    }
+                    catch { }
+
+                    try
+                    {
+                        if (driver.FindElement(By.Id("offers_exhausted_message")).Displayed)
+                        {
+                            driver.Navigate().GoToUrl("http://www.gifthulk.com/");
+                            Helpers.wait(5000);
+                            videoWatching = false;
+                            someLoop = false;
+                        }
+
+                        if (driver.FindElement(By.Id("offers_exhausted_messsage")).Displayed)
+                        {
+                            someLoop = false;
+                        }
                     }
                     catch { }
 
