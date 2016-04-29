@@ -366,10 +366,31 @@ namespace Scrap.Models
                         Helpers.wait(500);
                     }
                     finally { }
+
                     try
                     {
 
                         if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
+                        {
+                            Console.WriteLine("This is a test to find earned2Swag.Text");
+                            Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                            /*
+                            using (var destination = File.AppendText("pointsLog.txt"))
+                            {
+                                destination.WriteLine(Regex.Match(earn2, @"\d+").Value);
+                            }
+                            */
+                            IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
+                            viewMoreContent.Click();
+                            Helpers.closeWindows(driver, titles);
+                        }
+                    }
+                    catch { }
+
+                    try
+                    {
+
+                        if (driver.FindElement(By.Id("ty_headline")).Displayed)
                         {
                             Console.WriteLine("This is a test to find earned2Swag.Text");
                             Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");

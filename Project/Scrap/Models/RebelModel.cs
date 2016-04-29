@@ -12,175 +12,180 @@ namespace Scrap.Models
     {
         public RebelModel(string username, string password, BackgroundWorker bw)
         {
-            int currentHour = DateTime.Now.Hour;
-
-
-            ChromeDriverService service = ChromeDriverService.CreateDefaultService(App.Folder);
-            service.HideCommandPromptWindow = true;
-
-            ChromeOptions options = new ChromeOptions();
-            options.AddArgument("start-maximized");
-            options.AddArgument("user-data-dir=" + App.Folder + "profilePR");
-
-
-            IWebDriver driver = new ChromeDriver(service, options);
-
-            driver.Navigate().GoToUrl("http://www.prizerebel.com");
-
-            ByClass(driver, "ss-icon");
-
-            try
-            {
-                driver.FindElement(By.Id("loginFormEmail")).SendKeys(username);
-                driver.FindElement(By.ClassName("hero-form-first-password")).SendKeys(password);
-            }
-            catch { }
-
-            ById(driver, "loginSubmit");
-
-            Helpers.wait(1000);
-
-            while (!bw.CancellationPending)
-            {
-                //Helpers.ByClass(driver, "earn-tour-step-2");
-                driver.Navigate().GoToUrl("http://www.prizerebel.com/dailypoints.php");
-                dailyPoints(driver);
-                driver.Navigate().GoToUrl("http://www.prizerebel.com/offerwalls.php");
-                Helpers.wait(5000);
-
-                try
-                {
-                    IList<IWebElement> virools = driver.FindElements(By.ClassName("filter-tab-btn"));
-                    foreach (IWebElement virool in virools)
-                    {
-                        if (virool.Text == "Virool")
-                        {
-                            virool.Click();
-                            break;
-                        }
-                    }
-                    virool(driver);
-                    videos(driver);
-                }
-                catch { }
-
-                driver.Navigate().GoToUrl("http://www.prizerebel.com/offerwalls.php");
-                Helpers.wait(5000);
-
-                /*
-                try
-                {
-                    IList<IWebElement> virools = driver.FindElements(By.ClassName("filter-tab-btn"));
-                    foreach (IWebElement virool in virools)
-                    {
-                        if (virool.Text == "Encrave")
-                        {
-                            virool.Click();
-                            break;
-                        }
-                    }
-                    encrave(driver);
-                }
-                catch { }
-                */
-
-                /*
-                try
-                {
-                    while (currentHour != DateTime.Now.Hour)
-                    {
-                    }
-                }
-                catch { }
-                */
-
-                currentHour = DateTime.Now.Hour;
-            }
-            driver.Quit();
-        }
-
-        void encrave(IWebDriver driver)
-        {
             while (true)
             {
+                bool letsEnd = true;
+                int currentHour = DateTime.Now.Hour;
 
-            }
-        }
 
-        void trialPay(IWebDriver driver)
-        {
-            string[] titles = { "PrizeRebel.com | Earn" };
-            int currentHour = DateTime.Now.Hour;
-            bool loop = true;
+                ChromeDriverService service = ChromeDriverService.CreateDefaultService(App.Folder);
+                service.HideCommandPromptWindow = true;
 
-            while (loop)
-            {
+                ChromeOptions options = new ChromeOptions();
+                options.AddArgument("start-maximized");
+                options.AddArgument("user-data-dir=" + App.Folder + "profilePR");
 
-                Helpers.wait(2000);
-                switchFrameByNumber(driver, 0);
+
+                IWebDriver driver = new ChromeDriver(service, options);
+
+                driver.Navigate().GoToUrl("http://www.prizerebel.com");
+
+                ByClass(driver, "ss-icon");
+
                 try
                 {
-                    driver.FindElement(By.LinkText("Videos")).Click();
+                    driver.FindElement(By.Id("loginFormEmail")).SendKeys(username);
+                    driver.FindElement(By.ClassName("hero-form-first-password")).SendKeys(password);
                 }
                 catch { }
 
-                try
-                {
-                    if (currentHour != DateTime.Now.Hour)
-                    {
-                        driver.Navigate().GoToUrl("http://www.prizerebel.com/offerwalls.php");
-                        closeWindows(driver, titles);
-                        loop = false;
-                    }
-                }
-                catch { }
+                ById(driver, "loginSubmit");
 
-                //ByClass(driver, "offer_row");
-                try
-                {
-                    IList<IWebElement> offerRows = driver.FindElements(By.ClassName("largeOffer"));
-                    foreach (IWebElement offerRow in offerRows)
-                    {
-                        Helpers.wait(1000);
+                Helpers.wait(1000);
 
-                        if (offerRow.FindElement(By.ClassName("summary")).FindElement(By.ClassName("information")).FindElement(By.ClassName("requirements")).Text.Contains("video"))
+//                while (letsEnd)
+//                {
+                    //Helpers.ByClass(driver, "earn-tour-step-2");
+                    driver.Navigate().GoToUrl("http://www.prizerebel.com/dailypoints.php");
+                    dailyPoints(driver);
+                    driver.Navigate().GoToUrl("http://www.prizerebel.com/offerwalls.php");
+                    Helpers.wait(5000);
+
+                    try
+                    {
+                        IList<IWebElement> virools = driver.FindElements(By.ClassName("filter-tab-btn"));
+                        foreach (IWebElement virool in virools)
                         {
-                            offerRow.Click();
-                            break;
+                            if (virool.Text == "Virool")
+                            {
+                                virool.Click();
+                                break;
+                            }
+                        }
+                        virool(driver);
+                        videos(driver);
+                    }
+                    catch { }
+
+                    driver.Navigate().GoToUrl("http://www.prizerebel.com/offerwalls.php");
+                    Helpers.wait(5000);
+
+                    /*
+                    try
+                    {
+                        IList<IWebElement> virools = driver.FindElements(By.ClassName("filter-tab-btn"));
+                        foreach (IWebElement virool in virools)
+                        {
+                            if (virool.Text == "Encrave")
+                            {
+                                virool.Click();
+                                break;
+                            }
+                        }
+                        encrave(driver);
+                    }
+                    catch { }
+                    */
+
+                    /*
+                    try
+                    {
+                        while (currentHour != DateTime.Now.Hour)
+                        {
                         }
                     }
-                }
-                catch { }
+                    catch { }
+                    */
 
-                switchToBrowserByString(driver, "TrialPay");
-                Helpers.wait(1000);
-                switchToBrowserFrameByString(driver, "tp-video-player");
-                ByClass(driver, "btn-text");
-
-                Helpers.wait(5000);
-
-                switchToBrowserByString(driver, "Social Ingot");
-
-                try
-                {
-                    driver.FindElement(By.TagName("img")).Click();
-                }
-                catch { }
-
-                Helpers.wait(90000);
-
-                closeWindows(driver, titles);
-
-                driver.Close();
-                switchToBrowserByString(driver, "Social Ingot");
-                driver.Close();
-                switchToBrowserByString(driver, "TrialPay");
-                driver.Close();
-                switchToBrowserByString(driver, "PrizeRebel.com");
-
-                closeWindows(driver, titles);
+                    currentHour = DateTime.Now.Hour;
+//                    letsEnd = true;
+//                }
+                driver.Quit();
             }
         }
+
+            void encrave(IWebDriver driver)
+        {
+                while (true)
+                {
+
+                }
+            }
+
+            void trialPay(IWebDriver driver)
+        {
+                string[] titles = { "PrizeRebel.com | Earn" };
+                int currentHour = DateTime.Now.Hour;
+                bool loop = true;
+
+                while (loop)
+                {
+
+                    Helpers.wait(2000);
+                    switchFrameByNumber(driver, 0);
+                    try
+                    {
+                        driver.FindElement(By.LinkText("Videos")).Click();
+                    }
+                    catch { }
+
+                    try
+                    {
+                        if (currentHour != DateTime.Now.Hour)
+                        {
+                            driver.Navigate().GoToUrl("http://www.prizerebel.com/offerwalls.php");
+                            closeWindows(driver, titles);
+                            loop = false;
+                        }
+                    }
+                    catch { }
+
+                    //ByClass(driver, "offer_row");
+                    try
+                    {
+                        IList<IWebElement> offerRows = driver.FindElements(By.ClassName("largeOffer"));
+                        foreach (IWebElement offerRow in offerRows)
+                        {
+                            Helpers.wait(1000);
+
+                            if (offerRow.FindElement(By.ClassName("summary")).FindElement(By.ClassName("information")).FindElement(By.ClassName("requirements")).Text.Contains("video"))
+                            {
+                                offerRow.Click();
+                                break;
+                            }
+                        }
+                    }
+                    catch { }
+
+                    switchToBrowserByString(driver, "TrialPay");
+                    Helpers.wait(1000);
+                    switchToBrowserFrameByString(driver, "tp-video-player");
+                    ByClass(driver, "btn-text");
+
+                    Helpers.wait(5000);
+
+                    switchToBrowserByString(driver, "Social Ingot");
+
+                    try
+                    {
+                        driver.FindElement(By.TagName("img")).Click();
+                    }
+                    catch { }
+
+                    Helpers.wait(90000);
+
+                    closeWindows(driver, titles);
+
+                    driver.Close();
+                    switchToBrowserByString(driver, "Social Ingot");
+                    driver.Close();
+                    switchToBrowserByString(driver, "TrialPay");
+                    driver.Close();
+                    switchToBrowserByString(driver, "PrizeRebel.com");
+
+                    closeWindows(driver, titles);
+                }
+            }
 
         public static void videos(IWebDriver driver)
         {
@@ -219,6 +224,11 @@ namespace Scrap.Models
                     }
 
                     Helpers.wait(5000);
+
+                    if (driver.FindElement(By.ClassName("small-9")).Text.Contains("Please try back later."))
+                    {
+                        looping = false;
+                    }
 
                 }
 
@@ -267,13 +277,16 @@ namespace Scrap.Models
 
                     switchFrameByNumber(driver, 0);
                     counter = 0;
+
+                    Helpers.wait(5000);
+
                     //ByClass(driver, "thumbnail");
                     IList<IWebElement> thumbnails = driver.FindElements(By.ClassName("thumbnail"));
                     Console.WriteLine("Thumbnails Count: " + thumbnails.Count);
-                    /*                    if (thumbnails.Count == 0)
+                                        if (thumbnails.Count == 0)
                                         {
                                             looping = false;
-                                        }*/
+                                        }
                     foreach (IWebElement thumbnail in thumbnails)
                     {
                         if (counter > thumbnails.Count - 2)
@@ -344,6 +357,15 @@ namespace Scrap.Models
                                 //driver.FindElement(By.Id("share-overlay-facebook")).SendKeys(Keys.PageUp);
                                 driver.SwitchTo().DefaultContent();
                                 switchFrameByNumber(driver, 0);
+                                IWebElement closing = driver.FindElement(By.ClassName("close"));
+                                closing.SendKeys(Keys.PageUp);
+                                Helpers.wait(5000);
+                                closing.SendKeys(Keys.PageUp);
+                                Helpers.wait(5000);
+                                closing.SendKeys(Keys.PageUp);
+                                Helpers.wait(5000);
+                                closing.SendKeys(Keys.PageUp);
+                                Helpers.wait(5000);
                                 ByClass(driver, "close");
                                 looped = false;
                             }

@@ -70,10 +70,10 @@ namespace Scrap
             string username = txtUsernameZoom.Text, password = txtPasswordZoom.Password;
             bool vids = true;
 
-            zoomBw = new BackgroundWorker();
-            zoomBw.WorkerSupportsCancellation = true;
-            zoomBw.DoWork += delegate (object o, DoWorkEventArgs args) { new SwagModel(username, password, zoomBw, vids); };
-            zoomBw.RunWorkerAsync();
+            swagBw = new BackgroundWorker();
+            swagBw.WorkerSupportsCancellation = true;
+            swagBw.DoWork += delegate (object o, DoWorkEventArgs args) { new SwagModel(username, password, swagBw, vids); };
+            swagBw.RunWorkerAsync();
         }
 
         private void btnLoginGiftHulk_Click(object sender, RoutedEventArgs e)

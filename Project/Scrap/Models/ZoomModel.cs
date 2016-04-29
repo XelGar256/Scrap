@@ -795,16 +795,20 @@ namespace Scrap.Models
                 }
                 catch { }
 
-                IList<IWebElement> testIframes = driver.FindElements(By.TagName("iframe"));
-                Console.WriteLine("How many iFrames are avaible = " + testIframes.Count);
-                Console.WriteLine("*********************************************");
-                foreach (IWebElement testIframe in testIframes)
+                try
                 {
-                    Console.WriteLine(testIframe.Displayed);
-                    Console.WriteLine(testIframe.Text);
-                    Console.WriteLine(testIframe.GetAttribute("id"));
+                    IList<IWebElement> testIframes = driver.FindElements(By.TagName("iframe"));
+                    Console.WriteLine("How many iFrames are avaible = " + testIframes.Count);
+                    Console.WriteLine("*********************************************");
+                    foreach (IWebElement testIframe in testIframes)
+                    {
+                        Console.WriteLine(testIframe.Displayed);
+                        Console.WriteLine(testIframe.Text);
+                        Console.WriteLine(testIframe.GetAttribute("id"));
+                    }
+                    Console.WriteLine("*********************************************");
                 }
-                Console.WriteLine("*********************************************");
+                catch { }
                 /* *************** Remove Me ***************************
                 try
                 {
