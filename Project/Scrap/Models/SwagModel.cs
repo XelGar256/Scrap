@@ -75,11 +75,11 @@ namespace Scrap.Models
 
             while (true)
             {
-                //nCrave(driver, bw);
-                //swago(driver, bw);
                 discoveryBreak(driver, bw);
                 nGage(driver, bw);
                 bestOf(driver, bw);
+                video(driver);
+
                 switchToBrowserByString(driver, "Home | Swagbucks");
                 try
                 {
@@ -758,7 +758,16 @@ namespace Scrap.Models
                 }
                 catch
                 {
-                            Console.WriteLine("No nGageCard found");
+                    try
+                    {
+                        IWebElement nGageCard = driver.FindElement(By.Id("sbHomeCard54562-563"));
+                        nGageCard.Click();
+                        nGageCards = true;
+                    }
+                    catch
+                    {
+                        Console.WriteLine("No nGageCard found");
+                    }
                 }
             }
             Helpers.wait(5000);
@@ -935,6 +944,12 @@ namespace Scrap.Models
                             }
                             Helpers.wait(1000);
                             currentVideo++;
+                            if (DateTime.UtcNow.Hour >= 8 && DateTime.UtcNow.Hour <= 9)
+                            {
+                                videoGroupWatched = 5000;
+                                setComplete = true;
+                                break;
+                            }
                         }
                         Helpers.wait(1000);
                         currentVideo = 0;
