@@ -320,10 +320,11 @@ namespace Scrap.Models
                             }
                         }
                         catch { }
-                        switchToBrowserFrameByString(driver, "player-container");
 
                         try
                         {
+                            driver.SwitchTo().DefaultContent();
+                            switchFrameByNumber(driver, 0);
                             IWebElement closing = driver.FindElement(By.ClassName("close"));
                             closing.SendKeys(Keys.PageUp);
                             Helpers.wait(1000);
@@ -335,6 +336,10 @@ namespace Scrap.Models
                             Helpers.wait(1000);
                         }
                         catch { }
+                        switchFrameByNumber(driver, 0);
+                        switchToBrowserFrameByString(driver, "widgetPlayer");
+
+                        switchToBrowserFrameByString(driver, "player-container");
 
 
                         ByClass(driver, "ytp-large-play-button");
