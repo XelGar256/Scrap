@@ -766,7 +766,15 @@ namespace Scrap.Models
                     catch { }
                     */
                     switchFrameByNumber(driver, 0);
-
+                    try
+                    {
+                        if (driver.FindElement(By.Id("compositor_placed_innerclip_cta")).Displayed)
+                        {
+                            driver.Navigate().Refresh();
+                            closeWindows(driver, titles);
+                        }
+                    }
+                    catch { }
                     try
                     {
                         IWebElement rewardText = driver.FindElement(By.Id("ty_header"));
