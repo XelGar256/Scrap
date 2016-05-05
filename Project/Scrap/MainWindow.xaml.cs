@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 
+
 namespace Scrap
 {
     /// <summary>
@@ -28,7 +29,7 @@ namespace Scrap
                     proc.Kill();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -38,20 +39,22 @@ namespace Scrap
         {
             string username = txtUsernameSwag.Text, password = txtPasswordSwag.Password;
             bool vids = false;
+            bool openBucks = false;
 
             swagBw = new BackgroundWorker();
             swagBw.WorkerSupportsCancellation = true;
-            swagBw.DoWork += delegate(object o, DoWorkEventArgs args) { new SwagModel(username, password, swagBw, vids); };
+            swagBw.DoWork += delegate (object o, DoWorkEventArgs args) { new SwagModel(username, password, swagBw, vids, openBucks); };
             swagBw.RunWorkerAsync();
         }
 
         private void btnLoginZoom_Click(object sender, RoutedEventArgs e)
         {
+            bool justZoom = false;
             string username = txtUsernameZoom.Text, password = txtPasswordZoom.Password;
 
             zoomBw = new BackgroundWorker();
             zoomBw.WorkerSupportsCancellation = true;
-            zoomBw.DoWork += delegate (object o, DoWorkEventArgs args) { new ZoomModel(username, password, zoomBw); };
+            zoomBw.DoWork += delegate (object o, DoWorkEventArgs args) { new ZoomModel(username, password, zoomBw, justZoom); };
             zoomBw.RunWorkerAsync();
         }
 
@@ -69,20 +72,22 @@ namespace Scrap
         {
             string username = txtUsernameZoom.Text, password = txtPasswordZoom.Password;
             bool vids = true;
+            bool openBucks = false;
 
             swagBw = new BackgroundWorker();
             swagBw.WorkerSupportsCancellation = true;
-            swagBw.DoWork += delegate (object o, DoWorkEventArgs args) { new SwagModel(username, password, swagBw, vids); };
+            swagBw.DoWork += delegate (object o, DoWorkEventArgs args) { new SwagModel(username, password, swagBw, vids, openBucks); };
             swagBw.RunWorkerAsync();
         }
 
         private void btnLoginGiftHulk_Click(object sender, RoutedEventArgs e)
         {
             string username = txtUsernameGiftHulk.Text, password = txtPasswordGiftHulk.Password;
+            bool openHulk = false;
 
             giftHulkBw = new BackgroundWorker();
             giftHulkBw.WorkerSupportsCancellation = true;
-            giftHulkBw.DoWork += delegate (object o, DoWorkEventArgs args) { new GiftHulkModel(username, password, giftHulkBw); };
+            giftHulkBw.DoWork += delegate (object o, DoWorkEventArgs args) { new GiftHulkModel(username, password, giftHulkBw, openHulk); };
             giftHulkBw.RunWorkerAsync();
         }
 
@@ -99,6 +104,51 @@ namespace Scrap
             instaGCBw.WorkerSupportsCancellation = true;
             instaGCBw.DoWork += delegate (object o, DoWorkEventArgs args) { new InstaGCModel(username, password, instaGCBw); };
             instaGCBw.RunWorkerAsync();
+        }
+
+        private void btn_openZoom_Click(object sender, RoutedEventArgs e)
+        {
+            bool justZoom = true;
+            string username = txtUsernameZoom.Text, password = txtPasswordZoom.Password;
+
+            zoomBw = new BackgroundWorker();
+            zoomBw.WorkerSupportsCancellation = true;
+            zoomBw.DoWork += delegate (object o, DoWorkEventArgs args) { new ZoomModel(username, password, zoomBw, justZoom); };
+            zoomBw.RunWorkerAsync();
+        }
+
+        private void btnOpenBucks_Click(object sender, RoutedEventArgs e)
+        {
+            string username = txtUsernameSwag.Text, password = txtPasswordSwag.Password;
+            bool vids = false;
+            bool openBucks = true;
+
+            swagBw = new BackgroundWorker();
+            swagBw.WorkerSupportsCancellation = true;
+            swagBw.DoWork += delegate (object o, DoWorkEventArgs args) { new SwagModel(username, password, swagBw, vids, openBucks); };
+            swagBw.RunWorkerAsync();
+        }
+
+        private void btnOpenRebel_Click(object sender, RoutedEventArgs e)
+        {
+            string username = txtUsernameRebel.Text, password = txtPasswordRebel.Password;
+            bool openRebel = true;
+
+            rebelBw = new BackgroundWorker();
+            rebelBw.WorkerSupportsCancellation = true;
+            rebelBw.DoWork += delegate (object o, DoWorkEventArgs args) { new RebelModel(username, password, rebelBw, openRebel); };
+            rebelBw.RunWorkerAsync();
+        }
+
+        private void btnOpenHulk_Click(object sender, RoutedEventArgs e)
+        {
+            string username = txtUsernameGiftHulk.Text, password = txtPasswordGiftHulk.Password;
+            bool openHulk = true;
+
+            giftHulkBw = new BackgroundWorker();
+            giftHulkBw.WorkerSupportsCancellation = true;
+            giftHulkBw.DoWork += delegate (object o, DoWorkEventArgs args) { new GiftHulkModel(username, password, giftHulkBw, openHulk); };
+            giftHulkBw.RunWorkerAsync();
         }
 
         private void btnStopGC_Click(object sender, RoutedEventArgs e)
@@ -124,10 +174,11 @@ namespace Scrap
         private void btnLoginRebel_Click(object sender, RoutedEventArgs e)
         {
             string username = txtUsernameRebel.Text, password = txtPasswordRebel.Password;
+            bool openRebel = false;
 
             rebelBw = new BackgroundWorker();
             rebelBw.WorkerSupportsCancellation = true;
-            rebelBw.DoWork += delegate (object o, DoWorkEventArgs args) { new RebelModel(username, password, rebelBw); };
+            rebelBw.DoWork += delegate (object o, DoWorkEventArgs args) { new RebelModel(username, password, rebelBw, openRebel); };
             rebelBw.RunWorkerAsync();
         }
 

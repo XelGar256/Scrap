@@ -13,7 +13,7 @@ namespace Scrap.Models
     class SwagModel
     {
         string[] titles = { "Home | Swagbucks", "nCrave | Swagbucks", "www.swagbucks.com/?", "Entertainmentcrave.com", "nGage" };
-        public SwagModel(string username, string password, BackgroundWorker bw, bool vids)
+        public SwagModel(string username, string password, BackgroundWorker bw, bool vids, bool openBucks)
         {
             ChromeDriverService service = ChromeDriverService.CreateDefaultService(App.Folder);
             service.HideCommandPromptWindow = true;
@@ -63,31 +63,31 @@ namespace Scrap.Models
             finally { }
             Console.WriteLine("Please sir no swag button");
 
-            dailys(driver, bw);
-
-            Helpers.wait(500);
-            while (!bw.CancellationPending && vids)
+            if (!openBucks)
             {
-                //Videos(driver, bw);
-                video(driver);
-            }
-            Console.WriteLine("past the vids");
+                dailys(driver, bw);
 
-            while (true)
-            {
-                discoveryBreak(driver, bw);
-                nGage(driver, bw);
-                bestOf(driver, bw);
-                video(driver);
-
-                switchToBrowserByString(driver, "Home | Swagbucks");
-                try
+                Helpers.wait(500);
+                while (!bw.CancellationPending && vids)
                 {
+                    //Videos(driver, bw);
+                    video(driver);
+                }
+                Console.WriteLine("past the vids");
+
+                while (true)
+                {
+                    discoveryBreak(driver);
+                    driver.Navigate().Refresh();
+                    nGage(driver);
+                    driver.Navigate().Refresh();
+                    bestOf(driver);
+                    driver.Navigate().Refresh();
+                    video(driver);
                     driver.Navigate().Refresh();
                 }
-                catch { }
+                //driver.Quit();
             }
-            driver.Quit();
         }
 
         void swago(IWebDriver driver, BackgroundWorker bw)
@@ -101,7 +101,8 @@ namespace Scrap.Models
         {
             try
             {
-                driver.FindElement(By.LinkText("Daily Poll")).Click();
+                //driver.FindElement(By.LinkText("Daily Poll")).Click();
+                driver.FindElement(By.PartialLinkText("Poll")).Click();
             }
             catch { }
             Helpers.wait(1000);
@@ -225,7 +226,7 @@ namespace Scrap.Models
             ByClass(driver, "logoTopbar");
         }
 
-        void discoveryBreak(IWebDriver driver, BackgroundWorker bw)
+        void discoveryBreak(IWebDriver driver)
         {
             bool discoBreak = false;
             try
@@ -601,7 +602,7 @@ namespace Scrap.Models
         }
 
 
-        void nGage(IWebDriver driver, BackgroundWorker bw)
+        void nGage(IWebDriver driver)
         {
             Random random = new Random();
             bool nGageCards = false;
@@ -736,7 +737,7 @@ namespace Scrap.Models
             catch { }
         }
 
-        void bestOf(IWebDriver driver, BackgroundWorker bw)
+        void bestOf(IWebDriver driver)
         {
             Random random = new Random();
             bool nGageCards = false;

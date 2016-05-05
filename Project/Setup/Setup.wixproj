@@ -44,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="redist\chromedriver.exe" />
-    <Content Include="redist\garbage.exe" />
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <!--

@@ -164,6 +164,18 @@
   <ItemGroup>
     <Resource Include="ScrapIcon.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Embedded\ZoomLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Embedded\SwagBucks.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Embedded\PrizeRebel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Embedded\GiftHulk.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

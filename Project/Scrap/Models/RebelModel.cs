@@ -10,14 +10,10 @@ namespace Scrap.Models
 {
     class RebelModel
     {
-        public RebelModel(string username, string password, BackgroundWorker bw)
+        public RebelModel(string username, string password, BackgroundWorker bw, bool openRebel)
         {
             while (true)
             {
-                bool letsEnd = true;
-                int currentHour = DateTime.Now.Hour;
-
-
                 ChromeDriverService service = ChromeDriverService.CreateDefaultService(App.Folder);
                 service.HideCommandPromptWindow = true;
 
@@ -43,64 +39,37 @@ namespace Scrap.Models
 
                 Helpers.wait(1000);
 
-                //                while (letsEnd)
-                //                {
-                //Helpers.ByClass(driver, "earn-tour-step-2");
-                driver.Navigate().GoToUrl("http://www.prizerebel.com/dailypoints.php");
-                dailyPoints(driver);
-                driver.Navigate().GoToUrl("http://www.prizerebel.com/offerwalls.php");
-                Helpers.wait(5000);
-
-                try
+                if (!openRebel)
                 {
-                    IList<IWebElement> virools = driver.FindElements(By.ClassName("filter-tab-btn"));
-                    foreach (IWebElement virool in virools)
+                    driver.Navigate().GoToUrl("http://www.prizerebel.com/dailypoints.php");
+                    dailyPoints(driver);
+                    driver.Navigate().GoToUrl("http://www.prizerebel.com/offerwalls.php");
+                    Helpers.wait(5000);
+
+                    try
                     {
-                        if (virool.Text == "Virool")
+                        IList<IWebElement> virools = driver.FindElements(By.ClassName("filter-tab-btn"));
+                        foreach (IWebElement virool in virools)
                         {
-                            virool.Click();
-                            break;
+                            if (virool.Text == "Virool")
+                            {
+                                virool.Click();
+                                break;
+                            }
                         }
+                        virool(driver);
+                        videos(driver);
                     }
-                    virool(driver);
-                    videos(driver);
+                    catch { }
+
+                    driver.Navigate().GoToUrl("http://www.prizerebel.com/offerwalls.php");
+                    Helpers.wait(5000);
+                    driver.Quit();
                 }
-                catch { }
-
-                driver.Navigate().GoToUrl("http://www.prizerebel.com/offerwalls.php");
-                Helpers.wait(5000);
-
-                /*
-                try
+                else
                 {
-                    IList<IWebElement> virools = driver.FindElements(By.ClassName("filter-tab-btn"));
-                    foreach (IWebElement virool in virools)
-                    {
-                        if (virool.Text == "Encrave")
-                        {
-                            virool.Click();
-                            break;
-                        }
-                    }
-                    encrave(driver);
+                    break;
                 }
-                catch { }
-                */
-
-                /*
-                try
-                {
-                    while (currentHour != DateTime.Now.Hour)
-                    {
-                    }
-                }
-                catch { }
-                */
-
-                currentHour = DateTime.Now.Hour;
-                //                    letsEnd = true;
-                //                }
-                driver.Quit();
             }
         }
 
@@ -796,6 +765,18 @@ namespace Scrap.Models
                     }
                     catch { }
                     */
+                    switchFrameByNumber(driver, 0);
+
+                    try
+                    {
+                        IWebElement rewardText = driver.FindElement(By.Id("ty_header"));
+                        if (rewardText.Text == "You earned 1 Points!")
+                        {
+                            driver.Navigate().Refresh();
+                            closeWindows(driver, titles);
+                        }
+                    }
+                    catch { }
                 }
             }
         }
