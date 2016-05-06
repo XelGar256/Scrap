@@ -394,6 +394,7 @@ namespace Scrap.Models
                     }
                     catch { }
 
+                    Helpers.switchToBrowserByString(driver, "Watch and");
                     switchFrameByNumber(driver, 0);
 
                     try

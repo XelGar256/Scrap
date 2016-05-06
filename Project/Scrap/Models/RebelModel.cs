@@ -585,12 +585,6 @@ namespace Scrap.Models
                         driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#displayWrap iframe")));
                     }
                     catch { }
-                    /*
-                    try
-                    {
-                        if (driver.FindElement(By.ClassName("reward_text")).Displayed)
-                        {
-                        */
 
                     try
                     {
@@ -753,19 +747,15 @@ namespace Scrap.Models
                     }
                     catch { }
 
-                    /*
-                    try
-                    {
-                        if (driver.FindElement(By.ClassName("inner-wrap")).Text == "You have reached the limit for the day, please check back in 24 hrs.")
-                        //if (driver.FindElement(By.TagName("body")).Text == "You have reached the limit for the day, please check back in 24 hrs.")
-                        //if (driver.FindElement(By.CssSelector("div:contains('You have reached the limit for the day, please check back in 24 hrs.')")).Displayed)
-                        {
-                            loop = false;
-                        }
-                    }
-                    catch { }
-                    */
                     switchFrameByNumber(driver, 0);
+
+                    ById(driver, "webtraffic_popup_start_button");
+                    ById(driver, "webtraffic_popup_next_button");
+                    ByClass(driver, "webtraffic_start_button");
+                    ByClass(driver, "webtraffic_next_button");
+
+                    ById(driver, "expository_image");
+
                     try
                     {
                         if (driver.FindElement(By.Id("compositor_placed_innerclip_cta")).Displayed)
@@ -775,10 +765,21 @@ namespace Scrap.Models
                         }
                     }
                     catch { }
+
                     try
                     {
                         IWebElement rewardText = driver.FindElement(By.Id("ty_header"));
                         if (rewardText.Text == "You earned 1 Points!")
+                        {
+                            driver.Navigate().Refresh();
+                            closeWindows(driver, titles);
+                        }
+                    }
+                    catch { }
+
+                    try
+                    {
+                        if (driver.FindElement(By.Id("ty_headline")).Text.Contains("Thanks for visiting"))
                         {
                             driver.Navigate().Refresh();
                             closeWindows(driver, titles);
