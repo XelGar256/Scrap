@@ -37,7 +37,7 @@ namespace Scrap.Models
             finally { }
             //jun videos
             Helpers.wait(2000);
-            switchToBrowserByString(driver, "Dashboard");
+            Helpers.switchToBrowserByString(driver, "Dashboard");
 
             if (!justZoom)
             {
@@ -53,14 +53,14 @@ namespace Scrap.Models
                 }
                 finally { }
 
-                ByClass(driver, "brand");
+                Helpers.ByClass(driver, "brand");
 
 
                 Helpers.wait(1000);
-                ByClass(driver, "widgetcontent");
+                Helpers.ByClass(driver, "widgetcontent");
                 Helpers.wait(1000);
 
-                while (lookFor(driver, "Watch and")) //testing
+                while (Helpers.lookFor(driver, "Watch and")) //testing
                 {
                     if (hour != DateTime.Now.Hour)
                     {
@@ -89,7 +89,7 @@ namespace Scrap.Models
                             IWebDriver popup = driver.SwitchTo().Window(window);
 
                             Helpers.wait(1000);
-                            switchFrameByNumber(driver, 0);
+                            Helpers.switchFrameByNumber(driver, 0);
 
                             //
 
@@ -142,22 +142,22 @@ namespace Scrap.Models
                             catch { }
 
                             //
-                            ById(driver, "webtraffic_popup_start_button");
-                            ById(driver, "webtraffic_popup_next_button");
-                            ByClass(driver, "webtraffic_start_button");
-                            ByClass(driver, "webtraffic_next_button");
-                            ByClass(driver, "webtraffic_button");
-                            ById(driver, "expository_image");
+                            Helpers.ById(driver, "webtraffic_popup_start_button");
+                            Helpers.ById(driver, "webtraffic_popup_next_button");
+                            Helpers.ByClass(driver, "webtraffic_start_button");
+                            Helpers.ByClass(driver, "webtraffic_next_button");
+                            Helpers.ByClass(driver, "webtraffic_button");
+                            Helpers.ById(driver, "expository_image");
 
                             // Chips Ad
-                            ById(driver, "compositor_placed_innerclip_cheddar");
-                            ById(driver, "compositor_placed_innerclip_gouda");
-                            ById(driver, "compositor_placed_innerclip_habanero");
-                            ById(driver, "compositor_placed_innerclip_flamin");
-                            ById(driver, "compositor_placed_innerclip_honeybbq");
-                            ById(driver, "compositor_placed_innerclip_korean");
-                            ById(driver, "compositor_placed_innerclip_oliveoil");
-                            ById(driver, "compositor_placed_innerclip_seasalt");
+                            Helpers.ById(driver, "compositor_placed_innerclip_cheddar");
+                            Helpers.ById(driver, "compositor_placed_innerclip_gouda");
+                            Helpers.ById(driver, "compositor_placed_innerclip_habanero");
+                            Helpers.ById(driver, "compositor_placed_innerclip_flamin");
+                            Helpers.ById(driver, "compositor_placed_innerclip_honeybbq");
+                            Helpers.ById(driver, "compositor_placed_innerclip_korean");
+                            Helpers.ById(driver, "compositor_placed_innerclip_oliveoil");
+                            Helpers.ById(driver, "compositor_placed_innerclip_seasalt");
                             //
 
                             try
@@ -165,7 +165,7 @@ namespace Scrap.Models
                                 if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
                                 {
                                     driver.Navigate().Refresh();
-                                    closeWindows(driver, titles);
+                                    Helpers.closeWindows(driver, titles);
                                 }
                             }
                             catch { }
@@ -175,7 +175,7 @@ namespace Scrap.Models
                                 if (driver.FindElement(By.Id("compositor_placed_innerclip_cta")).Displayed)
                                 {
                                     driver.Navigate().Refresh();
-                                    closeWindows(driver, titles);
+                                    Helpers.closeWindows(driver, titles);
                                 }
                             }
                             catch { }
@@ -185,7 +185,7 @@ namespace Scrap.Models
                                 if (driver.FindElement(By.Id("compositor_placed_innerclip_youtube")).Displayed)
                                 {
                                     driver.Navigate().Refresh();
-                                    closeWindows(driver, titles);
+                                    Helpers.closeWindows(driver, titles);
                                 }
                             }
                             catch { }
@@ -252,14 +252,14 @@ namespace Scrap.Models
                         }
                         catch { }
 
-                        switchFrameByNumber(driver, 0);
+                        Helpers.switchFrameByNumber(driver, 0);
 
                         try
                         {
                             if (driver.FindElement(By.Id("compositor_placed_innerclip_youtube")).Displayed)
                             {
                                 driver.Navigate().Refresh();
-                                closeWindows(driver, titles);
+                                Helpers.closeWindows(driver, titles);
                             }
                         }
                         catch { }
@@ -291,7 +291,7 @@ namespace Scrap.Models
 
                         try
                         {
-                            switchFrameByNumber(driver, 0);
+                            Helpers.switchFrameByNumber(driver, 0);
                             testIframes = driver.FindElements(By.TagName("iframe"));
                             Console.WriteLine("Number of iFrames after vgPlayer = " + testIframes.Count);
                             foreach (IWebElement testIframe in testIframes)
@@ -348,7 +348,7 @@ namespace Scrap.Models
                         */
 
                         Console.WriteLine("Switching to Browser");
-                        switchToBrowserByString(driver, "Offer Walls");
+                        Helpers.switchToBrowserByString(driver, "Offer Walls");
                         try
                         {
                             Console.WriteLine("Switching to Frame");
@@ -357,17 +357,17 @@ namespace Scrap.Models
                             if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
                             {
                                 driver.Navigate().Refresh();
-                                closeWindows(driver, titles);
+                                Helpers.closeWindows(driver, titles);
                             }
                         }
 
                         catch { }
 
-                        switchToBrowserByString(driver, "Offer Walls");
+                        Helpers.switchToBrowserByString(driver, "Offer Walls");
                         try
                         {
                             driver.SwitchTo().DefaultContent();
-                            switchFrameByNumber(driver, 0);
+                            Helpers.switchFrameByNumber(driver, 0);
                         }
                         catch { }
 
@@ -385,7 +385,7 @@ namespace Scrap.Models
                         Helpers.switchToBrowserByString(driver, "Watch and");
                         IList<IWebElement> stackedFrames = driver.FindElements(By.TagName("iframe"));
                         Console.WriteLine("Current Number Of IFrames " + stackedFrames.Count);
-                        switchFrameByNumber(driver, stackedFrames.Count);
+                        Helpers.switchFrameByNumber(driver, stackedFrames.Count);
                         if (driver.FindElement(By.TagName("error")).Text.Contains("AccessDeniedAccess"))
                         {
                             Console.WriteLine("HOLY SHIT DUDE");
@@ -395,26 +395,26 @@ namespace Scrap.Models
                     catch { }
 
                     Helpers.switchToBrowserByString(driver, "Watch and");
-                    switchFrameByNumber(driver, 0);
+                    Helpers.switchFrameByNumber(driver, 0);
 
                     try
                     {
                         if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
                         {
                             driver.Navigate().Refresh();
-                            closeWindows(driver, titles);
+                            Helpers.closeWindows(driver, titles);
                         }
                     }
                     catch { }
                 }
 
-                switchToBrowserByString(driver, "Dashboard");
+                Helpers.switchToBrowserByString(driver, "Dashboard");
                 Console.WriteLine(driver.Title);
 
 
                 driver.Navigate().GoToUrl("http://www.zoombucks.com/offer_walls.php?t=1444653478#volume-11");
 
-                switchToBrowserByString(driver, "Offer Walls");
+                Helpers.switchToBrowserByString(driver, "Offer Walls");
                 bool offerWall = true;
 
                 do
@@ -441,7 +441,7 @@ namespace Scrap.Models
                                     {
                                         Console.WriteLine("Looking for Videos");
                                         //closeWindows(driver, titles);
-                                        ById(driver, "next_btn");
+                                        Helpers.ById(driver, "next_btn");
                                     }
                                     catch { }
                                 }
@@ -504,11 +504,11 @@ namespace Scrap.Models
                                     catch { }
 
                                     //
-                                    ById(driver, "expository_image");
-                                    ById(driver, "webtraffic_popup_start_button");
-                                    ById(driver, "webtraffic_popup_next_button");
-                                    ByClass(driver, "webtraffic_start_button");
-                                    ByClass(driver, "webtraffic_next_button");
+                                    Helpers.ById(driver, "expository_image");
+                                    Helpers.ById(driver, "webtraffic_popup_start_button");
+                                    Helpers.ById(driver, "webtraffic_popup_next_button");
+                                    Helpers.ByClass(driver, "webtraffic_start_button");
+                                    Helpers.ByClass(driver, "webtraffic_next_button");
                                 }
                             }
                             catch { }
@@ -528,7 +528,7 @@ namespace Scrap.Models
                                 if (driver.FindElement(By.Id("compositor_placed_innerclip_cta")).Displayed)
                                 {
                                     driver.Navigate().Refresh();
-                                    closeWindows(driver, titles);
+                                    Helpers.closeWindows(driver, titles);
                                 }
                             }
                             catch { }
@@ -555,7 +555,7 @@ namespace Scrap.Models
                         try
                         {
                             Console.WriteLine("Switching to Browser");
-                            switchToBrowserByString(driver, "Offer Walls");
+                            Helpers.switchToBrowserByString(driver, "Offer Walls");
                             Console.WriteLine("Switching to Frame");
                             driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#volume-11 iframe")));
                             driver.SwitchTo().Frame(0);
@@ -566,7 +566,7 @@ namespace Scrap.Models
                                 if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
                                 {
                                     driver.Navigate().Refresh();
-                                    closeWindows(driver, titles);
+                                    Helpers.closeWindows(driver, titles);
                                 }
                             }
                             catch { }
@@ -576,13 +576,13 @@ namespace Scrap.Models
                             {
                                 Console.WriteLine("refreshing....");
                                 driver.Navigate().Refresh();
-                                closeWindows(driver, titles);
+                                Helpers.closeWindows(driver, titles);
                             }
                             else if (volume11reward.Text.Contains("2 ZBs"))
                             {
                                 Console.WriteLine("refreshing....");
                                 driver.Navigate().Refresh();
-                                closeWindows(driver, titles);
+                                Helpers.closeWindows(driver, titles);
                             }
                         }
                         catch { }
@@ -590,14 +590,14 @@ namespace Scrap.Models
                         try
                         {
                             Console.WriteLine("Switching to Browser");
-                            switchToBrowserByString(driver, "Offer Walls");
+                            Helpers.switchToBrowserByString(driver, "Offer Walls");
                             Console.WriteLine("Switching to Frame");
                             driver.SwitchTo().Frame(0);
 
                             if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
                             {
                                 driver.Navigate().Refresh();
-                                closeWindows(driver, titles);
+                                Helpers.closeWindows(driver, titles);
                             }
                         }
 
@@ -645,7 +645,7 @@ namespace Scrap.Models
                         try
                         {
                             driver.SwitchTo().DefaultContent();
-                            switchFrameByNumber(driver, 0);
+                            Helpers.switchFrameByNumber(driver, 0);
                         }
                         catch { }
 
@@ -731,7 +731,7 @@ namespace Scrap.Models
 
                     try
                     {
-                        switchFrameByNumber(driver, 0);
+                       Helpers.switchFrameByNumber(driver, 0);
                         testIframes = driver.FindElements(By.TagName("iframe"));
                         Console.WriteLine("Number of iFrames after vgPlayer = " + testIframes.Count);
                         foreach (IWebElement testIframe in testIframes)
@@ -756,7 +756,7 @@ namespace Scrap.Models
                     }
                     catch { }
 
-                    switchFrameByNumber(driver, 0);
+                    Helpers.switchFrameByNumber(driver, 0);
                     try
                     {
                         driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#video_body iframe")));
@@ -770,7 +770,7 @@ namespace Scrap.Models
                         if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
                         {
                             driver.Navigate().Refresh();
-                            closeWindows(driver, titles);
+                            Helpers.closeWindows(driver, titles);
                         }
                     }
                     catch { }
@@ -783,259 +783,6 @@ namespace Scrap.Models
                 }
                 catch { }
             }
-        }
-
-
-        public static void ById(IWebDriver driver, string targetID)
-        {
-            try
-            {
-                if (driver.FindElement(By.Id(targetID)).Displayed)
-                {
-                    Helpers.wait(2000);
-                    driver.FindElement(By.Id(targetID)).Click();
-                }
-            }
-            catch
-            {
-                Console.WriteLine("Trying to find ID " + targetID);
-            }
-            finally { }
-        }
-
-        public static void ByClass(IWebDriver driver, string targetClass)
-        {
-            try
-            {
-                if (driver.FindElement(By.ClassName(targetClass)).Displayed)
-                {
-                    Helpers.wait(2000);
-                    driver.FindElement(By.ClassName(targetClass)).Click();
-                }
-            }
-            catch
-            {
-                Console.WriteLine("Trying to find ClassName " + targetClass);
-            }
-            finally { }
-        }
-
-        public static void switchToBrowserFrameByString(IWebDriver driver, string targetBrowserString)
-        {
-            try
-            {
-                driver.SwitchTo().Frame(driver.FindElement(By.Id(targetBrowserString)));
-            }
-            catch { }
-            finally { }
-        }
-
-        public static void switchToFrame(IWebDriver driver, IList<IWebElement> iframes, int counts)
-        {
-            try
-            {
-                foreach (IWebElement iframe in iframes)
-                {
-                    driver.SwitchTo().Frame(iframe);
-                }
-            }
-            catch { }
-            finally { }
-        }
-
-        public static void switchToBrowserByString(IWebDriver driver, string targetBrowserString)
-        {
-            System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
-
-            try
-            {
-                foreach (string defwindow in windowHandles)
-                {
-                    Console.WriteLine(driver.Title.ToString());
-                    try
-                    {
-                        if (defwindow != null)
-                        {
-                            driver.SwitchTo().Window(defwindow);
-                            break;
-                        }
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Hang Up");
-                        break;
-                    }
-                    finally
-                    {
-                        Console.WriteLine("Couldn't Get Window");
-                    }
-                    try
-                    {
-                        if (driver.Title.Contains(targetBrowserString))
-                        {
-                            Console.WriteLine("You are now in " + driver.Title);
-                            break;
-                        }
-                    }
-                    catch
-                    {
-                        break;
-                    }
-                    finally { }
-                }
-            }
-            catch { }
-            finally { }
-        }
-
-        public static void closeWindows(IWebDriver driver, string[] titles)
-        {
-            try
-            {
-                System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
-
-                foreach (String window in windowHandles)
-                {
-                    IWebDriver popup = driver.SwitchTo().Window(window);
-                    try
-                    {
-                        bool found = false;
-                        foreach (string title in titles)
-                        {
-                            if (popup.Title.Contains(title))
-                            {
-                                found = true;
-                                break;
-
-                            }
-                        }
-
-                        if (!found)
-                        {
-                            driver.SwitchTo().Window(window);
-                            driver.Close();
-                        }
-                    }
-                    catch { }
-                    finally { }
-                }
-            }
-            catch { }
-            finally { }
-        }
-
-        public static bool lookFor(IWebDriver driver, string title)
-        {
-            try
-            {
-                foreach (string defwindow in driver.WindowHandles)
-                {
-                    Console.WriteLine(driver.Title);
-                    try
-                    {
-                        driver.SwitchTo().Window(defwindow);
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Hang Up");
-                        return true;
-                    }
-                    finally
-                    {
-                        Console.WriteLine("Couldn't Get Window");
-                    }
-                    try
-                    {
-                        if (driver.Title.Contains(title))
-                        {
-                            Console.WriteLine("There is " + title);
-                            return true;
-                        }
-                    }
-                    catch
-                    {
-                        return true;
-                    }
-                    finally { }
-                }
-                return false;
-            }
-            catch
-            {
-                return true;
-            }
-            finally { }
-        }
-
-        public static bool isID(IWebDriver driver, string element)
-        {
-            if (driver.FindElement(By.Id(element)).Displayed)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        public static bool isClass(IWebDriver driver, string element)
-        {
-            if (driver.FindElement(By.Id(element)).Displayed)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public static void switchFrameByNumber(IWebDriver driver, int frameIndex)
-        {
-            try
-            {
-                driver.SwitchTo().Frame(frameIndex);
-            }
-            catch { }
-            finally { }
-        }
-
-        public static void switchToBrowserByElement(IWebDriver driver, IWebElement targetElement)
-        {
-            try
-            {
-                foreach (string defwindow in driver.WindowHandles)
-                {
-                    Console.WriteLine(driver.Title.ToString());
-                    try
-                    {
-                        driver.SwitchTo().Window(defwindow);
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Hang Up");
-                        break;
-                    }
-                    finally
-                    {
-                        Console.WriteLine("Couldn't Get Window");
-                    }
-                    try
-                    {
-                        if (targetElement.Text.Contains("You're watching"))
-                        {
-                            break;
-                        }
-                    }
-                    catch
-                    {
-                        break;
-                    }
-                    finally { }
-                }
-            }
-            catch { }
-            finally { }
         }
     }
 }
