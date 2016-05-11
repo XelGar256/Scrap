@@ -458,6 +458,8 @@ namespace Scrap.Models
                     }
                     catch { }
 
+                    Helpers.switchToBrowserByString(driver, titles[0]);
+
                     try
                     {
                         driver.SwitchTo().DefaultContent();

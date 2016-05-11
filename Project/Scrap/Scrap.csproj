@@ -165,16 +165,13 @@
     <Resource Include="ScrapIcon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Embedded\ZoomLogo.png" />
+    <Resource Include="Embedded\ScrapBackground.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Embedded\SwagBucks.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Embedded\PrizeRebel.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Embedded\GiftHulk.png" />
+    <Resource Include="Embedded\GiftHulk Logo.png" />
+    <Resource Include="Embedded\PrizeRebel Logo.png" />
+    <Resource Include="Embedded\SwagBucks Logo.png" />
+    <Resource Include="Embedded\ZoomBucks Logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
