@@ -518,7 +518,9 @@ namespace Scrap.Models
 
                             try
                             {
-                                driver.FindElement(By.LinkText("Launch Targeted Videos")).Click();
+                                IWebElement targeted = driver.FindElement(By.LinkText("Launch Targeted Videos"));
+                                targeted.SendKeys(Keys.PageDown);
+                                targeted.Click();
                             }
                             catch { }
 

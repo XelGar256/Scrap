@@ -55,6 +55,16 @@ namespace Scrap.Classes
             finally { }
         }
 
+        public static void switchToBrowserFrameByStringClass(IWebDriver driver, string targetBrowserString)
+        {
+            try
+            {
+                driver.SwitchTo().Frame(driver.FindElement(By.ClassName(targetBrowserString)));
+            }
+            catch { }
+            finally { }
+        }
+
         public static void switchToFrame(IWebDriver driver, IList<IWebElement> iframes, int counts)
         {
             try

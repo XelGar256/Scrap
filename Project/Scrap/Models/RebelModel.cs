@@ -21,6 +21,8 @@ namespace Scrap.Models
                 options.AddArgument("start-maximized");
                 options.AddArgument("user-data-dir=" + App.Folder + "profilePR");
 
+                //if (openRebel)
+                //options.AddAdditionalCapability("mobileEmulation", new Dictionary<string, string> { { "deviceName", "Google Nexus 5" } });
 
                 IWebDriver driver = new ChromeDriver(service, options);
 
@@ -64,6 +66,20 @@ namespace Scrap.Models
 
                     driver.Navigate().GoToUrl("http://www.prizerebel.com/offerwalls.php");
                     Helpers.wait(5000);
+                    try
+                    {
+                        IList<IWebElement> virools = driver.FindElements(By.ClassName("filter-tab-btn"));
+                        foreach (IWebElement virool in virools)
+                        {
+                            if (virool.Text == "Encrave")
+                            {
+                                virool.Click();
+                                break;
+                            }
+                        }
+                        encrave(driver);
+                    }
+                    catch { }
                     driver.Quit();
                 }
                 else
@@ -75,9 +91,257 @@ namespace Scrap.Models
 
         void encrave(IWebDriver driver)
         {
-            while (true)
-            {
+            bool clickPlayer = false;
+            bool nCraveLoop = true;
+            bool checks = false;
 
+            string[] titles = { "PrizeRebel.com | Earn", "Entertainmentcrave.com" };
+
+            Helpers.wait(5000);
+            Helpers.switchToBrowserFrameByStringClass(driver, "iframeOfferWall");
+            Helpers.wait(5000);
+            Helpers.switchFrameByNumber(driver, 0);
+
+            try
+            {
+                Helpers.wait(5000);
+                int textCounters = 0;
+                IList<IWebElement> disableTexts = driver.FindElements(By.ClassName("disableText"));
+                foreach (IWebElement disableText in disableTexts)
+                {
+                    Helpers.wait(5000);
+                    if (textCounters == disableTexts.Count - 1)
+                    {
+                        disableText.Click();
+                    }
+                    textCounters++;
+                }
+            }
+            catch { }
+
+            Helpers.switchToBrowserByString(driver, "Entertainmentcrave.com");
+
+            int hr = DateTime.Now.Hour;
+
+            while (nCraveLoop)
+            {
+                if (hr != DateTime.Now.Hour)
+                {
+                    nCraveLoop = false;
+                }
+                //Start of Slides
+                Helpers.switchToBrowserByString(driver, "Entertainmentcrave");
+                Helpers.switchToBrowserFrameByString(driver, "contIframe");
+
+                Helpers.ByClass(driver, "flite-close-button");
+
+                Helpers.switchToBrowserByString(driver, "Entertainmentcrave");
+                Helpers.switchToBrowserFrameByString(driver, "contIframe");
+
+                try
+                {
+                    driver.FindElement(By.ClassName("next")).FindElement(By.CssSelector("a[href*='nextPage']")).Click();
+                }
+                catch { }
+
+                Helpers.wait(1000);
+
+                try
+                {
+                    driver.FindElement(By.ClassName("wp-post-navigation-next")).Click();
+                }
+                catch { }
+
+                Helpers.wait(1000);
+
+                try
+                {
+                    driver.FindElement(By.ClassName("wp-post-navigation-next-1")).Click();
+                }
+                catch { }
+
+                Helpers.wait(1000);
+
+                try
+                {
+                    driver.FindElement(By.ClassName("bx-next")).Click();
+                }
+                catch { }
+
+                Helpers.wait(1000);
+
+                try
+                {
+                    driver.FindElement(By.ClassName("GalleryBig-nextArrow")).Click();
+                }
+                catch { }
+
+                Helpers.wait(1000);
+
+                try
+                {
+                    driver.FindElement(By.ClassName("GalleryBig")).Click();
+                }
+                catch { }
+
+                Helpers.wait(1000);
+
+                try
+                {
+                    Helpers.switchToBrowserByString(driver, "Entertainmentcrave");
+                    Helpers.switchToBrowserFrameByString(driver, "contIframe");
+
+                    driver.FindElement(By.ClassName("owl-buttons")).FindElement(By.ClassName("owl-next")).Click();
+                }
+                catch { }
+
+                Helpers.wait(1000);
+
+                try
+                {
+                    Helpers.switchToBrowserByString(driver, "Entertainmentcrave");
+                    Helpers.switchToBrowserFrameByString(driver, "contIframe");
+
+                    driver.FindElement(By.LinkText("Next")).SendKeys(Keys.PageUp);
+                    Helpers.wait(1000);
+                    driver.FindElement(By.LinkText("Next")).Click();
+                }
+                catch { }
+
+                Helpers.wait(1000);
+
+                try
+                {
+                    Helpers.switchToBrowserByString(driver, "Entertainmentcrave");
+                    Helpers.switchToBrowserFrameByString(driver, "contIframe");
+
+                    driver.FindElement(By.LinkText("Next")).SendKeys(Keys.PageDown);
+                    Helpers.wait(1000);
+                    driver.FindElement(By.LinkText("Prev")).SendKeys(Keys.PageDown);
+                    Helpers.wait(1000);
+                    driver.FindElement(By.LinkText("Next")).Click();
+                }
+                catch { }
+
+                Helpers.wait(1000);
+
+                try
+                {
+                    driver.FindElement(By.ClassName("btn-slideshow")).Click();
+                }
+                catch { }
+                //End of Slides
+
+                Helpers.wait(1000);
+
+                //Video
+                try
+                {
+                    if (!clickPlayer)
+                    {
+                        IWebElement clickNext = driver.FindElement(By.ClassName("vdb_player"));
+                        clickNext.Click();
+                        clickPlayer = true;
+                    }
+                }
+                catch { }
+                //End Video
+
+                Helpers.wait(1000);
+
+                //Check Marks
+                try
+                {
+                    if (!driver.FindElement(By.ClassName("navPages")).Displayed)
+                    {
+                        checks = true;
+                    }
+                }
+                catch { }
+
+                try
+                {
+                    if (!checks)
+                    {
+                        IList<IWebElement> urlLinks = driver.FindElements(By.ClassName("url-link"));
+                        if (urlLinks.Count > 0)
+                        {
+                            foreach (IWebElement urlLink in urlLinks)
+                            {
+                                Random rnd = new Random();
+                                urlLink.Click();
+                                Helpers.wait(1000 * rnd.Next(60, 90));
+                                Helpers.switchToBrowserByString(driver, "Entertainmentcrave");
+                            }
+
+                            System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
+
+                            foreach (String window in windowHandles)
+                            {
+                                try
+                                {
+                                    IWebDriver popup = driver.SwitchTo().Window(window);
+                                }
+                                catch { }
+
+                                if (driver.Title.Contains("Entertainmentcrave"))
+                                {
+                                    Helpers.switchToBrowserByString(driver, driver.Title);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                catch { }
+
+                try
+                {
+                    driver.SwitchTo().DefaultContent();
+                }
+                catch { }
+
+                //Link Up or Down
+                try
+                {
+                    if (driver.FindElement(By.ClassName("active")).Displayed)
+                    {
+
+                        Random upDownRnd = new Random();
+                        if (upDownRnd.Next(1, 2) < 2)
+                        {
+                            try
+                            {
+                                IWebElement up = driver.FindElement(By.Id("link_up"));
+                                up.Click();
+                                clickPlayer = false;
+                            }
+                            catch { }
+                        }
+                        else
+                        {
+                            try
+                            {
+
+                                IWebElement down = driver.FindElement(By.Id("link_down"));
+                                down.Click();
+                                clickPlayer = false;
+                            }
+                            catch { }
+                        }
+                    }
+                }
+                catch { }
+
+                //Keep Craving
+                try
+                {
+                    driver.FindElement(By.ClassName("keepCraving")).Click();
+                    Helpers.closeWindows(driver, titles);
+                    clickPlayer = false;
+                    checks = false;
+                }
+                catch { }
             }
         }
 
