@@ -217,7 +217,7 @@ namespace Scrap.Models
                         Helpers.switchToBrowserByString(driver, "Entertainmentcrave");
                         Helpers.switchToBrowserFrameByString(driver, "contIframe");
 
-                        driver.FindElement(By.LinkText("Next")).SendKeys(Keys.PageUp);
+                        driver.FindElement(By.ClassName("gallery-counters")).SendKeys(Keys.PageUp);
                         Helpers.wait(1000);
                         driver.FindElement(By.LinkText("Next")).Click();
                     }
@@ -230,9 +230,9 @@ namespace Scrap.Models
                         Helpers.switchToBrowserByString(driver, "Entertainmentcrave");
                         Helpers.switchToBrowserFrameByString(driver, "contIframe");
 
-                        driver.FindElement(By.LinkText("Next")).SendKeys(Keys.PageDown);
+                        driver.FindElement(By.ClassName("gallery-counters")).SendKeys(Keys.PageUp);
                         Helpers.wait(1000);
-                        driver.FindElement(By.LinkText("Prev")).SendKeys(Keys.PageDown);
+                        driver.FindElement(By.ClassName("gallery-counters")).SendKeys(Keys.PageUp);
                         Helpers.wait(1000);
                         driver.FindElement(By.LinkText("Next")).Click();
                     }
@@ -912,6 +912,8 @@ namespace Scrap.Models
                             driver.SwitchTo().Frame(driver.FindElement(By.Id("vgPlayer")));
                         }
                         catch { }
+
+                        Helpers.ByClass(driver, "closeBtn");
 
                         Helpers.switchFrameByNumber(driver, 0);
 
