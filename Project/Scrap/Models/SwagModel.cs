@@ -120,7 +120,7 @@ namespace Scrap.Models
             Helpers.wait(1000);
             Helpers.ByClass(driver, "todayPoll");
             Helpers.wait(1000);
-            Helpers.ByClass(driver, "logoTopbar");
+            driver.Navigate().GoToUrl("http://www.swagbucks.com/");
             Helpers.wait(1000);
         }
 
@@ -428,6 +428,7 @@ namespace Scrap.Models
                     Helpers.ById(driver, "compositor_placed_innerclip_honeybbq");
                     Helpers.ById(driver, "compositor_placed_innerclip_korean");
                     Helpers.ById(driver, "compositor_placed_innerclip_oliveoil");
+                    Helpers.ById(driver, "compositor_placed_innerclip_seasalt");
                     Helpers.ById(driver, "compositor_placed_innerclip_seasalt");
                     //
 

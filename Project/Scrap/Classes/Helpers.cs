@@ -25,7 +25,6 @@ namespace Scrap.Classes
             {
                 Console.WriteLine("Trying to find ID " + targetID);
             }
-            finally { }
         }
 
         public static void ByClass(IWebDriver driver, string targetClass)
@@ -42,7 +41,6 @@ namespace Scrap.Classes
             {
                 Console.WriteLine("Trying to find ClassName " + targetClass);
             }
-            finally { }
         }
 
         public static void switchToBrowserFrameByString(IWebDriver driver, string targetBrowserString)
@@ -52,7 +50,6 @@ namespace Scrap.Classes
                 driver.SwitchTo().Frame(driver.FindElement(By.Id(targetBrowserString)));
             }
             catch { }
-            finally { }
         }
 
         public static void switchToBrowserFrameByStringClass(IWebDriver driver, string targetBrowserString)
@@ -62,7 +59,6 @@ namespace Scrap.Classes
                 driver.SwitchTo().Frame(driver.FindElement(By.ClassName(targetBrowserString)));
             }
             catch { }
-            finally { }
         }
 
         public static void switchToFrame(IWebDriver driver, IList<IWebElement> iframes, int counts)
@@ -75,7 +71,6 @@ namespace Scrap.Classes
                 }
             }
             catch { }
-            finally { }
         }
 
         public static void switchToBrowserByString(IWebDriver driver, string targetBrowserString)
@@ -94,10 +89,6 @@ namespace Scrap.Classes
                         Console.WriteLine("Hang Up");
                         break;
                     }
-                    finally
-                    {
-                        Console.WriteLine("Couldn't Get Window");
-                    }
                     try
                     {
                         if (driver.Title.Contains(targetBrowserString))
@@ -110,11 +101,9 @@ namespace Scrap.Classes
                     {
                         break;
                     }
-                    finally { }
                 }
             }
             catch { }
-            finally { }
         }
 
         public static void closeWindows(IWebDriver driver, string[] titles)
@@ -146,11 +135,9 @@ namespace Scrap.Classes
                         }
                     }
                     catch { }
-                    finally { }
                 }
             }
             catch { }
-            finally { }
         }
 
         public static bool lookFor(IWebDriver driver, string title)
@@ -169,10 +156,6 @@ namespace Scrap.Classes
                         Console.WriteLine("Hang Up");
                         return true;
                     }
-                    finally
-                    {
-                        Console.WriteLine("Couldn't Get Window");
-                    }
                     try
                     {
                         if (driver.Title.Contains(title))
@@ -185,7 +168,6 @@ namespace Scrap.Classes
                     {
                         return true;
                     }
-                    finally { }
                 }
                 return false;
             }
@@ -193,7 +175,6 @@ namespace Scrap.Classes
             {
                 return true;
             }
-            finally { }
         }
 
         public static bool isID(IWebDriver driver, string element)
@@ -226,7 +207,6 @@ namespace Scrap.Classes
                 driver.SwitchTo().Frame(frameIndex);
             }
             catch { }
-            finally { }
         }
 
         public static void switchToBrowserByElement(IWebDriver driver, IWebElement targetElement)
@@ -245,7 +225,6 @@ namespace Scrap.Classes
                         Console.WriteLine("Hang Up");
                         break;
                     }
-                    finally
                     {
                         Console.WriteLine("Couldn't Get Window");
                     }
@@ -260,11 +239,9 @@ namespace Scrap.Classes
                     {
                         break;
                     }
-                    finally { }
                 }
             }
             catch { }
-            finally { }
         }
     }
 }

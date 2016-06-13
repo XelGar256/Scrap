@@ -768,6 +768,15 @@ namespace Scrap.Models
 
                         try
                         {
+                            if (driver.FindElement(By.Id("offers_exhausted_message")).Displayed)
+                            {
+                                loop = false;
+                            }
+                        }
+                        catch { }
+
+                        try
+                        {
                             IList<IWebElement> oLinks = driver.FindElements(By.ClassName("singleselectset_radio"));
                             Random random = new Random();
                             int rndClick = random.Next(1, oLinks.Count);

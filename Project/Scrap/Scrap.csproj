@@ -108,6 +108,7 @@
   <ItemGroup>
     <Compile Include="Models\GiftHulkModel.cs" />
     <Compile Include="Models\InstaGCModel.cs" />
+    <Compile Include="Models\PedModel.cs" />
     <Compile Include="Models\RebelModel.cs" />
     <Compile Include="Models\SwagModel.cs" />
     <Compile Include="Models\LootPalaceModel.cs" />

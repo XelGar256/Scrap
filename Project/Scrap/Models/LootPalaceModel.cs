@@ -137,6 +137,7 @@ namespace Scrap.Models
                 }
             }
             catch { }
+
             while (loop)
             {
                 try

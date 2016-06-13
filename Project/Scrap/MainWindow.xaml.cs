@@ -12,7 +12,7 @@ namespace Scrap
     /// </summary>
     public partial class MainWindow : Window
     {
-        private BackgroundWorker zoomBw, swagBw, rebelBw, giftHulkBw, lpBw, instaGCBw;
+        private BackgroundWorker zoomBw, swagBw, rebelBw, giftHulkBw, lpBw, instaGCBw, pedBw;
 
         public MainWindow()
         {
@@ -149,6 +149,35 @@ namespace Scrap
             giftHulkBw.WorkerSupportsCancellation = true;
             giftHulkBw.DoWork += delegate (object o, DoWorkEventArgs args) { new GiftHulkModel(username, password, giftHulkBw, openHulk); };
             giftHulkBw.RunWorkerAsync();
+        }
+
+        private void btnLoginPed_Click(object sender, RoutedEventArgs e)
+        {
+            //PED
+            string username = txtUsernamePed.Text, password = txtPasswordPed.Password;
+            bool openPed = false;
+
+            pedBw = new BackgroundWorker();
+            pedBw.WorkerSupportsCancellation = true;
+            pedBw.DoWork += delegate (object o, DoWorkEventArgs args) { new PedModel(username, password, pedBw, openPed); };
+            pedBw.RunWorkerAsync();
+        }
+
+        private void btnStopPed_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_openPed_Click(object sender, RoutedEventArgs e)
+        {
+            //PED
+            string username = txtUsernamePed.Text, password = txtPasswordPed.Password;
+            bool openPed = true;
+
+            pedBw = new BackgroundWorker();
+            pedBw.WorkerSupportsCancellation = true;
+            pedBw.DoWork += delegate (object o, DoWorkEventArgs args) { new PedModel(username, password, pedBw, openPed); };
+            pedBw.RunWorkerAsync();
         }
 
         private void btnStopGC_Click(object sender, RoutedEventArgs e)
