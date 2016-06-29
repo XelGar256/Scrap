@@ -844,6 +844,9 @@ namespace Scrap.Models
                         Helpers.ById(driver, "compositor_placed_innerclip_oliveoil");
                         Helpers.ById(driver, "compositor_placed_innerclip_seasalt");
                         //
+
+                        Helpers.ById(driver, "compositor_placed_innerclip_bajablast");
+
                         try
                         {
                             IWebElement rewardText = driver.FindElement(By.Id("ty_header"));

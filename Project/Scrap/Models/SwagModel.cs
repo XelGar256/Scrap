@@ -70,7 +70,6 @@ namespace Scrap.Models
                 Helpers.wait(500);
                 while (!bw.CancellationPending && vids)
                 {
-                    //Videos(driver, bw);
                     video(driver);
                 }
                 Console.WriteLine("past the vids");
@@ -78,13 +77,15 @@ namespace Scrap.Models
                 while (true)
                 {
                     discoveryBreak(driver);
+                    Helpers.switchToBrowserByString(driver, "Swagbucks");
                     driver.Navigate().Refresh();
                     nGage(driver);
+                    Helpers.switchToBrowserByString(driver, "Swagbucks");
                     driver.Navigate().Refresh();
-                    bestOf(driver);
-                    driver.Navigate().Refresh();
+                    Helpers.switchToBrowserByString(driver, "Swagbucks");
                     video(driver);
-                    driver.Navigate().Refresh();
+
+                    driver.Navigate().GoToUrl("http://www.swagbucks.com/");
                 }
                 //driver.Quit();
             }
@@ -94,7 +95,6 @@ namespace Scrap.Models
         {
             try
             {
-                //driver.FindElement(By.LinkText("Daily Poll")).Click();
                 driver.FindElement(By.PartialLinkText("Poll")).Click();
             }
             catch { }
@@ -143,18 +143,6 @@ namespace Scrap.Models
             Helpers.switchToBrowserFrameByString(driver, "parentiframe");
             try
             {
-                /*
-                IList<IWebElement> encraveTasks = driver.FindElements(By.ClassName("disableText"));
-                int counter = 0;
-                foreach (IWebElement encraveTask in encraveTasks)
-                {
-                    if (counter == encraveTasks.Count - 1)
-                    {
-                        encraveTask.Click();
-                    }
-                    counter++;
-                }
-                */
                 driver.FindElement(By.ClassName("disableText")).Click();
                 Helpers.wait(5000);
             }
@@ -162,7 +150,7 @@ namespace Scrap.Models
 
             Helpers.wait(1000);
             Helpers.switchToBrowserByString(driver, "Entertainmentcrave");
-            //Helpers.ById(driver, "crave_on");
+
             Helpers.wait(1000);
             while (craveMe)
             {
@@ -206,11 +194,9 @@ namespace Scrap.Models
                             }
                         }
                         catch { }
+
                         Helpers.ById(driver, "link_down");
                         Helpers.ByClass(driver, "keepCraving");
-
-                        //Helpers.switchToBrowserFrameByString(driver, "contIframe");
-                        //driver.FindElement(By.ClassName("beforeswfanchor3")).Click();
                     }
                 }
                 catch { }
@@ -431,6 +417,8 @@ namespace Scrap.Models
                     Helpers.ById(driver, "compositor_placed_innerclip_seasalt");
                     Helpers.ById(driver, "compositor_placed_innerclip_seasalt");
                     //
+                    Helpers.ById(driver, "compositor_placed_innerclip_bajablast");
+
 
                     Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
                     try
@@ -859,6 +847,7 @@ namespace Scrap.Models
 
         void video(IWebDriver driver)
         {
+            int currentHour = DateTime.Now.Hour;
             bool setComplete = false;
             int linkArray = 0, videoGroupWatched = 0, vidCount = 0, currentVideo = 0, totalVid = 0;
             string[] linkText = { "Editor's Pick", "Careers", "Comedy", "Entertainment", "Fashion", "Fitness", "Food", "Health", "Hobbies", "Home & Garden", "Music", "News & Politics", "Parenting", "Pets & Animals", "Shopping", "Sports", "Technology", "Travel", "Wedding" };
@@ -958,6 +947,11 @@ namespace Scrap.Models
                 totalVid++;
                 if (linkArray == 19)
                     setComplete = true;
+
+                if (currentHour != DateTime.Now.Hour)
+                {
+                    setComplete = true;
+                }
             }
         }
 
