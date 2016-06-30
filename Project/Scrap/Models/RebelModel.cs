@@ -555,6 +555,23 @@ namespace Scrap.Models
                         Helpers.switchToBrowserFrameByString(driver, "widgetPlayer");
                         try
                         {
+                            IList<IWebElement> h1s = driver.FindElements(By.TagName("h1"));
+                            foreach (IWebElement h1 in h1s)
+                            {
+                                if (h1.Text.Contains("504 Gateway"))
+                                {
+                                    driver.SwitchTo().DefaultContent();
+                                    Helpers.switchFrameByNumber(driver, 0);
+                                    Helpers.ByClass(driver, "close");
+                                    looped = false;
+                                    looping = false;
+                                }
+                            }
+                        }
+                        catch { }
+
+                        try
+                        {
                             IWebElement fbPageUp = driver.FindElement(By.ClassName("fb-share-btn"));
                             fbPageUp.SendKeys(Keys.PageUp);
                             Helpers.wait(1000);
