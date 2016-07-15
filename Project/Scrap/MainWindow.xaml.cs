@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 
-
 namespace Scrap
 {
     /// <summary>
@@ -12,7 +11,7 @@ namespace Scrap
     /// </summary>
     public partial class MainWindow : Window
     {
-        private BackgroundWorker zoomBw, swagBw, rebelBw, giftHulkBw, lpBw, instaGCBw, pedBw;
+        private BackgroundWorker zoomBw, swagBw, rebelBw, giftHulkBw, InboxBw, pedBw;
 
         public MainWindow()
         {
@@ -40,6 +39,7 @@ namespace Scrap
             string username = txtUsernameSwag.Text, password = txtPasswordSwag.Password;
             bool vids = false;
             bool openBucks = false;
+
 
             swagBw = new BackgroundWorker();
             swagBw.WorkerSupportsCancellation = true;
@@ -94,16 +94,6 @@ namespace Scrap
         private void btnStopGiftHulk_Click(object sender, RoutedEventArgs e)
         {
 
-        }
-
-        private void btnLoginGC_Click(object sender, RoutedEventArgs e)
-        {
-            string username = txtUsernameGiftHulk.Text, password = txtPasswordGiftHulk.Password;
-
-            instaGCBw = new BackgroundWorker();
-            instaGCBw.WorkerSupportsCancellation = true;
-            instaGCBw.DoWork += delegate (object o, DoWorkEventArgs args) { new InstaGCModel(username, password, instaGCBw); };
-            instaGCBw.RunWorkerAsync();
         }
 
         private void btn_openZoom_Click(object sender, RoutedEventArgs e)
@@ -168,6 +158,21 @@ namespace Scrap
 
         }
 
+        private void btnLoginInbox_Click(object sender, RoutedEventArgs e)
+        {
+            string username = txtUsernameInbox.Text, password = txtPasswordInbox.Password;
+
+            InboxBw = new BackgroundWorker();
+            InboxBw.WorkerSupportsCancellation = true;
+            InboxBw.DoWork += delegate (object o, DoWorkEventArgs args) { new InboxModel(username, password, InboxBw); };
+            InboxBw.RunWorkerAsync();
+        }
+
+        private void btnStopInbox_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void btn_openPed_Click(object sender, RoutedEventArgs e)
         {
             //PED
@@ -178,21 +183,6 @@ namespace Scrap
             pedBw.WorkerSupportsCancellation = true;
             pedBw.DoWork += delegate (object o, DoWorkEventArgs args) { new PedModel(username, password, pedBw, openPed); };
             pedBw.RunWorkerAsync();
-        }
-
-        private void btnStopGC_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnLoginPalace_Click(object sender, RoutedEventArgs e)
-        {
-            string username = txtUsernamePalace.Text, password = txtPasswordPalace.Password;
-
-            lpBw = new BackgroundWorker();
-            lpBw.WorkerSupportsCancellation = true;
-            lpBw.DoWork += delegate (object o, DoWorkEventArgs args) { new LootPalaceModel(username, password, lpBw); };
-            lpBw.RunWorkerAsync();
         }
 
         private void btnStopPalace_Click(object sender, RoutedEventArgs e)

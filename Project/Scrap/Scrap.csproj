@@ -107,11 +107,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\GiftHulkModel.cs" />
-    <Compile Include="Models\InstaGCModel.cs" />
+    <Compile Include="Models\InboxModel.cs" />
     <Compile Include="Models\PedModel.cs" />
     <Compile Include="Models\RebelModel.cs" />
     <Compile Include="Models\SwagModel.cs" />
-    <Compile Include="Models\LootPalaceModel.cs" />
     <Compile Include="Models\ZoomModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
