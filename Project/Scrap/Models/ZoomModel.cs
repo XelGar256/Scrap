@@ -377,6 +377,29 @@ namespace Scrap.Models
                             }
                         }
                         catch { }
+
+                        try
+                        {
+                            driver.SwitchTo().DefaultContent();
+                        }
+                        catch { }
+                        Helpers.switchFrameByNumber(driver, 0);
+                        Helpers.switchToBrowserFrameByString(driver, "vgPlayer");
+                        Helpers.switchFrameByNumber(driver, 0);
+                        Helpers.switchToBrowserFrameByString(driver, "player");
+                        Helpers.ByClass(driver, "ytp-large-play-button");
+
+                        try
+                        {
+                            driver.SwitchTo().DefaultContent();
+                        }
+                        catch { }
+                        Helpers.switchFrameByNumber(driver, 0);
+                        Helpers.switchFrameByNumber(driver, 0);
+                        Helpers.switchFrameByNumber(driver, 0);
+                        Helpers.switchToBrowserFrameByString(driver, "player");
+                        Helpers.switchToBrowserFrameByString(driver, "player");
+                        Helpers.ByClass(driver, "ytp-large-play-button");
                     }
 
                     Helpers.switchToBrowserByString(driver, "Dashboard");

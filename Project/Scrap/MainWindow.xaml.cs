@@ -161,10 +161,22 @@ namespace Scrap
         private void btnLoginInbox_Click(object sender, RoutedEventArgs e)
         {
             string username = txtUsernameInbox.Text, password = txtPasswordInbox.Password;
+            bool tv = false;
 
             InboxBw = new BackgroundWorker();
             InboxBw.WorkerSupportsCancellation = true;
-            InboxBw.DoWork += delegate (object o, DoWorkEventArgs args) { new InboxModel(username, password, InboxBw); };
+            InboxBw.DoWork += delegate (object o, DoWorkEventArgs args) { new InboxModel(username, password, InboxBw, tv); };
+            InboxBw.RunWorkerAsync();
+        }
+
+        private void btnInboxTv_Click(object sender, RoutedEventArgs e)
+        {
+            string username = txtUsernameInbox.Text, password = txtPasswordInbox.Password;
+            bool tv = true;
+
+            InboxBw = new BackgroundWorker();
+            InboxBw.WorkerSupportsCancellation = true;
+            InboxBw.DoWork += delegate (object o, DoWorkEventArgs args) { new InboxModel(username, password, InboxBw, tv); };
             InboxBw.RunWorkerAsync();
         }
 

@@ -139,11 +139,9 @@ namespace Scrap.Models
                                     driver.FindElement(By.PartialLinkText("videos to watch")).Click();
                                 }
                                 catch { }
-                                //                    }
-                                //                }
-                                //                catch { }
 
                                 Helpers.wait(5000);
+
                                 try
                                 {
                                     driver.FindElement(By.LinkText("Watch this video!")).Click();
@@ -158,14 +156,8 @@ namespace Scrap.Models
                                 Helpers.wait(500);
                                 try
                                 {
-                                    IList<IWebElement> testIframes = driver.FindElements(By.TagName("iframe"));
-                                    Console.WriteLine("Number of iFrames = " + testIframes.Count);
                                     driver.SwitchTo().Frame(driver.FindElement(By.Id("stick-video-popup-video")));
-                                    testIframes = driver.FindElements(By.TagName("iframe"));
-                                    Console.WriteLine("Number of iFrames = " + testIframes.Count);
                                     driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#html_wrapper iframe")));
-                                    testIframes = driver.FindElements(By.TagName("iframe"));
-                                    Console.WriteLine("Number of iFrames = " + testIframes.Count);
                                 }
                                 catch { }
                                 //
@@ -264,6 +256,7 @@ namespace Scrap.Models
                                 catch { }
 
                                 Helpers.wait(500);
+
                                 try
                                 {
                                     driver.SwitchTo().Frame(driver.FindElement(By.Id("stick-video-popup-video")));
@@ -491,6 +484,19 @@ namespace Scrap.Models
 
                                 }
                                 catch { }
+
+                                try
+                                {
+                                    driver.SwitchTo().DefaultContent();
+                                    driver.SwitchTo().Frame(driver.FindElement(By.Id("stick-video-popup-video")));
+                                    driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#html_wrapper iframe")));
+                                }
+                                catch { }
+                                Helpers.switchFrameByNumber(driver, 0);
+                                Helpers.switchFrameByNumber(driver, 0);
+                                Helpers.switchToBrowserFrameByString(driver, "player");
+                                Helpers.switchToBrowserFrameByString(driver, "player");
+                                Helpers.ByClass(driver, "ytp-large-play-button");
                             }
                         }
                         catch { }

@@ -12,7 +12,7 @@ namespace Scrap.Models
     {
         string[] titles = { "Cash Videos" };
 
-        public InboxModel(string username, string password, BackgroundWorker bw)
+        public InboxModel(string username, string password, BackgroundWorker bw, bool tv)
         {
             ChromeDriverService service = ChromeDriverService.CreateDefaultService(App.Folder);
             service.HideCommandPromptWindow = true;
@@ -35,12 +35,33 @@ namespace Scrap.Models
             }
             catch { }
 
-            try
+            if (!tv)
             {
-                driver.FindElement(By.ClassName("videos")).Click();
-                videos(driver);
+                try
+                {
+                    driver.FindElement(By.ClassName("videos")).Click();
+                    videos(driver);
+                }
+                catch { }
             }
-            catch { }
+            else if (tv)
+            {
+                try
+                {
+                    driver.FindElement(By.ClassName("tv")).Click();
+                    Helpers.wait(2000);
+                    Helpers.ByClass(driver, "jw-icon");
+                    while (true)
+                    {
+                        try
+                        {
+                            driver.FindElement(By.Id("tvStillTherePopupContinue")).Click();
+                        }
+                        catch { }
+                    }
+                }
+                catch { }
+            }
         }
 
         void videos(IWebDriver driver)
@@ -64,17 +85,19 @@ namespace Scrap.Models
                         {
                             driver.SwitchTo().DefaultContent();
 
+
                             if (!clicked)
                             {
                                 IList<IWebElement> offerButtons = driver.FindElements(By.ClassName("offerButton"));
+                                int counter = 0;
                                 foreach (IWebElement offerButton in offerButtons)
                                 {
-                                    if (offerButtons.Count < 1)
+                                    if (counter > 1)
                                     {
+                                        offerButton.Click();
                                         break;
                                     }
-                                    offerButton.Click();
-                                    break;
+                                    counter++;
                                 }
                             }
                         }
@@ -136,6 +159,18 @@ namespace Scrap.Models
                         }
                         catch { }
 
+                        try
+                        {
+                            Helpers.switchToBrowserByString(driver, "for E-Mail");
+                            Helpers.switchFrameByNumber(driver, 0);
+                            if (Helpers.isClass(driver, "video-poster-play-icon"))
+                            {
+                                Helpers.ByClass(driver, "video-poster-play-icon");
+                                clicked = true;
+                            }
+                        }
+                        catch { }
+
                         Helpers.ByClass(driver, "video-poster-play-icon");
 
                         try
@@ -167,6 +202,7 @@ namespace Scrap.Models
 
                         try
                         {
+                            Helpers.switchToBrowserByString(driver, "Cash Videos - Earn Money Watching");
                             if (driver.FindElement(By.Id("adk_inter_cnt")).Text == "00:00")
                             {
                                 driver.FindElement(By.Id("adk_inter_close")).Click();
@@ -174,6 +210,12 @@ namespace Scrap.Models
                                 Helpers.ByClass(driver, "videos");
                                 Helpers.closeWindows(driver, titles);
                                 clicked = false;
+                            }
+                            else if (driver.FindElement(By.Id("adk_inter_cnt")).Text == "01:30")
+                            {
+                                Helpers.closeWindows(driver, titles);
+                                Helpers.wait(5000);
+                                driver.FindElement(By.Id("adk_inter_close")).Click();
                             }
                         }
                         catch { }
@@ -200,6 +242,11 @@ namespace Scrap.Models
                         try
                         {
                             Helpers.switchFrameByNumber(driver, 0);
+                            try
+                            {
+                                driver.FindElement(By.ClassName("icon-close")).Click();
+                            }
+                            catch { }
                             Helpers.switchFrameByNumber(driver, 0);
                             Helpers.switchFrameByNumber(driver, 0);
                             Helpers.switchFrameByNumber(driver, 0);
@@ -223,6 +270,7 @@ namespace Scrap.Models
 
         void encrave(IWebDriver driver)
         {
+            IWebElement clickMe = null;
             bool clickPlayer = false;
             bool nCraveLoop = true;
             bool checks = false;
@@ -321,6 +369,19 @@ namespace Scrap.Models
                         Helpers.switchToBrowserByString(driver, "Entertainmentcrave");
                         Helpers.switchToBrowserFrameByString(driver, "contIframe");
 
+                        clickMe = driver.FindElement(By.ClassName("owl-next"));
+                        clickMe.Click();
+                    }
+                    catch
+                    {
+                        clickMe = null;
+                    }
+
+                    try
+                    {
+                        Helpers.switchToBrowserByString(driver, "Entertainmentcrave");
+                        Helpers.switchToBrowserFrameByString(driver, "contIframe");
+
                         driver.FindElement(By.ClassName("owl-buttons")).FindElement(By.ClassName("owl-next")).Click();
                     }
                     catch { }
@@ -339,9 +400,13 @@ namespace Scrap.Models
                         Helpers.switchToBrowserByString(driver, "Entertainmentcrave");
                         Helpers.switchToBrowserFrameByString(driver, "contIframe");
 
-                        driver.FindElement(By.ClassName("owl-next")).Click();
+                        clickMe = driver.FindElement(By.ClassName("owl-next"));
+                        clickMe.Click();
                     }
-                    catch { }
+                    catch
+                    {
+                        clickMe = null;
+                    }
 
                     Helpers.wait(1000);
 
@@ -350,11 +415,19 @@ namespace Scrap.Models
                         Helpers.switchToBrowserByString(driver, "Entertainmentcrave");
                         Helpers.switchToBrowserFrameByString(driver, "contIframe");
 
-                        driver.FindElement(By.ClassName("gallery-counters")).SendKeys(Keys.PageUp);
+                        //driver.FindElement(By.ClassName("gallery-counters")).SendKeys(Keys.PageUp);
                         Helpers.wait(1000);
-                        driver.FindElement(By.LinkText("Next")).Click();
+                        if (driver.FindElement(By.LinkText("Next")).Displayed)
+                        {
+                            driver.Navigate().Refresh();
+                        }
+                        clickMe = driver.FindElement(By.ClassName("owl-buttons")).FindElement(By.LinkText("Next"));
+                        clickMe.Click();
                     }
-                    catch { }
+                    catch
+                    {
+                        clickMe = null;
+                    }
 
                     Helpers.wait(1000);
 
@@ -363,11 +436,19 @@ namespace Scrap.Models
                         Helpers.switchToBrowserByString(driver, "Entertainmentcrave");
                         Helpers.switchToBrowserFrameByString(driver, "contIframe");
 
-                        driver.FindElement(By.ClassName("gallery-counters")).SendKeys(Keys.PageUp);
-                        Helpers.wait(1000);
-                        driver.FindElement(By.ClassName("gallery-counters")).SendKeys(Keys.PageUp);
-                        Helpers.wait(1000);
-                        driver.FindElement(By.LinkText("Next")).Click();
+                        if (driver.FindElement(By.LinkText("Next")).Displayed)
+                        {
+                            driver.Navigate().Refresh();
+                        }
+                    }
+                    catch { }
+
+                    try
+                    {
+                        Helpers.switchToBrowserByString(driver, "Entertainmentcrave");
+                        Helpers.switchToBrowserFrameByString(driver, "contIframe");
+
+                        driver.FindElement(By.LinkText("Prev")).Click();
                     }
                     catch { }
 
