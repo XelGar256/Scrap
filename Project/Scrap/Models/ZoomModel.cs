@@ -14,7 +14,8 @@ namespace Scrap.Models
         bool junVideos = false, volume = false, viroolBool = false;
         public ZoomModel(string username, string password, BackgroundWorker bw, bool justZoom)
         {
-            while (true)
+            bool looping = true;
+            while (looping)
             {
                 ChromeDriverService service = ChromeDriverService.CreateDefaultService(App.Folder);
                 service.HideCommandPromptWindow = true;
@@ -30,13 +31,13 @@ namespace Scrap.Models
                 {
                     //driver.FindElement(By.Name("email")).SendKeys(username);
                     //driver.FindElement(By.Name("email")).SendKeys(Keys.Enter);
-                    Helpers.wait(5000);
+                    ////Helpers.wait(5000);
                     driver.FindElement(By.Id("password")).SendKeys(password);
                     driver.FindElement(By.ClassName("btn-block")).Click();
                 }
                 catch { }
 
-                Helpers.wait(2000);
+                Helpers.wait(10000);
 
                 try
                 {
@@ -54,6 +55,12 @@ namespace Scrap.Models
                 catch { }
 
                 int hr = DateTime.Now.Hour;
+
+                try
+                {
+                    driver.Navigate().GoToUrl("http://members.grabpoints.com/#/offers/watch_videos");
+                }
+                catch { }
 
                 if (!justZoom)
                 {
@@ -97,8 +104,17 @@ namespace Scrap.Models
                     driver.Close();
                     driver.Quit();
 
+                    hr = DateTime.Now.Hour;
+
                     while (DateTime.Now.Hour == hr)
                     { }
+                    junVideos = false;
+                    volume = false;
+                    viroolBool = false;
+                }
+                else
+                {
+                    looping = false;
                 }
             }
         }
@@ -266,11 +282,36 @@ namespace Scrap.Models
 
                     driver.SwitchTo().DefaultContent();
                     Helpers.switchFrameByNumber(driver, 0);
+
+                    try
+                    {
+                        if (driver.FindElement(By.ClassName("wicon-youtube")).Displayed)
+                        {
+                            driver.SwitchTo().DefaultContent();
+                            Helpers.switchFrameByNumber(driver, 0);
+                            Helpers.ByClass(driver, "close");
+                            looped = false;
+                        }
+                    }
+                    catch { }
+
                     Helpers.switchFrameByNumber(driver, 0);
 
                     try
                     {
                         if (driver.FindElement(By.LinkText("Opt out")).Displayed)
+                        {
+                            driver.SwitchTo().DefaultContent();
+                            Helpers.switchFrameByNumber(driver, 0);
+                            Helpers.ByClass(driver, "close");
+                            looped = false;
+                        }
+                    }
+                    catch { }
+
+                    try
+                    {
+                        if (driver.FindElement(By.ClassName("ytp-videowall-still-info-content")).Displayed)
                         {
                             driver.SwitchTo().DefaultContent();
                             Helpers.switchFrameByNumber(driver, 0);
@@ -377,8 +418,56 @@ namespace Scrap.Models
                         }
                         catch { }
 
-                        //driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#video_body iframe")));
-                        //driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#html_wrapper iframe")));
+                        try
+                        {
+                            driver.SwitchTo().DefaultContent();
+                        }
+                        catch { }
+
+                        Helpers.switchFrameByNumber(driver, 0);
+
+                        try
+                         {
+                            IWebElement dropDownMonth = driver.FindElement(By.ClassName("b_month"));
+                            IWebElement dropDownDay = driver.FindElement(By.ClassName("b_day"));
+                            IWebElement dropDownYear = driver.FindElement(By.ClassName("b_year"));
+                            IWebElement dropDownGender = driver.FindElement(By.ClassName("gender"));
+                            string[] months = { "January", "Febuary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+                            string[] gender = { "Male", "Female" };
+                            Random random = new Random();
+                            int rndMonth = random.Next(0, 11);
+                            Console.WriteLine(rndMonth);
+                            SelectElement clickThis = new SelectElement(dropDownMonth);
+                            clickThis.SelectByText(months[rndMonth]);
+                            Helpers.wait(1000);
+                            int rndGender = random.Next(0, 1);
+                            Console.WriteLine(rndMonth);
+                            clickThis = new SelectElement(dropDownGender);
+                            clickThis.SelectByText(gender[rndMonth]);
+                            Helpers.wait(1000);
+                            int rndDay = random.Next(1, 28);
+                            clickThis = new SelectElement(dropDownDay);
+                            clickThis.SelectByText(rndDay.ToString());
+                            Helpers.wait(1000);
+                            int rndYear = random.Next(1974, 1994);
+                            clickThis = new SelectElement(dropDownYear);
+                            clickThis.SelectByText(rndYear.ToString());
+                            Helpers.wait(1000);
+                        }
+                        catch { }
+
+                        try
+                        {
+                            driver.FindElement(By.ClassName("submit")).Click();
+                        }
+                        catch { }
+
+                        try
+                        {
+                            driver.SwitchTo().DefaultContent();
+                        }
+                        catch { }
+
                         Helpers.switchFrameByNumber(driver, 0);
                         Helpers.switchFrameByNumber(driver, 0);
 
@@ -559,7 +648,7 @@ namespace Scrap.Models
             }
             catch { }
 
-            while (Helpers.lookFor(driver, "hyprmx.com") || Helpers.lookFor(driver, "No Offers"))
+            while (Helpers.lookFor(driver, "hyprmx.com") || Helpers.lookFor(driver, "No Offers") || Helpers.lookFor(driver, "Now exploring..."))
             {
                 try
                 {

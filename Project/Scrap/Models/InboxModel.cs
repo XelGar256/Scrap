@@ -35,6 +35,15 @@ namespace Scrap.Models
             }
             catch { }
 
+            try
+            {
+                if (driver.FindElement(By.Id("emailsBlock")).FindElement(By.ClassName("textBox")).Text != "0")
+                {
+                    driver.FindElement(By.Id("emailsBlock")).FindElement(By.ClassName("textBox")).Click();
+                }
+            }
+            catch { }
+
             if (!tv)
             {
                 try
@@ -85,6 +94,13 @@ namespace Scrap.Models
                         {
                             driver.SwitchTo().DefaultContent();
 
+                            Helpers.ByClass(driver, "jw-icon");
+
+                            try
+                            {
+                                driver.FindElement(By.Id("tvStillTherePopupContinue")).Click();
+                            }
+                            catch { }
 
                             if (!clicked)
                             {

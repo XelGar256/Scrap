@@ -161,6 +161,8 @@ namespace Scrap.Models
 
                     Helpers.wait(1000);
 
+                    Helpers.ByClass(driver, "_2");
+
                     try
                     {
                         driver.FindElement(By.ClassName("wp-post-navigation-next")).Click();
@@ -180,6 +182,22 @@ namespace Scrap.Models
                     try
                     {
                         driver.FindElement(By.ClassName("bx-next")).Click();
+                    }
+                    catch { }
+
+                    Helpers.wait(1000);
+
+                    try
+                    {
+                        driver.FindElement(By.ClassName("start-slideshow_btn")).Click();
+                    }
+                    catch { }
+
+                    Helpers.wait(1000);
+
+                    try
+                    {
+                        driver.FindElement(By.ClassName("next_btn")).Click();
                     }
                     catch { }
 

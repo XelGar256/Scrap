@@ -489,7 +489,6 @@ namespace Scrap.Models
                                 {
                                     driver.SwitchTo().DefaultContent();
                                     driver.SwitchTo().Frame(driver.FindElement(By.Id("stick-video-popup-video")));
-                                    driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#html_wrapper iframe")));
                                 }
                                 catch { }
                                 Helpers.switchFrameByNumber(driver, 0);
@@ -846,6 +845,19 @@ namespace Scrap.Models
                                 }
                             }
                             catch { }
+
+                            try
+                            {
+                                driver.SwitchTo().DefaultContent();
+                                driver.SwitchTo().Frame(driver.FindElement(By.Id("stick-video-popup-video")));
+                            }
+                            catch { }
+                            Helpers.switchFrameByNumber(driver, 0);
+                            Helpers.switchFrameByNumber(driver, 0);
+                            Helpers.switchToBrowserFrameByString(driver, "player");
+                            Helpers.switchToBrowserFrameByString(driver, "player");
+                            Helpers.ByClass(driver, "ytp-large-play-button");
+
                         }
                         catch { }
                     }
