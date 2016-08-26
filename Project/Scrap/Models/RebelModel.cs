@@ -161,7 +161,7 @@ namespace Scrap.Models
 
                     Helpers.wait(1000);
 
-                    Helpers.ByClass(driver, "_2");
+                    Helpers.ByClass(driver, "_next");
 
                     try
                     {

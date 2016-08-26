@@ -61,20 +61,24 @@ namespace Scrap.Models
                             }
                         }
                         //ByClass(driver, "aside-button");
-                        IList<IWebElement> tabLabels = driver.FindElements(By.ClassName("tab-label"));
-                        foreach (IWebElement tabLabel in tabLabels)
-                        {
-                            if (tabLabel.Text == "Win 4 Hulk Coins!")
-                            {
-                                tabLabel.Click();
-                                break;
-                            }
-                        }
                         //for (int counter = 0; counter == chips; counter++)
                         string code = "";
                         int amount = 0, uses = 0, loopCount = 0;
                         while (chips > 0)
                         {
+                            if (driver.FindElement(By.Id("card_suits_block")).Displayed && driver.FindElement(By.Id("card_ranks_block")).Displayed)
+                            {
+                                IList<IWebElement> tabLabels = driver.FindElements(By.ClassName("tab-label"));
+                                foreach (IWebElement tabLabel in tabLabels)
+                                {
+                                    if (tabLabel.Text.Contains("Win 4"))
+                                    {
+                                        tabLabel.Click();
+                                        break;
+                                    }
+                                }
+                            }
+
                             string[] suit = { "Heart", "Diamond", "Club", "Spade" };
                             Random random = new Random();
                             int rndSuit = random.Next(0, 3);
@@ -111,6 +115,7 @@ namespace Scrap.Models
                                 }
                             }
                             catch { }
+                            Helpers.wait(5000);
                         }
 
                         Helpers.ByClass(driver, "logo");
@@ -161,6 +166,35 @@ namespace Scrap.Models
                                 }
                                 catch { }
                                 //
+
+                                try
+                                {
+                                    IList<IWebElement> closeBs = driver.FindElements(By.TagName("b"));
+                                    foreach (IWebElement closeB in closeBs)
+                                    {
+                                        if (closeB.Text.Contains("No videos available right now."))
+                                        {
+                                            Console.WriteLine("Rewarded");
+                                            Helpers.switchToBrowserByString(driver, "nothing is");
+                                            driver.Navigate().GoToUrl("http://www.gifthulk.com/");
+                                            Helpers.closeWindows(driver, titles);
+                                            videoWatching = false;
+                                        }
+                                    }
+                                }
+                                catch { }
+
+                                try
+                                {
+                                    if (driver.FindElement(By.Id("ty_headline")).Displayed)
+                                    {
+                                        Console.WriteLine("Rewarded");
+                                        Helpers.switchToBrowserByString(driver, "nothing is");
+                                        driver.Navigate().GoToUrl("http://www.gifthulk.com/");
+                                        Helpers.closeWindows(driver, titles);
+                                    }
+                                }
+                                catch { }
 
                                 try
                                 {
@@ -491,6 +525,47 @@ namespace Scrap.Models
                                     driver.SwitchTo().Frame(driver.FindElement(By.Id("stick-video-popup-video")));
                                 }
                                 catch { }
+                                Helpers.switchFrameByNumber(driver, 0);
+                                Helpers.switchFrameByNumber(driver, 0);
+                                Helpers.switchFrameByNumber(driver, 0);
+                                Helpers.switchToBrowserFrameByString(driver, "player");
+                                Helpers.switchToBrowserFrameByString(driver, "player");
+                                Helpers.ByClass(driver, "ytp-large-play-button");
+
+                                try
+                                {
+                                    driver.SwitchTo().DefaultContent();
+                                    driver.SwitchTo().Frame(driver.FindElement(By.Id("watch-video-popup-frame")));
+                                }
+                                catch { }
+
+                                try
+                                {
+                                    if (driver.FindElement(By.Id("compositor_placed_innerclip_cta")).Displayed)
+                                    {
+                                        try
+                                        {
+                                            driver.SwitchTo().DefaultContent();
+                                            driver.FindElement(By.Id("watch-video")).Click();
+                                            driver.SwitchTo().Frame(driver.FindElement(By.Id("watch-video-popup-frame")));
+                                        }
+                                        catch { }
+                                    }
+                                }
+                                catch { }
+
+                                try
+                                {
+                                    if (driver.FindElement(By.Id("ty_headline")).Displayed)
+                                    {
+                                        driver.SwitchTo().DefaultContent();
+                                        driver.FindElement(By.Id("watch-video")).Click();
+                                        driver.SwitchTo().Frame(driver.FindElement(By.Id("watch-video-popup-frame")));
+                                    }
+                                }
+                                catch { }
+
+                                Helpers.switchFrameByNumber(driver, 0);
                                 Helpers.switchFrameByNumber(driver, 0);
                                 Helpers.switchFrameByNumber(driver, 0);
                                 Helpers.switchToBrowserFrameByString(driver, "player");
@@ -850,6 +925,24 @@ namespace Scrap.Models
                             {
                                 driver.SwitchTo().DefaultContent();
                                 driver.SwitchTo().Frame(driver.FindElement(By.Id("stick-video-popup-video")));
+                            }
+                            catch { }
+                            Helpers.switchFrameByNumber(driver, 0);
+
+                            try
+                            {
+                                IList<IWebElement> closeBs = driver.FindElements(By.TagName("b"));
+                                foreach (IWebElement closeB in closeBs)
+                                {
+                                    if (closeB.Text.Contains("No videos available right now."))
+                                    {
+                                        Console.WriteLine("Rewarded");
+                                        Helpers.switchToBrowserByString(driver, "nothing is");
+                                        driver.Navigate().GoToUrl("http://www.gifthulk.com/");
+                                        Helpers.closeWindows(driver, titles);
+                                        someLoop = false;
+                                    }
+                                }
                             }
                             catch { }
                             Helpers.switchFrameByNumber(driver, 0);

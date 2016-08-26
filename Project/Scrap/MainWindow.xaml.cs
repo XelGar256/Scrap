@@ -17,6 +17,36 @@ namespace Scrap
         {
             chromeDriverKiller();
             InitializeComponent();
+            LoadSettings();
+        }
+
+        private void LoadSettings()
+        {
+            if (Properties.Settings.Default.ZoomUser != string.Empty)
+            {
+                txtUsernameZoom.Text = Properties.Settings.Default.ZoomUser;
+                txtPasswordZoom.Password = Properties.Settings.Default.ZoomPass;
+            }
+            if (Properties.Settings.Default.SwagUser != string.Empty)
+            {
+                txtUsernameSwag.Text = Properties.Settings.Default.SwagUser;
+                txtPasswordSwag.Password = Properties.Settings.Default.SwagPass;
+            }
+            if (Properties.Settings.Default.RebelUser != string.Empty)
+            {
+                txtUsernameRebel.Text = Properties.Settings.Default.RebelUser;
+                txtPasswordRebel.Password = Properties.Settings.Default.RebelPass;
+            }
+            if (Properties.Settings.Default.GiftUser != string.Empty)
+            {
+                txtUsernameGiftHulk.Text = Properties.Settings.Default.GiftUser;
+                txtPasswordGiftHulk.Password = Properties.Settings.Default.GiftPass;
+            }
+            if (Properties.Settings.Default.InboxUser != string.Empty)
+            {
+                txtUsernameInbox.Text = Properties.Settings.Default.InboxUser;
+                txtPasswordInbox.Password = Properties.Settings.Default.InboxPass;
+            }
         }
 
         private void chromeDriverKiller()
@@ -178,6 +208,65 @@ namespace Scrap
             InboxBw.WorkerSupportsCancellation = true;
             InboxBw.DoWork += delegate (object o, DoWorkEventArgs args) { new InboxModel(username, password, InboxBw, tv); };
             InboxBw.RunWorkerAsync();
+        }
+
+        private void btnSaveSettings_Click(object sender, RoutedEventArgs e)
+        {
+            if (txtZoomUser.Text != "")
+            {
+                Properties.Settings.Default.ZoomUser = txtZoomUser.Text;
+                Properties.Settings.Default.ZoomPass = txtZoomPass.Password;
+            }
+            if (txtSwagUser.Text != "")
+            {
+                Properties.Settings.Default.SwagUser = txtSwagUser.Text;
+                Properties.Settings.Default.SwagPass = txtSwagPass.Password;
+            }
+            if (txtPrizeUser.Text != "")
+            {
+                Properties.Settings.Default.RebelUser = txtPrizeUser.Text;
+                Properties.Settings.Default.RebelPass = txtPrizePass.Password;
+            }
+            if (txtGiftUser.Text != "")
+            {
+
+                Properties.Settings.Default.GiftUser = txtGiftUser.Text;
+                Properties.Settings.Default.GiftPass = txtGiftPass.Password;
+            }
+            if (txtInboxUser.Text != "")
+            {
+                Properties.Settings.Default.InboxUser = txtInboxUser.Text;
+                Properties.Settings.Default.InboxPass = txtInboxPass.Password;
+            }
+            Properties.Settings.Default.Save();
+
+            MessageBox.Show("Your Settings Have Been Saved!!", "Save Settings", MessageBoxButton.OK);
+
+            if (Properties.Settings.Default.ZoomUser != string.Empty)
+            {
+                txtUsernameZoom.Text = Properties.Settings.Default.ZoomUser;
+                txtPasswordZoom.Password = Properties.Settings.Default.ZoomPass;
+            }
+            if (Properties.Settings.Default.SwagUser != string.Empty)
+            {
+                txtUsernameSwag.Text = Properties.Settings.Default.SwagUser;
+                txtPasswordSwag.Password = Properties.Settings.Default.SwagPass;
+            }
+            if (Properties.Settings.Default.RebelUser != string.Empty)
+            {
+                txtUsernameRebel.Text = Properties.Settings.Default.RebelUser;
+                txtPasswordRebel.Password = Properties.Settings.Default.RebelPass;
+            }
+            if (Properties.Settings.Default.GiftUser != string.Empty)
+            {
+                txtUsernameGiftHulk.Text = Properties.Settings.Default.GiftUser;
+                txtPasswordGiftHulk.Password = Properties.Settings.Default.GiftPass;
+            }
+            if (Properties.Settings.Default.InboxUser != string.Empty)
+            {
+                txtUsernameInbox.Text = Properties.Settings.Default.InboxUser;
+                txtPasswordInbox.Password = Properties.Settings.Default.InboxPass;
+            }
         }
 
         private void btnStopInbox_Click(object sender, RoutedEventArgs e)
