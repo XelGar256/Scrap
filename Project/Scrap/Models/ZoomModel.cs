@@ -391,6 +391,31 @@ namespace Scrap.Models
                         }
                     }
                     catch { }
+
+                    Helpers.switchFrameByNumber(driver, 0);
+                    Helpers.switchFrameByNumber(driver, 0);
+
+                    try
+                    {
+                        if (driver.FindElement(By.ClassName("ytp-videowall-still-info-content")).Displayed)
+                        {
+                            driver.SwitchTo().DefaultContent();
+                            Helpers.ByClass(driver, "close");
+                            looped = false;
+                        }
+                    }
+                    catch { }
+
+                    try
+                    {
+                        if (driver.FindElement(By.ClassName("ytp-endscreen-content")).Displayed)
+                        {
+                            driver.SwitchTo().DefaultContent();
+                            Helpers.ByClass(driver, "close");
+                            looped = false;
+                        }
+                    }
+                    catch { }
                 }
             }
         }
