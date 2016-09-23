@@ -1139,6 +1139,16 @@ namespace Scrap.Models
                             }
                         }
                         catch { }
+
+                        try
+                        {
+                            if(driver.FindElement(By.Id("ty_body_text")).Displayed)
+                            {
+                                driver.Navigate().Refresh();
+                                Helpers.closeWindows(driver, titles);
+                            }
+                        }
+                        catch { }
                     }
                 }
                 catch { }

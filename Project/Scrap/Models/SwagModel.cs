@@ -95,10 +95,14 @@ namespace Scrap.Models
         {
             try
             {
-                driver.FindElement(By.PartialLinkText("Poll")).Click();
+                driver.FindElement(By.PartialLinkText("Daily Poll")).Click();
             }
             catch { }
+
             Helpers.wait(1000);
+            Helpers.switchToBrowserByString(driver, "Daily Poll");
+            Helpers.wait(1000);
+
             try
             {
                 IList<IWebElement> pollCheckboxes = driver.FindElements(By.ClassName("pollCheckbox"));
@@ -120,8 +124,7 @@ namespace Scrap.Models
             Helpers.wait(1000);
             Helpers.ByClass(driver, "todayPoll");
             Helpers.wait(1000);
-            driver.Navigate().GoToUrl("http://www.swagbucks.com/");
-            Helpers.wait(1000);
+            Helpers.switchToBrowserByString(driver, "Home | Swagbucks");
         }
 
         void nCrave(IWebDriver driver, BackgroundWorker bw)
