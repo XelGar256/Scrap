@@ -230,6 +230,36 @@ namespace Scrap.Models
                         Helpers.ById(driver, "webtraffic_popup_next_button");
                         Helpers.ById(driver, "expository_image");
 
+                        try
+                        {
+                            if (driver.FindElement(By.Id("compositor_placed_innerclip_cta")).Displayed)
+                            {
+                                driver.Navigate().GoToUrl("http://www.gifthulk.com/");
+                                Helpers.closeWindows(driver, titles);
+                            }
+                        }
+                        catch { }
+
+                        try
+                        {
+                            if (driver.FindElement(By.Id("ty_headline")).Displayed)
+                            {
+                                driver.Navigate().GoToUrl("http://www.gifthulk.com/");
+                                Helpers.closeWindows(driver, titles);
+                            }
+                        }
+                        catch { }
+
+                        try
+                        {
+                            if (driver.FindElement(By.Id("ty_body_text")).Displayed)
+                            {
+                                driver.Navigate().GoToUrl("http://www.gifthulk.com/");
+                                Helpers.closeWindows(driver, titles);
+                            }
+                        }
+                        catch { }
+
                         if (driver.FindElement(By.TagName("div")).Text.Contains("No videos available right now."))
                         {
                             driver.Navigate().GoToUrl("http://www.gifthulk.com/");
@@ -241,7 +271,7 @@ namespace Scrap.Models
             }
         }
 
-            void GuessCard(IWebDriver driver, int cards)
+        void GuessCard(IWebDriver driver, int cards)
         {
             string code = "";
             int chips = 0, counting;
