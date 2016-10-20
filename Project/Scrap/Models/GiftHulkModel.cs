@@ -210,6 +210,11 @@ namespace Scrap.Models
         void sideVideos(IWebDriver driver)
         {
             Helpers.switchToBrowserFrameByString(driver, "watch-video-popup-frame");
+
+            Helpers.ById(driver, "webtraffic_popup_start_button");
+            Helpers.ById(driver, "webtraffic_popup_next_button");
+            Helpers.ById(driver, "expository_image");
+
             if (driver.FindElement(By.TagName("div")).Text.Contains("No videos available right now."))
             {
                 driver.Navigate().GoToUrl("http://www.gifthulk.com/");
