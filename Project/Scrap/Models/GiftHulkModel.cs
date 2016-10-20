@@ -212,21 +212,36 @@ namespace Scrap.Models
             bool looping = true;
             while (looping)
             {
-                Helpers.switchToBrowserFrameByString(driver, "watch-video-popup-frame");
-
-                Helpers.ById(driver, "webtraffic_popup_start_button");
-                Helpers.ById(driver, "webtraffic_popup_next_button");
-                Helpers.ById(driver, "expository_image");
-
-                if (driver.FindElement(By.TagName("div")).Text.Contains("No videos available right now."))
+                try
                 {
-                    driver.Navigate().GoToUrl("http://www.gifthulk.com/");
-                    looping = false;
+                    System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
+
+                    foreach (String window in windowHandles)
+                    {
+                        try
+                        {
+                            IWebDriver popup = driver.SwitchTo().Window(window);
+                        }
+                        catch { }
+
+                        Helpers.switchToBrowserFrameByString(driver, "watch-video-popup-frame");
+
+                        Helpers.ById(driver, "webtraffic_popup_start_button");
+                        Helpers.ById(driver, "webtraffic_popup_next_button");
+                        Helpers.ById(driver, "expository_image");
+
+                        if (driver.FindElement(By.TagName("div")).Text.Contains("No videos available right now."))
+                        {
+                            driver.Navigate().GoToUrl("http://www.gifthulk.com/");
+                            looping = false;
+                        }
+                    }
                 }
+                catch { }
             }
         }
 
-        void GuessCard(IWebDriver driver, int cards)
+            void GuessCard(IWebDriver driver, int cards)
         {
             string code = "";
             int chips = 0, counting;
