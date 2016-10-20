@@ -11,7 +11,7 @@ namespace Scrap
     /// </summary>
     public partial class MainWindow : Window
     {
-        private BackgroundWorker zoomBw, swagBw, rebelBw, giftHulkBw, InboxBw, pedBw;
+        private BackgroundWorker zoomBw, swagBw, rebelBw, giftHulkBw, InboxBw, grindBw;
 
         public MainWindow()
         {
@@ -114,10 +114,24 @@ namespace Scrap
         {
             string username = txtUsernameGiftHulk.Text, password = txtPasswordGiftHulk.Password;
             bool openHulk = false;
+            int cards = 0;
+
+            if (rdoCard.IsChecked == true)
+            {
+                cards = 0;
+            }
+            if (rdoRank.IsChecked == true)
+            {
+                cards = 1;
+            }
+            if (rdoSuit.IsChecked == true)
+            {
+                cards = 2;
+            }
 
             giftHulkBw = new BackgroundWorker();
             giftHulkBw.WorkerSupportsCancellation = true;
-            giftHulkBw.DoWork += delegate (object o, DoWorkEventArgs args) { new GiftHulkModel(username, password, giftHulkBw, openHulk); };
+            giftHulkBw.DoWork += delegate (object o, DoWorkEventArgs args) { new GiftHulkModel(username, password, giftHulkBw, openHulk, cards); };
             giftHulkBw.RunWorkerAsync();
         }
 
@@ -164,26 +178,27 @@ namespace Scrap
         {
             string username = txtUsernameGiftHulk.Text, password = txtPasswordGiftHulk.Password;
             bool openHulk = true;
+            int cards = 0;
 
             giftHulkBw = new BackgroundWorker();
             giftHulkBw.WorkerSupportsCancellation = true;
-            giftHulkBw.DoWork += delegate (object o, DoWorkEventArgs args) { new GiftHulkModel(username, password, giftHulkBw, openHulk); };
+            giftHulkBw.DoWork += delegate (object o, DoWorkEventArgs args) { new GiftHulkModel(username, password, giftHulkBw, openHulk, cards); };
             giftHulkBw.RunWorkerAsync();
         }
 
-        private void btnLoginPed_Click(object sender, RoutedEventArgs e)
+        private void btnLoginGrind_Click(object sender, RoutedEventArgs e)
         {
-            //PED
-            string username = txtUsernamePed.Text, password = txtPasswordPed.Password;
-            bool openPed = false;
+            //Grindabuck
+            string username = txtUsernameGrind.Text, password = txtPasswordGrind.Password;
+            bool openGrind = false;
 
-            pedBw = new BackgroundWorker();
-            pedBw.WorkerSupportsCancellation = true;
-            pedBw.DoWork += delegate (object o, DoWorkEventArgs args) { new PedModel(username, password, pedBw, openPed); };
-            pedBw.RunWorkerAsync();
+            grindBw = new BackgroundWorker();
+            grindBw.WorkerSupportsCancellation = true;
+            grindBw.DoWork += delegate (object o, DoWorkEventArgs args) { new GrindaModel(username, password, grindBw, openGrind); };
+            grindBw.RunWorkerAsync();
         }
 
-        private void btnStopPed_Click(object sender, RoutedEventArgs e)
+        private void btnStopGrind_Click(object sender, RoutedEventArgs e)
         {
 
         }
@@ -274,21 +289,16 @@ namespace Scrap
 
         }
 
-        private void btn_openPed_Click(object sender, RoutedEventArgs e)
+        private void btn_openGrind_Click(object sender, RoutedEventArgs e)
         {
-            //PED
-            string username = txtUsernamePed.Text, password = txtPasswordPed.Password;
-            bool openPed = true;
+            //Grindabuck
+            string username = txtUsernameGrind.Text, password = txtPasswordGrind.Password;
+            bool openGrind = true;
 
-            pedBw = new BackgroundWorker();
-            pedBw.WorkerSupportsCancellation = true;
-            pedBw.DoWork += delegate (object o, DoWorkEventArgs args) { new PedModel(username, password, pedBw, openPed); };
-            pedBw.RunWorkerAsync();
-        }
-
-        private void btnStopPalace_Click(object sender, RoutedEventArgs e)
-        {
-
+            grindBw = new BackgroundWorker();
+            grindBw.WorkerSupportsCancellation = true;
+            grindBw.DoWork += delegate (object o, DoWorkEventArgs args) { new GrindaModel(username, password, grindBw, openGrind); };
+            grindBw.RunWorkerAsync();
         }
 
         private void btnLoginRebel_Click(object sender, RoutedEventArgs e)

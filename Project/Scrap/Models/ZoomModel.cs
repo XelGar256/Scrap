@@ -80,6 +80,15 @@ namespace Scrap.Models
 
                                 try
                                 {
+                                    if (driver.Title.Contains("Facebook"))
+                                    {
+                                        driver.Close();
+                                    }
+                                }
+                                catch { }
+
+                                try
+                                {
                                     IList<IWebElement> surveys = driver.FindElements(By.ClassName("btn-block"));
                                     if (surveys.Count > 2)
                                     {
@@ -242,6 +251,15 @@ namespace Scrap.Models
                             Helpers.switchFrameByNumber(driver, 0);
                             Helpers.ByClass(driver, "close");
                             looped = false;
+                        }
+                    }
+                    catch { }
+
+                    try
+                    {
+                        if (driver.Title.Contains("Facebook"))
+                        {
+                            driver.Close();
                         }
                     }
                     catch { }
@@ -445,6 +463,15 @@ namespace Scrap.Models
 
                         try
                         {
+                            if (driver.Title.Contains("Facebook"))
+                            {
+                                driver.Close();
+                            }
+                        }
+                        catch { }
+
+                        try
+                        {
                             driver.SwitchTo().DefaultContent();
                         }
                         catch { }
@@ -452,7 +479,7 @@ namespace Scrap.Models
                         Helpers.switchFrameByNumber(driver, 0);
 
                         try
-                         {
+                        {
                             IWebElement dropDownMonth = driver.FindElement(By.ClassName("b_month"));
                             IWebElement dropDownDay = driver.FindElement(By.ClassName("b_day"));
                             IWebElement dropDownYear = driver.FindElement(By.ClassName("b_year"));
@@ -653,12 +680,35 @@ namespace Scrap.Models
                         }
                         catch { }
 
+                        driver.SwitchTo().DefaultContent();
+
+                        Helpers.switchFrameByNumber(driver, 0);
+                        Helpers.switchFrameByNumber(driver, 0);
+                        Helpers.switchFrameByNumber(driver, 0);
+                        Helpers.switchFrameByNumber(driver, 0);
+                        Helpers.switchToBrowserFrameByString(driver, "player");
+                        Helpers.switchToBrowserFrameByString(driver, "player");
+
+                        Helpers.ByClass(driver, "ytp-large-play-button");
+
+                        driver.SwitchTo().DefaultContent();
+                        Helpers.switchFrameByNumber(driver, 0);
+                        Helpers.switchFrameByNumber(driver, 0);
                         Helpers.switchFrameByNumber(driver, 0);
                         Helpers.switchFrameByNumber(driver, 0);
                         Helpers.switchFrameByNumber(driver, 0);
                         Helpers.switchFrameByNumber(driver, 0);
 
-                        Helpers.ByClass(driver, "ytp-large-play-button");
+                        try
+                        {
+                            if (driver.FindElement(By.ClassName("ytp-error-content-wrap")).Displayed)
+                            {
+                                driver.SwitchTo().DefaultContent();
+                                driver.FindElement(By.Id("next_btn")).Click();
+                            }
+                        }
+                        catch { }
+
                     }
                 }
                 catch { }
@@ -684,6 +734,15 @@ namespace Scrap.Models
                         try
                         {
                             IWebDriver popup = driver.SwitchTo().Window(window);
+                        }
+                        catch { }
+
+                        try
+                        {
+                            if (driver.Title.Contains("Facebook"))
+                            {
+                                driver.Close();
+                            }
                         }
                         catch { }
 
@@ -843,746 +902,3 @@ namespace Scrap.Models
         }
     }
 }
-/*
-                //jun videos
-                Helpers.wait(2000);
-
-                Helpers.switchToBrowserByString(driver, "Dashboard");
-
-                if (!justZoom)
-                {
-                    try
-                    {
-                        driver.FindElement(By.XPath("//a[contains(@href, 'hourly_offer_contest')]")).Click();
-                        hour = DateTime.Now.Hour;
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Couldn't Click Contest");
-                    }
-                    finally { }
-
-                    Helpers.ByClass(driver, "brand");
-
-
-                    Helpers.wait(1000);
-                    Helpers.ByClass(driver, "widgetcontent");
-                    Helpers.wait(1000);
-
-                    while (Helpers.lookFor(driver, "Watch and")) //testing
-                    {
-                        if (hour != DateTime.Now.Hour)
-                        {
-                            try
-                            {
-                                Helpers.switchToBrowserByString(driver, "Dashboard");
-                                driver.FindElement(By.XPath("//a[contains(@href, 'hourly_offer_contest')]")).Click();
-                                hour = DateTime.Now.Hour;
-                            }
-                            catch
-                            {
-                                Console.WriteLine("Couldn't Click Contest");
-                            }
-                            finally { }
-
-                            Helpers.ByClass(driver, "brand");
-                        }
-
-                        try
-                        {
-                            System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
-
-                            foreach (String window in windowHandles)
-                            {
-                                IWebDriver popup = driver.SwitchTo().Window(window);
-
-                                Helpers.wait(1000);
-                                Helpers.switchFrameByNumber(driver, 0);
-
-                                //
-
-                                try
-                                {
-                                    IList<IWebElement> oLinks = driver.FindElements(By.ClassName("singleselectset_radio"));
-                                    Random random = new Random();
-                                    int rndClick = random.Next(1, oLinks.Count);
-                                    Console.WriteLine(rndClick);
-                                    int counterClick = 1;
-                                    foreach (IWebElement oLink in oLinks)
-                                    {
-                                        Console.WriteLine(counterClick);
-                                        if (counterClick == rndClick)
-                                        {
-                                            oLink.Click();
-                                        }
-                                        counterClick++;
-                                    }
-                                }
-                                catch { }
-
-                                try
-                                {
-                                    IWebElement dropDownMonth = driver.FindElement(By.Id("dob_month"));
-                                    IWebElement dropDownDay = driver.FindElement(By.Id("dob_day"));
-                                    IWebElement dropDownYear = driver.FindElement(By.Id("dob_year"));
-                                    string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-                                    Random random = new Random();
-                                    int rndMonth = random.Next(0, 11);
-                                    Console.WriteLine(rndMonth);
-                                    SelectElement clickThis = new SelectElement(dropDownMonth);
-                                    clickThis.SelectByText(months[rndMonth]);
-                                    Helpers.wait(1000);
-                                    int rndDay = random.Next(1, 28);
-                                    clickThis = new SelectElement(dropDownDay);
-                                    clickThis.SelectByText(rndDay.ToString());
-                                    Helpers.wait(1000);
-                                    int rndYear = random.Next(1974, 1994);
-                                    clickThis = new SelectElement(dropDownYear);
-                                    clickThis.SelectByText(rndYear.ToString());
-                                    Helpers.wait(1000);
-                                }
-                                catch { }
-
-                                try
-                                {
-                                    driver.FindElement(By.Id("demosubmitimg")).Click();
-                                }
-                                catch { }
-
-                                //
-                                Helpers.ById(driver, "webtraffic_popup_start_button");
-                                Helpers.ById(driver, "webtraffic_popup_next_button");
-                                Helpers.ByClass(driver, "webtraffic_start_button");
-                                Helpers.ByClass(driver, "webtraffic_next_button");
-                                Helpers.ByClass(driver, "webtraffic_button");
-                                Helpers.ById(driver, "expository_image");
-
-                                // Chips Ad
-                                Helpers.ById(driver, "compositor_placed_innerclip_cheddar");
-                                Helpers.ById(driver, "compositor_placed_innerclip_gouda");
-                                Helpers.ById(driver, "compositor_placed_innerclip_habanero");
-                                Helpers.ById(driver, "compositor_placed_innerclip_flamin");
-                                Helpers.ById(driver, "compositor_placed_innerclip_honeybbq");
-                                Helpers.ById(driver, "compositor_placed_innerclip_korean");
-                                Helpers.ById(driver, "compositor_placed_innerclip_oliveoil");
-                                Helpers.ById(driver, "compositor_placed_innerclip_seasalt");
-                                //
-                                Helpers.ById(driver, "compositor_placed_innerclip_bajablast");
-
-                                try
-                                {
-                                    if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
-                                    {
-                                        driver.Navigate().Refresh();
-                                        Helpers.closeWindows(driver, titles);
-                                    }
-                                }
-                                catch { }
-
-                                try
-                                {
-                                    if (driver.FindElement(By.Id("compositor_placed_innerclip_cta")).Displayed)
-                                    {
-                                        driver.Navigate().Refresh();
-                                        Helpers.closeWindows(driver, titles);
-                                    }
-                                }
-                                catch { }
-
-                                try
-                                {
-                                    if (driver.FindElement(By.Id("compositor_placed_innerclip_youtube")).Displayed)
-                                    {
-                                        driver.Navigate().Refresh();
-                                        Helpers.closeWindows(driver, titles);
-                                    }
-                                }
-                                catch { }
-
-                                try
-                                {
-                                    IWebElement rewardText = driver.FindElement(By.Id("ty_header"));
-                                    if (rewardText.Text == "You earned 2 ZBs!")
-                                    {
-
-                                        driver.Navigate().Refresh();
-
-                                        Helpers.closeWindows(driver, titles);
-                                    }
-                                    else if (rewardText.Text == "You've earned 2 ZBs!")
-                                    {
-
-                                        driver.Navigate().Refresh();
-
-                                        Helpers.closeWindows(driver, titles);
-                                    }
-                                    else if (rewardText.Text == "You earned 1 ZBs!")
-                                    {
-
-                                        driver.Navigate().Refresh();
-
-                                        Helpers.closeWindows(driver, titles);
-                                    }
-                                    else if (rewardText.Text.Contains("2 ZBs"))
-                                    {
-                                        driver.Navigate().Refresh();
-
-                                        Helpers.closeWindows(driver, titles);
-                                    }
-                                }
-                                catch { }
-
-
-
-                            }
-                            Helpers.switchToBrowserByString(driver, "Now Exploring great content!");
-                            try
-                            {
-                                while (driver.Title.Contains("Now Exploring"))
-                                {
-                                    Helpers.switchToBrowserByString(driver, "Now Exploring great content!");
-                                    try
-                                    {
-                                        IWebElement greatContent = driver.FindElement(By.ClassName("nextstepimg"));
-                                        greatContent.Click();
-                                    }
-                                    catch
-                                    {
-                                        Console.WriteLine("Waiting to finish");
-                                    }
-                                    try
-                                    {
-                                        driver.FindElement(By.XPath("//img[@alt='Claim your reward']")).Click();
-                                        Helpers.switchToBrowserByString(driver, "Watch and Get");
-                                    }
-                                    catch { }
-                                    Helpers.wait(5000);
-                                }
-                            }
-                            catch { }
-
-                            Helpers.switchFrameByNumber(driver, 0);
-
-                            try
-                            {
-                                if (driver.FindElement(By.Id("compositor_placed_innerclip_youtube")).Displayed)
-                                {
-                                    driver.Navigate().Refresh();
-                                    Helpers.closeWindows(driver, titles);
-                                }
-                            }
-                            catch { }
-
-                            IList<IWebElement> testIframes = driver.FindElements(By.TagName("iframe"));
-                            Console.WriteLine("How many iFrames are avaible = " + testIframes.Count);
-                            Console.WriteLine("*********************************************");
-                            foreach (IWebElement testIframe in testIframes)
-                            {
-                                Console.WriteLine(testIframe.Displayed);
-                                Console.WriteLine(testIframe.Text);
-                                Console.WriteLine(testIframe.GetAttribute("id"));
-                            }
-                            Console.WriteLine("*********************************************");
-
-                            try
-                            {
-                                driver.SwitchTo().Frame(driver.FindElement(By.Id("vgPlayer")));
-                            }
-                            catch { }
-                            testIframes = driver.FindElements(By.TagName("iframe"));
-                            Console.WriteLine("Number of iFrames after vgPlayer = " + testIframes.Count);
-                            foreach (IWebElement testIframe in testIframes)
-                            {
-                                Console.WriteLine(testIframe.Displayed);
-                                Console.WriteLine(testIframe.Text);
-                                Console.WriteLine(testIframe.GetAttribute("id"));
-                            }
-
-                            try
-                            {
-                                Helpers.switchFrameByNumber(driver, 0);
-                                testIframes = driver.FindElements(By.TagName("iframe"));
-                                Console.WriteLine("Number of iFrames after vgPlayer = " + testIframes.Count);
-                                foreach (IWebElement testIframe in testIframes)
-                                {
-                                    Console.WriteLine(testIframe.Displayed);
-                                    Console.WriteLine(testIframe.Text);
-                                    Console.WriteLine(testIframe.GetAttribute("id"));
-                                }
-                            }
-                            catch { }
-                            try
-                            {
-                                driver.SwitchTo().Frame(driver.FindElement(By.Id("player")));
-                                driver.SwitchTo().Frame(driver.FindElement(By.Id("player")));
-                            }
-                            catch { }
-                            //
-
-                            try
-                            {
-                                driver.FindElement(By.ClassName("ytp-large-play-button")).Click();
-                            }
-                            catch { }
-
-                            Console.WriteLine("Switching to Browser");
-                            Helpers.switchToBrowserByString(driver, "Offer Walls");
-                            try
-                            {
-                                Console.WriteLine("Switching to Frame");
-                                driver.SwitchTo().Frame(1);
-
-                                if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
-                                {
-                                    driver.Navigate().Refresh();
-                                    Helpers.closeWindows(driver, titles);
-                                }
-                            }
-
-                            catch { }
-
-                            Helpers.switchToBrowserByString(driver, "Offer Walls");
-                            try
-                            {
-                                driver.SwitchTo().DefaultContent();
-                                Helpers.switchFrameByNumber(driver, 0);
-                            }
-                            catch { }
-
-                            try
-                            {
-                                if (driver.FindElement(By.Id("offers_exhausted_message")).Displayed)
-                                {
-                                    driver.Close();
-                                    Helpers.wait(5000);
-                                }
-                            }
-                            catch { }
-
-
-                            Helpers.switchToBrowserByString(driver, "Watch and");
-                            IList<IWebElement> stackedFrames = driver.FindElements(By.TagName("iframe"));
-                            Console.WriteLine("Current Number Of IFrames " + stackedFrames.Count);
-                            Helpers.switchFrameByNumber(driver, stackedFrames.Count);
-                            if (driver.FindElement(By.TagName("error")).Text.Contains("AccessDeniedAccess"))
-                            {
-                                Console.WriteLine("HOLY SHIT DUDE");
-                                driver.Close();
-                            }
-                        }
-                        catch { }
-
-                        Helpers.switchToBrowserByString(driver, "Watch and");
-                        Helpers.switchFrameByNumber(driver, 0);
-
-                        try
-                        {
-                            if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
-                            {
-                                driver.Navigate().Refresh();
-                                Helpers.closeWindows(driver, titles);
-                            }
-                        }
-                        catch { }
-
-                        try
-                        {
-                            driver.SwitchTo().DefaultContent();
-                        }
-                        catch { }
-                        Helpers.switchFrameByNumber(driver, 0);
-                        Helpers.switchToBrowserFrameByString(driver, "vgPlayer");
-                        Helpers.switchFrameByNumber(driver, 0);
-                        Helpers.switchToBrowserFrameByString(driver, "player");
-                        Helpers.ByClass(driver, "ytp-large-play-button");
-
-                        try
-                        {
-                            driver.SwitchTo().DefaultContent();
-                        }
-                        catch { }
-                        Helpers.switchFrameByNumber(driver, 0);
-                        Helpers.switchFrameByNumber(driver, 0);
-                        Helpers.switchFrameByNumber(driver, 0);
-                        Helpers.switchToBrowserFrameByString(driver, "player");
-                        Helpers.switchToBrowserFrameByString(driver, "player");
-                        Helpers.ByClass(driver, "ytp-large-play-button");
-                    }
-
-                    Helpers.switchToBrowserByString(driver, "Dashboard");
-                    Console.WriteLine(driver.Title);
-
-
-                    driver.Navigate().GoToUrl("http://www.zoombucks.com/offer_walls.php?t=1444653478#volume-11");
-
-                    Helpers.switchToBrowserByString(driver, "Offer Walls");
-                    bool offerWall = true;
-
-                    do
-                    {
-                        try
-                        {
-                            System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
-
-                            foreach (String window in windowHandles)
-                            {
-                                IWebDriver popup = driver.SwitchTo().Window(window);
-
-                                try
-                                {
-                                    driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#volume-11 iframe")));
-                                }
-                                catch { }
-                                try
-                                {
-                                    if (driver.FindElement(By.ClassName("video_title")).Text != "Watch this video!")
-                                    {
-                                        try
-                                        {
-                                            Console.WriteLine("Looking for Videos");
-                                            Helpers.ById(driver, "next_btn");
-                                        }
-                                        catch { }
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Videos Found");
-                                        Helpers.wait(500);
-                                        driver.SwitchTo().Frame(0);
-                                        driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#html_wrapper iframe")));
-                                        Console.WriteLine("Lets Get Started");
-                                        //
-
-                                        try
-                                        {
-                                            IList<IWebElement> oLinks = driver.FindElements(By.ClassName("singleselectset_radio"));
-                                            Random random = new Random();
-                                            int rndClick = random.Next(1, oLinks.Count);
-                                            Console.WriteLine(rndClick);
-                                            int counterClick = 1;
-                                            foreach (IWebElement oLink in oLinks)
-                                            {
-                                                Console.WriteLine(counterClick);
-                                                if (counterClick == rndClick)
-                                                {
-                                                    oLink.Click();
-                                                }
-                                                counterClick++;
-                                            }
-                                        }
-                                        catch { }
-
-                                        try
-                                        {
-                                            IWebElement dropDownMonth = driver.FindElement(By.Id("dob_month"));
-                                            IWebElement dropDownDay = driver.FindElement(By.Id("dob_day"));
-                                            IWebElement dropDownYear = driver.FindElement(By.Id("dob_year"));
-                                            string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-                                            Random random = new Random();
-                                            int rndMonth = random.Next(0, 11);
-                                            Console.WriteLine(rndMonth);
-                                            SelectElement clickThis = new SelectElement(dropDownMonth);
-                                            clickThis.SelectByText(months[rndMonth]);
-                                            Helpers.wait(1000);
-                                            int rndDay = random.Next(1, 28);
-                                            clickThis = new SelectElement(dropDownDay);
-                                            clickThis.SelectByText(rndDay.ToString());
-                                            Helpers.wait(1000);
-                                            int rndYear = random.Next(1974, 1994);
-                                            clickThis = new SelectElement(dropDownYear);
-                                            clickThis.SelectByText(rndYear.ToString());
-                                            Helpers.wait(1000);
-                                        }
-                                        catch { }
-
-                                        try
-                                        {
-                                            driver.FindElement(By.Id("demosubmitimg")).Click();
-                                        }
-                                        catch { }
-
-                                        //
-                                        Helpers.ById(driver, "expository_image");
-                                        Helpers.ById(driver, "webtraffic_popup_start_button");
-                                        Helpers.ById(driver, "webtraffic_popup_next_button");
-                                        Helpers.ByClass(driver, "webtraffic_start_button");
-                                        Helpers.ByClass(driver, "webtraffic_next_button");
-                                    }
-                                }
-                                catch { }
-
-                                try
-                                {
-                                    if (driver.FindElement(By.Id("offers_exhausted_message")).Displayed)
-                                    {
-                                        driver.Close();
-                                        Helpers.wait(5000);
-                                    }
-                                }
-                                catch { }
-
-                                try
-                                {
-                                    if (driver.FindElement(By.Id("compositor_placed_innerclip_cta")).Displayed)
-                                    {
-                                        driver.Navigate().Refresh();
-                                        Helpers.closeWindows(driver, titles);
-                                    }
-                                }
-                                catch { }
-
-
-                                Helpers.wait(5000);
-
-                                try
-                                {
-                                    Console.WriteLine("Switching to Browser");
-                                    Console.WriteLine("Switching to Frame");
-                                    driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#volume-11 iframe")));
-                                    Console.WriteLine("Switching to Frame");
-                                    driver.SwitchTo().Frame(0);
-                                    Console.WriteLine("Switching to Frame");
-                                    driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#html_wrapper iframe")));
-
-                                }
-                                catch { }
-                            }
-
-                            try
-                            {
-                                Console.WriteLine("Switching to Browser");
-                                Helpers.switchToBrowserByString(driver, "Offer Walls");
-                                Console.WriteLine("Switching to Frame");
-                                driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#volume-11 iframe")));
-                                driver.SwitchTo().Frame(0);
-                                driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#html_wrapper iframe")));
-
-                                try
-                                {
-                                    if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
-                                    {
-                                        driver.Navigate().Refresh();
-                                        Helpers.closeWindows(driver, titles);
-                                    }
-                                }
-                                catch { }
-
-                                IWebElement volume11reward = driver.FindElement(By.Id("ty_header"));
-                                if (volume11reward.Text == "You earned 1 reward!")
-                                {
-                                    Console.WriteLine("refreshing....");
-                                    driver.Navigate().Refresh();
-                                    Helpers.closeWindows(driver, titles);
-                                }
-                                else if (volume11reward.Text.Contains("2 ZBs"))
-                                {
-                                    Console.WriteLine("refreshing....");
-                                    driver.Navigate().Refresh();
-                                    Helpers.closeWindows(driver, titles);
-                                }
-                            }
-                            catch { }
-
-                            try
-                            {
-                                Console.WriteLine("Switching to Browser");
-                                Helpers.switchToBrowserByString(driver, "Offer Walls");
-                                Console.WriteLine("Switching to Frame");
-                                driver.SwitchTo().Frame(0);
-
-                                if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
-                                {
-                                    driver.Navigate().Refresh();
-                                    Helpers.closeWindows(driver, titles);
-                                }
-                            }
-
-                            catch { }
-
-
-                            Helpers.switchToBrowserByString(driver, "Now Exploring great content!");
-                            try
-                            {
-                                while (driver.Title.Contains("Now Exploring"))
-                                {
-                                    Helpers.switchToBrowserByString(driver, "Now Exploring great content!");
-                                    try
-                                    {
-                                        IWebElement greatContent = driver.FindElement(By.ClassName("nextstepimg"));
-                                        greatContent.Click();
-                                    }
-                                    catch
-                                    {
-                                        Console.WriteLine("Waiting to finish");
-                                    }
-                                    try
-                                    {
-                                        driver.FindElement(By.XPath("//img[@alt='Claim your reward']")).Click();
-                                        Helpers.switchToBrowserByString(driver, "Watch and Get");
-                                    }
-                                    catch { }
-                                    Helpers.wait(5000);
-                                }
-                            }
-                            catch { }
-
-                            Console.WriteLine("Switching to Frame");
-                            driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#volume-11 iframe")));
-                            Console.WriteLine("Switching to Frame");
-                            driver.SwitchTo().Frame(0);
-                            Console.WriteLine("Switching to Frame");
-                            driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#html_wrapper iframe")));
-
-                            if (driver.FindElement(By.Id("offers_exhausted_message")).Displayed)
-                            {
-                                offerWall = false;
-                            }
-
-                            try
-                            {
-                                driver.SwitchTo().DefaultContent();
-                                Helpers.switchFrameByNumber(driver, 0);
-                            }
-                            catch { }
-
-                            try
-                            {
-                                IList<IWebElement> oLinks = driver.FindElements(By.ClassName("singleselectset_radio"));
-                                Random random = new Random();
-                                int rndClick = random.Next(1, oLinks.Count);
-                                Console.WriteLine(rndClick);
-                                int counterClick = 1;
-                                foreach (IWebElement oLink in oLinks)
-                                {
-                                    Console.WriteLine(counterClick);
-                                    if (counterClick == rndClick)
-                                    {
-                                        oLink.Click();
-                                    }
-                                    counterClick++;
-                                }
-                            }
-                            catch { }
-
-                            try
-                            {
-                                IWebElement dropDownMonth = driver.FindElement(By.Id("dob_month"));
-                                IWebElement dropDownDay = driver.FindElement(By.Id("dob_day"));
-                                IWebElement dropDownYear = driver.FindElement(By.Id("dob_year"));
-                                string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-                                Random random = new Random();
-                                int rndMonth = random.Next(0, 11);
-                                Console.WriteLine(rndMonth);
-                                SelectElement clickThis = new SelectElement(dropDownMonth);
-                                clickThis.SelectByText(months[rndMonth]);
-                                Helpers.wait(1000);
-                                int rndDay = random.Next(1, 28);
-                                clickThis = new SelectElement(dropDownDay);
-                                clickThis.SelectByText(rndDay.ToString());
-                                Helpers.wait(1000);
-                                int rndYear = random.Next(1974, 1994);
-                                clickThis = new SelectElement(dropDownYear);
-                                clickThis.SelectByText(rndYear.ToString());
-                                Helpers.wait(1000);
-                            }
-                            catch { }
-
-                            try
-                            {
-                                driver.FindElement(By.Id("demosubmitimg")).Click();
-                            }
-                            catch { }
-
-                        }
-                        catch { }
-
-                        try
-                        {
-                            IList<IWebElement> testIframes = driver.FindElements(By.TagName("iframe"));
-                            Console.WriteLine("How many iFrames are avaible = " + testIframes.Count);
-                            Console.WriteLine("*********************************************");
-                            foreach (IWebElement testIframe in testIframes)
-                            {
-                                Console.WriteLine(testIframe.Displayed);
-                                Console.WriteLine(testIframe.Text);
-                                Console.WriteLine(testIframe.GetAttribute("id"));
-                            }
-                            Console.WriteLine("*********************************************");
-                        }
-                        catch { }
-
-                        try
-                        {
-                            driver.SwitchTo().DefaultContent();
-                        }
-                        catch { }
-                        try
-                        {
-                            driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#volume-11 iframe")));
-                            //driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#video_body iframe")));
-                            Helpers.switchFrameByNumber(driver, 0);
-                            driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#html_wrapper iframe")));
-                        }
-                        catch { }
-
-                        Helpers.switchToBrowserFrameByString(driver, "vgPlayer");
-
-                        try
-                        {
-                            driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#player iframe")));
-                        }
-                        catch { }
-
-                        Helpers.switchFrameByNumber(driver, 0);
-                        Helpers.switchFrameByNumber(driver, 0);
-                        Helpers.switchFrameByNumber(driver, 0);
-
-                        try
-                        {
-                            driver.FindElement(By.ClassName("ytp-large-play-button")).Click();
-                        }
-                        catch { }
-
-                        Helpers.switchFrameByNumber(driver, 0);
-                        try
-                        {
-                            driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#video_body iframe")));
-                            driver.SwitchTo().Frame(driver.FindElement(By.CssSelector("div#html_wrapper iframe")));
-                        }
-                        catch { }
-
-
-                        try
-                        {
-                            if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
-                            {
-                                driver.Navigate().Refresh();
-                                Helpers.closeWindows(driver, titles);
-                            }
-                        }
-                        catch { }
-
-                    } while (offerWall);
-
-                    try
-                    {
-                        driver.Quit();
-                    }
-                    catch { }
-                }
-
-                bool zoomLooping = true;
-                int currrentHour = DateTime.Now.Hour;
-
-                while (zoomLooping)
-                {
-                    if (currrentHour != DateTime.Now.Hour)
-                    {
-                        zoomLooping = false;
-                    }
-                }
-            }
-        }
-    }
-}
-    */

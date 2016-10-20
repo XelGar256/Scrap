@@ -92,6 +92,15 @@ namespace Scrap.Models
 
                         try
                         {
+                            if (driver.Title.Contains("Facebook"))
+                            {
+                                driver.Close();
+                            }
+                        }
+                        catch { }
+
+                        try
+                        {
                             driver.SwitchTo().DefaultContent();
 
                             Helpers.ByClass(driver, "jw-icon");
@@ -306,6 +315,15 @@ namespace Scrap.Models
                     try
                     {
                         IWebDriver popup = driver.SwitchTo().Window(window);
+                    }
+                    catch { }
+
+                    try
+                    {
+                        if (driver.Title.Contains("Facebook"))
+                        {
+                            driver.Close();
+                        }
                     }
                     catch { }
 

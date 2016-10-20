@@ -261,6 +261,7 @@ namespace Scrap.Models
                     }
                     catch { }
                     finally { }
+
                     Console.WriteLine("In the discoBreak!!");
                     Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
                     try
@@ -290,6 +291,15 @@ namespace Scrap.Models
                     }
                     catch { }
                     finally { }
+
+                    try
+                    {
+                        if (driver.Title.Contains("Facebook"))
+                        {
+                            driver.Close();
+                        }
+                    }
+                    catch { }
 
                     Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
                     try
@@ -328,20 +338,6 @@ namespace Scrap.Models
                         IWebElement earned2Swag = driver.FindElement(By.Id("ty_header"));
                         string earn2;
                         earn2 = earned2Swag.Text;
-                        /*
-                        if (earned2Swag.Text == "You earned 2 Swag Bucks!")
-                        {
-                            Console.WriteLine("This is a test to find earned2Swag.Text");
-                            Helpers.Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                            using (var destination = File.AppendText("pointsLog.txt"))
-                            {
-                                destination.WriteLine(Regex.Match(earn2, @"\d+").Value);
-                            }
-                            IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
-                            viewMoreContent.Click();
-                            Helpers.Helpers.closeWindows(driver, titles);
-                        }
-                        */
                     }
                     catch
                     {
@@ -670,6 +666,16 @@ namespace Scrap.Models
                         foreach (String window in windowHandles)
                         {
                             IWebDriver popup = driver.SwitchTo().Window(window);
+
+                            try
+                            {
+                                if (driver.Title.Contains("Facebook"))
+                                {
+                                    driver.Close();
+                                }
+                            }
+                            catch { }
+
                             try
                             {
                                 int rndClick = random.Next(2);

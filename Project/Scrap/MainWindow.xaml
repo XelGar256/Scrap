@@ -66,6 +66,9 @@
                     <Button x:Name="btnLoginGiftHulk" Content="Start Hulking" HorizontalAlignment="Left" Margin="81,86,0,0" VerticalAlignment="Top" Width="85" Click="btnLoginGiftHulk_Click"/>
                     <Button x:Name="btnStopGiftHulk" Content="Stop Hulking" HorizontalAlignment="Left" Margin="81,111,0,0" VerticalAlignment="Top" Width="85" RenderTransformOrigin="-0.36,-0.3" Click="btnStopGiftHulk_Click"/>
                     <Button x:Name="btnOpenHulk" Content="Open Gift Hulk" HorizontalAlignment="Left" VerticalAlignment="Top" Width="89" Margin="217,29,0,0" Click="btnOpenHulk_Click"/>
+                    <RadioButton x:Name="rdoCard" Content="Guess the Card!" HorizontalAlignment="Left" Margin="19,136,0,0" VerticalAlignment="Top" Foreground="Black"/>
+                    <RadioButton x:Name="rdoRank" Content="Guess the Rank!" HorizontalAlignment="Left" Margin="19,155,0,0" VerticalAlignment="Top" Foreground="Black"/>
+                    <RadioButton x:Name="rdoSuit" Content="Guess the Suit!" HorizontalAlignment="Left" Margin="19,175,0,0" VerticalAlignment="Top" Foreground="Black" IsChecked="True"/>
                 </Grid>
             </TabItem>
             <TabItem Header="InboxDollars" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top">
@@ -79,15 +82,15 @@
                     <Button x:Name="btnInboxTv" Content="Dolla$ TV" HorizontalAlignment="Left" Margin="192,86,0,0" VerticalAlignment="Top" Width="75" Click="btnInboxTv_Click"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="PedToClick" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Background="#FFE5E5E5">
+            <TabItem Header="Grindabuck" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Background="#FFE5E5E5">
                 <Grid>
                     <Label Content="Username:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
                     <Label Content="Password:" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="txtUsernamePed" HorizontalAlignment="Left" Height="23" Margin="81,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-1.85,-4.87"/>
-                    <PasswordBox x:Name="txtPasswordPed" HorizontalAlignment="Left" Margin="81,44,0,0" VerticalAlignment="Top" Width="120" Height="23"/>
-                    <Button x:Name="btnLoginPed" Content="Start Ped" HorizontalAlignment="Left" Margin="81,86,0,0" VerticalAlignment="Top" Width="85" Click="btnLoginPed_Click"/>
-                    <Button x:Name="btnStopPed" Content="Stop Ped" HorizontalAlignment="Left" Margin="81,111,0,0" VerticalAlignment="Top" Width="85" Click="btnStopPed_Click"/>
-                    <Button x:Name="btn_openPed" Content="Open Ped to Click" HorizontalAlignment="Left" Margin="219,29,0,0" VerticalAlignment="Top" Width="105" Click="btn_openPed_Click"/>
+                    <TextBox x:Name="txtUsernameGrind" HorizontalAlignment="Left" Height="23" Margin="81,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-1.85,-4.87"/>
+                    <PasswordBox x:Name="txtPasswordGrind" HorizontalAlignment="Left" Margin="81,44,0,0" VerticalAlignment="Top" Width="120" Height="23"/>
+                    <Button x:Name="btnLoginGrind" Content="Start Grinding" HorizontalAlignment="Left" Margin="81,86,0,0" VerticalAlignment="Top" Width="85" Click="btnLoginGrind_Click"/>
+                    <Button x:Name="btnStopGrind" Content="Stop Grinding" HorizontalAlignment="Left" Margin="81,111,0,0" VerticalAlignment="Top" Width="85" Click="btnStopGrind_Click"/>
+                    <Button x:Name="btn_openGrind" Content="Open Grindabuck" HorizontalAlignment="Left" Margin="219,29,0,0" VerticalAlignment="Top" Width="105" Click="btn_openGrind_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Settings" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="55">
