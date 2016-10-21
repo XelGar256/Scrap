@@ -235,6 +235,11 @@ namespace Scrap.Models
                             if (driver.FindElement(By.Id("compositor_placed_innerclip_cta")).Displayed)
                             {
                                 driver.Navigate().GoToUrl("http://www.gifthulk.com/");
+                                try
+                                {
+                                    driver.FindElement(By.Id("watch-video")).Click();
+                                }
+                                catch { }
                                 Helpers.closeWindows(driver, titles);
                             }
                         }
@@ -245,6 +250,11 @@ namespace Scrap.Models
                             if (driver.FindElement(By.Id("ty_headline")).Displayed)
                             {
                                 driver.Navigate().GoToUrl("http://www.gifthulk.com/");
+                                try
+                                {
+                                    driver.FindElement(By.Id("watch-video")).Click();
+                                }
+                                catch { }
                                 Helpers.closeWindows(driver, titles);
                             }
                         }
@@ -255,6 +265,11 @@ namespace Scrap.Models
                             if (driver.FindElement(By.Id("ty_body_text")).Displayed)
                             {
                                 driver.Navigate().GoToUrl("http://www.gifthulk.com/");
+                                try
+                                {
+                                    driver.FindElement(By.Id("watch-video")).Click();
+                                }
+                                catch { }
                                 Helpers.closeWindows(driver, titles);
                             }
                         }
