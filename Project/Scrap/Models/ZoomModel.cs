@@ -17,53 +17,54 @@ namespace Scrap.Models
             bool looping = true;
             while (looping)
             {
-                ChromeDriverService service = ChromeDriverService.CreateDefaultService(App.Folder);
-                service.HideCommandPromptWindow = true;
-
-                ChromeOptions options = new ChromeOptions();
-                options.AddArgument("start-maximized");
-                options.AddArgument("user-data-dir=" + App.Folder + "profileZB");
-
-                IWebDriver driver = new ChromeDriver(service, options);
-                driver.Navigate().GoToUrl("http://members.grabpoints.com/#/login?email=" + username);
-
-                try
-                {
-                    //driver.FindElement(By.Name("email")).SendKeys(username);
-                    //driver.FindElement(By.Name("email")).SendKeys(Keys.Enter);
-                    ////Helpers.wait(5000);
-                    driver.FindElement(By.Id("password")).SendKeys(password);
-                    driver.FindElement(By.ClassName("btn-block")).Click();
-                }
-                catch { }
-
-                Helpers.wait(10000);
-
-                try
-                {
-                    int counter = 0;
-                    IList<IWebElement> turnOffNotifcations = driver.FindElements(By.ClassName("btn-block"));
-                    foreach (IWebElement turnOffNotication in turnOffNotifcations)
-                    {
-                        if (counter == turnOffNotifcations.Count - 1)
-                        {
-                            turnOffNotication.Click();
-                        }
-                        counter++;
-                    }
-                }
-                catch { }
-
-                int hr = DateTime.Now.Hour;
-
-                try
-                {
-                    driver.Navigate().GoToUrl("http://members.grabpoints.com/#/offers/watch_videos");
-                }
-                catch { }
-
                 if (!justZoom)
                 {
+
+                    ChromeDriverService service = ChromeDriverService.CreateDefaultService(App.Folder);
+                    service.HideCommandPromptWindow = true;
+
+                    ChromeOptions options = new ChromeOptions();
+                    options.AddArgument("start-maximized");
+                    options.AddArgument("user-data-dir=" + App.Folder + "profileZB");
+
+                    IWebDriver driver = new ChromeDriver(service, options);
+                    driver.Navigate().GoToUrl("http://members.grabpoints.com/#/login?email=" + username);
+
+                    try
+                    {
+                        //driver.FindElement(By.Name("email")).SendKeys(username);
+                        //driver.FindElement(By.Name("email")).SendKeys(Keys.Enter);
+                        ////Helpers.wait(5000);
+                        driver.FindElement(By.Id("password")).SendKeys(password);
+                        driver.FindElement(By.ClassName("btn-block")).Click();
+                    }
+                    catch { }
+
+                    Helpers.wait(10000);
+
+                    try
+                    {
+                        int counter = 0;
+                        IList<IWebElement> turnOffNotifcations = driver.FindElements(By.ClassName("btn-block"));
+                        foreach (IWebElement turnOffNotication in turnOffNotifcations)
+                        {
+                            if (counter == turnOffNotifcations.Count - 1)
+                            {
+                                turnOffNotication.Click();
+                            }
+                            counter++;
+                        }
+                    }
+                    catch { }
+
+                    int hr = DateTime.Now.Hour;
+
+                    try
+                    {
+                        driver.Navigate().GoToUrl("http://members.grabpoints.com/#/offers/watch_videos");
+                    }
+                    catch { }
+
                     while (!viroolBool)
                     {
                         try
@@ -121,10 +122,6 @@ namespace Scrap.Models
                     volume = false;
                     viroolBool = false;
                 }
-                else
-                {
-                    looping = false;
-                }
             }
         }
 
@@ -160,6 +157,7 @@ namespace Scrap.Models
                 catch { }
             }
         }
+
         void virool(IWebDriver driver)
         {
             bool looped = false;
@@ -209,63 +207,171 @@ namespace Scrap.Models
 
                 while (looped)
                 {
-                    //switchFrameByNumber(driver, 0);
+                    driver.SwitchTo().DefaultContent();
                     Helpers.switchFrameByNumber(driver, 0);
+
                     Helpers.switchToBrowserFrameByString(driver, "widgetPlayer");
-                    try
-                    {
-                        IList<IWebElement> h1s = driver.FindElements(By.TagName("h1"));
-                        foreach (IWebElement h1 in h1s)
-                        {
-                            if (h1.Text.Contains("504 Gateway"))
-                            {
-                                driver.SwitchTo().DefaultContent();
-                                Helpers.switchFrameByNumber(driver, 0);
-                                Helpers.ByClass(driver, "close");
-                                looped = false;
-                            }
-                        }
-                    }
-                    catch { }
+                    Helpers.switchToBrowserFrameByString(driver, "player-container");
+
+                    Helpers.ByClass(driver, "ytp-large-play-button");
 
                     try
                     {
-                        IWebElement fbPageUp = driver.FindElement(By.ClassName("fb-share-btn"));
-                        fbPageUp.SendKeys(Keys.PageUp);
-                        Helpers.wait(1000);
-                        fbPageUp.SendKeys(Keys.PageUp);
-                        Helpers.wait(1000);
-                        fbPageUp.SendKeys(Keys.PageUp);
-                        Helpers.wait(1000);
-                        fbPageUp.SendKeys(Keys.PageUp);
-                        Helpers.wait(1000);
+                        if (driver.FindElement(By.ClassName("clearfix")).Displayed)
+                        { }
+
                     }
                     catch { }
+                }
+            }
 
-                    try
+            /*
+            while (looped)
+            {
+                //switchFrameByNumber(driver, 0);
+                Helpers.switchFrameByNumber(driver, 0);
+                Helpers.switchToBrowserFrameByString(driver, "widgetPlayer");
+                try
+                {
+                    IList<IWebElement> h1s = driver.FindElements(By.TagName("h1"));
+                    foreach (IWebElement h1 in h1s)
                     {
-                        if (driver.FindElement(By.LinkText("Opt out")).Displayed)
+                        if (h1.Text.Contains("504 Gateway"))
                         {
-                            driver.FindElement(By.LinkText("Opt out")).Click();
                             driver.SwitchTo().DefaultContent();
                             Helpers.switchFrameByNumber(driver, 0);
                             Helpers.ByClass(driver, "close");
                             looped = false;
                         }
                     }
-                    catch { }
+                }
+                catch { }
 
-                    try
+                try
+                {
+                    IWebElement fbPageUp = driver.FindElement(By.ClassName("fb-share-btn"));
+                    fbPageUp.SendKeys(Keys.PageUp);
+                    Helpers.wait(1000);
+                    fbPageUp.SendKeys(Keys.PageUp);
+                    Helpers.wait(1000);
+                    fbPageUp.SendKeys(Keys.PageUp);
+                    Helpers.wait(1000);
+                    fbPageUp.SendKeys(Keys.PageUp);
+                    Helpers.wait(1000);
+                }
+                catch { }
+
+                try
+                {
+                    if (driver.FindElement(By.LinkText("Opt out")).Displayed)
                     {
-                        if (driver.Title.Contains("Facebook"))
-                        {
-                            driver.Close();
-                        }
+                        driver.FindElement(By.LinkText("Opt out")).Click();
+                        driver.SwitchTo().DefaultContent();
+                        Helpers.switchFrameByNumber(driver, 0);
+                        Helpers.ByClass(driver, "close");
+                        looped = false;
                     }
-                    catch { }
+                }
+                catch { }
 
-                    try
+                try
+                {
+                    if (driver.Title.Contains("Facebook"))
                     {
+                        driver.Close();
+                    }
+                }
+                catch { }
+
+                try
+                {
+                    driver.SwitchTo().DefaultContent();
+                    Helpers.switchFrameByNumber(driver, 0);
+                    IWebElement closing = driver.FindElement(By.ClassName("close"));
+                    closing.SendKeys(Keys.PageUp);
+                    Helpers.wait(1000);
+                    closing.SendKeys(Keys.PageUp);
+                    Helpers.wait(1000);
+                    closing.SendKeys(Keys.PageUp);
+                    Helpers.wait(1000);
+                    closing.SendKeys(Keys.PageUp);
+                    Helpers.wait(1000);
+                }
+                catch { }
+                Helpers.switchFrameByNumber(driver, 0);
+                Helpers.switchToBrowserFrameByString(driver, "widgetPlayer");
+
+                Helpers.switchToBrowserFrameByString(driver, "player-container");
+
+                try
+                {
+                    if (driver.FindElement(By.ClassName("videowall-still-info-bg")).Displayed)
+                    {
+                        driver.SwitchTo().DefaultContent();
+                        Helpers.switchFrameByNumber(driver, 0);
+                        Helpers.ByClass(driver, "close");
+                        looped = false;
+                    }
+                }
+                catch { }
+
+                Helpers.ByClass(driver, "ytp-large-play-button");
+
+                driver.SwitchTo().DefaultContent();
+                Helpers.switchFrameByNumber(driver, 0);
+
+                try
+                {
+                    if (driver.FindElement(By.ClassName("wicon-youtube")).Displayed)
+                    {
+                        driver.SwitchTo().DefaultContent();
+                        Helpers.switchFrameByNumber(driver, 0);
+                        Helpers.ByClass(driver, "close");
+                        looped = false;
+                    }
+                }
+                catch { }
+
+                Helpers.switchFrameByNumber(driver, 0);
+
+                try
+                {
+                    if (driver.FindElement(By.LinkText("Opt out")).Displayed)
+                    {
+                        driver.SwitchTo().DefaultContent();
+                        Helpers.switchFrameByNumber(driver, 0);
+                        Helpers.ByClass(driver, "close");
+                        looped = false;
+                    }
+                }
+                catch { }
+
+                try
+                {
+                    if (driver.FindElement(By.ClassName("ytp-videowall-still-info-content")).Displayed)
+                    {
+                        driver.SwitchTo().DefaultContent();
+                        Helpers.switchFrameByNumber(driver, 0);
+                        Helpers.ByClass(driver, "close");
+                        looped = false;
+                    }
+                }
+                catch { }
+
+                try
+                {
+                    if (driver.FindElement(By.ClassName("close")).Displayed)
+                    {
+
+                    }
+                }
+                catch { }
+
+                try
+                {
+                    if (driver.FindElement(By.Id("share-overlay-facebook")).Displayed)
+                    {
+                        //driver.FindElement(By.Id("share-overlay-facebook")).SendKeys(Keys.PageUp);
                         driver.SwitchTo().DefaultContent();
                         Helpers.switchFrameByNumber(driver, 0);
                         IWebElement closing = driver.FindElement(By.ClassName("close"));
@@ -277,165 +383,77 @@ namespace Scrap.Models
                         Helpers.wait(1000);
                         closing.SendKeys(Keys.PageUp);
                         Helpers.wait(1000);
+                        Helpers.ByClass(driver, "close");
+                        looped = false;
                     }
-                    catch { }
-                    Helpers.switchFrameByNumber(driver, 0);
-                    Helpers.switchToBrowserFrameByString(driver, "widgetPlayer");
-
-                    Helpers.switchToBrowserFrameByString(driver, "player-container");
-
-                    try
-                    {
-                        if (driver.FindElement(By.ClassName("videowall-still-info-bg")).Displayed)
-                        {
-                            driver.SwitchTo().DefaultContent();
-                            Helpers.switchFrameByNumber(driver, 0);
-                            Helpers.ByClass(driver, "close");
-                            looped = false;
-                        }
-                    }
-                    catch { }
-
-                    Helpers.ByClass(driver, "ytp-large-play-button");
-
-                    driver.SwitchTo().DefaultContent();
-                    Helpers.switchFrameByNumber(driver, 0);
-
-                    try
-                    {
-                        if (driver.FindElement(By.ClassName("wicon-youtube")).Displayed)
-                        {
-                            driver.SwitchTo().DefaultContent();
-                            Helpers.switchFrameByNumber(driver, 0);
-                            Helpers.ByClass(driver, "close");
-                            looped = false;
-                        }
-                    }
-                    catch { }
-
-                    Helpers.switchFrameByNumber(driver, 0);
-
-                    try
-                    {
-                        if (driver.FindElement(By.LinkText("Opt out")).Displayed)
-                        {
-                            driver.SwitchTo().DefaultContent();
-                            Helpers.switchFrameByNumber(driver, 0);
-                            Helpers.ByClass(driver, "close");
-                            looped = false;
-                        }
-                    }
-                    catch { }
-
-                    try
-                    {
-                        if (driver.FindElement(By.ClassName("ytp-videowall-still-info-content")).Displayed)
-                        {
-                            driver.SwitchTo().DefaultContent();
-                            Helpers.switchFrameByNumber(driver, 0);
-                            Helpers.ByClass(driver, "close");
-                            looped = false;
-                        }
-                    }
-                    catch { }
-
-                    try
-                    {
-                        if (driver.FindElement(By.ClassName("close")).Displayed)
-                        {
-
-                        }
-                    }
-                    catch { }
-
-                    try
-                    {
-                        if (driver.FindElement(By.Id("share-overlay-facebook")).Displayed)
-                        {
-                            //driver.FindElement(By.Id("share-overlay-facebook")).SendKeys(Keys.PageUp);
-                            driver.SwitchTo().DefaultContent();
-                            Helpers.switchFrameByNumber(driver, 0);
-                            IWebElement closing = driver.FindElement(By.ClassName("close"));
-                            closing.SendKeys(Keys.PageUp);
-                            Helpers.wait(1000);
-                            closing.SendKeys(Keys.PageUp);
-                            Helpers.wait(1000);
-                            closing.SendKeys(Keys.PageUp);
-                            Helpers.wait(1000);
-                            closing.SendKeys(Keys.PageUp);
-                            Helpers.wait(1000);
-                            Helpers.ByClass(driver, "close");
-                            looped = false;
-                        }
-                    }
-                    catch { }
-
-                    try
-                    {
-                        if (driver.FindElement(By.PartialLinkText("2 Gems")).Displayed)
-                        {
-                            driver.SwitchTo().DefaultContent();
-                            Helpers.switchFrameByNumber(driver, 0);
-                            Helpers.ByClass(driver, "close");
-                            looped = false;
-                        }
-                    }
-                    catch { }
-
-
-                    try
-                    {
-                        if (driver.FindElement(By.Id("yt-subscribe-btn")).Displayed)
-                        {
-                            driver.SwitchTo().DefaultContent();
-                            Helpers.switchFrameByNumber(driver, 0);
-                            Helpers.ByClass(driver, "close");
-                            looped = false;
-                        }
-                    }
-                    catch { }
-
-                    driver.SwitchTo().DefaultContent();
-                    Helpers.switchFrameByNumber(driver, 0);
-
-                    try
-                    {
-                        if (driver.FindElement(By.ClassName("twitter-share-btn")).Displayed)
-                        {
-                            driver.SwitchTo().DefaultContent();
-                            Helpers.switchFrameByNumber(driver, 0);
-                            Helpers.ByClass(driver, "close");
-                            looped = false;
-                        }
-                    }
-                    catch { }
-
-                    Helpers.switchFrameByNumber(driver, 0);
-                    Helpers.switchFrameByNumber(driver, 0);
-
-                    try
-                    {
-                        if (driver.FindElement(By.ClassName("ytp-videowall-still-info-content")).Displayed)
-                        {
-                            driver.SwitchTo().DefaultContent();
-                            Helpers.ByClass(driver, "close");
-                            looped = false;
-                        }
-                    }
-                    catch { }
-
-                    try
-                    {
-                        if (driver.FindElement(By.ClassName("ytp-endscreen-content")).Displayed)
-                        {
-                            driver.SwitchTo().DefaultContent();
-                            Helpers.ByClass(driver, "close");
-                            looped = false;
-                        }
-                    }
-                    catch { }
                 }
-            }
+                catch { }
+
+                try
+                {
+                    if (driver.FindElement(By.PartialLinkText("2 Gems")).Displayed)
+                    {
+                        driver.SwitchTo().DefaultContent();
+                        Helpers.switchFrameByNumber(driver, 0);
+                        Helpers.ByClass(driver, "close");
+                        looped = false;
+                    }
+                }
+                catch { }
+
+
+                try
+                {
+                    if (driver.FindElement(By.Id("yt-subscribe-btn")).Displayed)
+                    {
+                        driver.SwitchTo().DefaultContent();
+                        Helpers.switchFrameByNumber(driver, 0);
+                        Helpers.ByClass(driver, "close");
+                        looped = false;
+                    }
+                }
+                catch { }
+
+                driver.SwitchTo().DefaultContent();
+                Helpers.switchFrameByNumber(driver, 0);
+
+                try
+                {
+                    if (driver.FindElement(By.ClassName("twitter-share-btn")).Displayed)
+                    {
+                        driver.SwitchTo().DefaultContent();
+                        Helpers.switchFrameByNumber(driver, 0);
+                        Helpers.ByClass(driver, "close");
+                        looped = false;
+                    }
+                }
+                catch { }
+
+                Helpers.switchFrameByNumber(driver, 0);
+                Helpers.switchFrameByNumber(driver, 0);
+
+                try
+                {
+                    if (driver.FindElement(By.ClassName("ytp-videowall-still-info-content")).Displayed)
+                    {
+                        driver.SwitchTo().DefaultContent();
+                        Helpers.ByClass(driver, "close");
+                        looped = false;
+                    }
+                }
+                catch { }
+
+                try
+                {
+                    if (driver.FindElement(By.ClassName("ytp-endscreen-content")).Displayed)
+                    {
+                        driver.SwitchTo().DefaultContent();
+                        Helpers.ByClass(driver, "close");
+                        looped = false;
+                    }
+                }
+                catch { }
+            }*/
         }
 
         void volume11(IWebDriver driver)
@@ -709,6 +727,9 @@ namespace Scrap.Models
                         }
                         catch { }
 
+                        Helpers.switchToBrowserFrameByString(driver, "player");
+
+                        Helpers.ByClass(driver, "ytp-large-play-button");
                     }
                 }
                 catch { }

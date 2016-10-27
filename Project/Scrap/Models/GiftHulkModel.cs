@@ -280,6 +280,13 @@ namespace Scrap.Models
                             driver.Navigate().GoToUrl("http://www.gifthulk.com/");
                             looping = false;
                         }
+
+                        Helpers.switchToBrowserFrameByString(driver, "vgPlayer");
+                        Helpers.switchFrameByNumber(driver, 0);
+                        Helpers.switchToBrowserFrameByString(driver, "player");
+                        Helpers.switchToBrowserFrameByString(driver, "player");
+
+                        Helpers.ByClass(driver, "ytp-large-play-button");
                     }
                 }
                 catch { }
