@@ -226,6 +226,22 @@ namespace Scrap.Models
 
                         Helpers.switchToBrowserFrameByString(driver, "watch-video-popup-frame");
 
+                        try
+                        {
+                            if (driver.FindElement(By.Id("offers_exhausted_message")).Displayed)
+                            {
+                                driver.Navigate().GoToUrl("http://www.gifthulk.com/");
+                                try
+                                {
+                                    driver.FindElement(By.Id("watch-video")).Click();
+                                }
+                                catch { }
+                                Helpers.closeWindows(driver, titles);
+                                looping = false;
+                            }
+                        }
+                        catch { }
+
                         Helpers.ById(driver, "webtraffic_popup_start_button");
                         Helpers.ById(driver, "webtraffic_popup_next_button");
                         Helpers.ById(driver, "expository_image");

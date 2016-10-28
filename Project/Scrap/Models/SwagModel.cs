@@ -210,12 +210,11 @@ namespace Scrap.Models
 
         void discoveryBreak(IWebDriver driver)
         {
-            bool discoBreak = false;
+            bool discoBreak = true;
             try
             {
                 IWebElement discBreak = driver.FindElement(By.Id("cardContentImg-1-5"));
                 discBreak.Click();
-                discoBreak = true;
                 Helpers.wait(5000);
             }
             catch
@@ -224,7 +223,6 @@ namespace Scrap.Models
                 {
                     IWebElement discBreak = driver.FindElement(By.Id("cardContentImg-1"));
                     discBreak.Click();
-                    discoBreak = true;
                     Helpers.wait(5000);
                 }
                 catch
@@ -233,7 +231,6 @@ namespace Scrap.Models
                     {
                         IWebElement discBreak = driver.FindElement(By.Id("sbHomeCard-1-5"));
                         discBreak.Click();
-                        discoBreak = true;
                         Helpers.wait(5000);
                     }
                     catch
@@ -242,14 +239,13 @@ namespace Scrap.Models
                         {
                             IWebElement discBreak = driver.FindElement(By.Id("sbHomeCard54559-563"));
                             discBreak.Click();
-                            discoBreak = true;
                             Helpers.wait(5000);
                         }
                         catch
                         {
                             Console.WriteLine("No Discovery Break Found!!");
+                            discoBreak = false;
                         }
-                        finally { }
                     }
                 }
             }
@@ -590,14 +586,13 @@ namespace Scrap.Models
         void nGage(IWebDriver driver)
         {
             Random random = new Random();
-            bool nGageCards = false;
+            bool nGageCards = true;
 
             try
             {
                 IWebElement nGageCard = driver.FindElement(By.Id("cardContentImg-14-5"));
                 nGageCard.Click();
                 Console.WriteLine("NGAGE!!!!");
-                nGageCards = true;
                 Helpers.wait(5000);
             }
             catch
@@ -606,7 +601,6 @@ namespace Scrap.Models
                 {
                     IWebElement nGageCard = driver.FindElement(By.Id("cardContentImg-14"));
                     nGageCard.Click();
-                    nGageCards = true;
                     Helpers.wait(5000);
                 }
                 catch
@@ -615,7 +609,6 @@ namespace Scrap.Models
                     {
                         IWebElement nGageCard = driver.FindElement(By.Id("sbHomeCard-14-5"));
                         nGageCard.Click();
-                        nGageCards = true;
                         Helpers.wait(5000);
                     }
                     catch
@@ -624,12 +617,12 @@ namespace Scrap.Models
                         {
                             IWebElement nGageCard = driver.FindElement(By.Id("sbHomeCard54560-563"));
                             nGageCard.Click();
-                            nGageCards = true;
                             Helpers.wait(5000);
                         }
                         catch
                         {
                             Console.WriteLine("No nGageCard found");
+                            nGageCards = false;
                         }
                     }
                 }
