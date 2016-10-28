@@ -231,11 +231,6 @@ namespace Scrap.Models
                             if (driver.FindElement(By.Id("offers_exhausted_message")).Displayed)
                             {
                                 driver.Navigate().GoToUrl("http://www.gifthulk.com/");
-                                try
-                                {
-                                    driver.FindElement(By.Id("watch-video")).Click();
-                                }
-                                catch { }
                                 Helpers.closeWindows(driver, titles);
                                 looping = false;
                             }
