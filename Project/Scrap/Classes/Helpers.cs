@@ -79,19 +79,12 @@ namespace Scrap.Classes
             {
                 foreach (string defwindow in driver.WindowHandles)
                 {
-                    Console.WriteLine(driver.Title.ToString());
+                    IWebDriver popup = driver.SwitchTo().Window(defwindow);
+
+                    Console.WriteLine(popup.Title.ToString());
                     try
                     {
-                        driver.SwitchTo().Window(defwindow);
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Hang Up");
-                        break;
-                    }
-                    try
-                    {
-                        if (driver.Title.Contains(targetBrowserString))
+                        if (popup.Title.Contains(targetBrowserString))
                         {
                             Console.WriteLine("You are now in " + driver.Title);
                             break;
@@ -114,13 +107,22 @@ namespace Scrap.Classes
 
                 foreach (String window in windowHandles)
                 {
-                    IWebDriver popup = driver.SwitchTo().Window(window);
+                    Console.WriteLine(driver.Title.ToString());
+                    try
+                    {
+                        driver.SwitchTo().Window(window);
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Hang Up");
+                        break;
+                    }
                     try
                     {
                         bool found = false;
                         foreach (string title in titles)
                         {
-                            if (popup.Title.Contains(title))
+                            if (driver.Title.Contains(title))
                             {
                                 found = true;
                                 break;
@@ -146,19 +148,14 @@ namespace Scrap.Classes
             {
                 foreach (string defwindow in driver.WindowHandles)
                 {
-                    Console.WriteLine(driver.Title);
+                    IWebDriver popup = driver.SwitchTo().Window(defwindow);
+
+                    Console.WriteLine(popup.Title);
+                    Console.WriteLine(popup.Url);
+
                     try
                     {
-                        driver.SwitchTo().Window(defwindow);
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Hang Up");
-                        return true;
-                    }
-                    try
-                    {
-                        if (driver.Title.Contains(title))
+                        if (popup.Url.Contains(title))
                         {
                             Console.WriteLine("There is " + title);
                             return true;

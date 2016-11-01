@@ -129,11 +129,10 @@ namespace Scrap.Models
 
         void nCrave(IWebDriver driver, BackgroundWorker bw)
         {
-            bool craveMe = false;
+            bool craveMe;
             try
             {
                 driver.FindElement(By.LinkText("Daily Crave")).Click();
-                craveMe = true;
             }
             catch { }
             Helpers.wait(1000);
@@ -155,6 +154,8 @@ namespace Scrap.Models
             Helpers.switchToBrowserByString(driver, "Entertainmentcrave");
 
             Helpers.wait(1000);
+
+            craveMe = Helpers.lookFor(driver, "nGage");
             while (craveMe)
             {
                 bool someSwitch = false;
@@ -210,7 +211,7 @@ namespace Scrap.Models
 
         void discoveryBreak(IWebDriver driver)
         {
-            bool discoBreak = true;
+            bool discoBreak;
             try
             {
                 IWebElement discBreak = driver.FindElement(By.Id("cardContentImg-1-5"));
@@ -244,349 +245,304 @@ namespace Scrap.Models
                         catch
                         {
                             Console.WriteLine("No Discovery Break Found!!");
-                            discoBreak = false;
                         }
                     }
                 }
             }
+
+            discoBreak = Helpers.lookFor(driver, "www.swagbucks.com/?");
 
             Helpers.wait(5000);
-            try
+            while (discoBreak)
             {
-                while (discoBreak)
+                Console.WriteLine("In the discoBreak!!");
+                Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                try
                 {
-                    try
-                    {
-                        driver.SwitchTo().Alert().Dismiss();
-                    }
-                    catch { }
-                    finally { }
-
-                    Console.WriteLine("In the discoBreak!!");
-                    Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                    try
+                    Helpers.switchToBrowserByString(driver, "Now Exploring great content!");
+                    while (Helpers.lookFor(driver, "static.jungroup.com/"))
                     {
                         Helpers.switchToBrowserByString(driver, "Now Exploring great content!");
-                        while (driver.Title.Contains("Now Exploring"))
+                        try
                         {
-                            Helpers.switchToBrowserByString(driver, "Now Exploring great content!");
+                            IWebElement greatContent = driver.FindElement(By.ClassName("nextstepimg"));
+                            greatContent.Click();
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Waiting to finish");
                             try
                             {
-                                IWebElement greatContent = driver.FindElement(By.ClassName("nextstepimg"));
-                                greatContent.Click();
+                                driver.FindElement(By.XPath("//img[@alt='Claim your reward']")).Click();
+                                Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
                             }
-                            catch
-                            {
-                                Console.WriteLine("Waiting to finish");
-                                try
-                                {
-                                    driver.FindElement(By.XPath("//img[@alt='Claim your reward']")).Click();
-                                    Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                                }
-                                catch { }
-                                finally { }
-                                Helpers.wait(5000);
-                            }
+                            catch { }
+                            Helpers.wait(5000);
                         }
                     }
-                    catch { }
-                    finally { }
-
-                    try
-                    {
-                        if (driver.Title.Contains("Facebook"))
-                        {
-                            driver.Close();
-                        }
-                    }
-                    catch { }
-
-                    Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                    try
-                    {
-                        Helpers.switchToBrowserFrameByString(driver, "junFrame");
-                        IWebElement earn2Swag = driver.FindElement(By.Id("webtraffic_popup_start_button"));
-                        earn2Swag.Click();
-                        Console.WriteLine("earn2Swag found,Helpers.wait 5 seconds");
-                        Helpers.wait(500);
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Waiting 5 Seconds!!");
-                        Helpers.wait(500);
-                    }
-
-                    Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                    try
-                    {
-                        Helpers.switchToBrowserFrameByString(driver, "junFrame");
-                        IWebElement nextPage = driver.FindElement(By.Id("webtraffic_popup_next_button"));
-                        nextPage.Click();
-                        Console.WriteLine("Next Page");
-                        Helpers.wait(500);
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Waiting 5 Seconds!!");
-                        Helpers.wait(500);
-                    }
-
-                    Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                    try
-                    {
-                        Helpers.switchToBrowserFrameByString(driver, "junFrame");
-                        IWebElement earned2Swag = driver.FindElement(By.Id("ty_header"));
-                        string earn2;
-                        earn2 = earned2Swag.Text;
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Waiting 5 Seconds!!");
-                        Helpers.wait(500);
-                    }
-                    finally { }
-
-                    try
-                    {
-
-                        if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
-                        {
-                            Console.WriteLine("This is a test to find earned2Swag.Text");
-                            Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                            /*
-                            using (var destination = File.AppendText("pointsLog.txt"))
-                            {
-                                destination.WriteLine(Regex.Match(earn2, @"\d+").Value);
-                            }
-                            */
-                            IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
-                            viewMoreContent.Click();
-                            Helpers.closeWindows(driver, titles);
-                        }
-                    }
-                    catch { }
-
-                    try
-                    {
-
-                        if (driver.FindElement(By.Id("ty_headline")).Displayed)
-                        {
-                            Console.WriteLine("This is a test to find earned2Swag.Text");
-                            Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                            /*
-                            using (var destination = File.AppendText("pointsLog.txt"))
-                            {
-                                destination.WriteLine(Regex.Match(earn2, @"\d+").Value);
-                            }
-                            */
-                            IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
-                            viewMoreContent.Click();
-                            Helpers.closeWindows(driver, titles);
-                        }
-                    }
-                    catch { }
-
-                    Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                    try
-                    {
-                        Helpers.switchToBrowserFrameByString(driver, "junFrame");
-                        if (driver.FindElement(By.Id("compositor_placed_innerclip_cta")).Displayed)
-                        {
-                            Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                            IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
-                            viewMoreContent.Click();
-                            Helpers.closeWindows(driver, titles);
-                        }
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Waiting 5 seconds!!");
-                        Helpers.wait(500);
-                    }
-                    finally { }
-
-                    // Chips Ad
-                    Helpers.ById(driver, "compositor_placed_innerclip_cheddar");
-                    Helpers.ById(driver, "compositor_placed_innerclip_gouda");
-                    Helpers.ById(driver, "compositor_placed_innerclip_habanero");
-                    Helpers.ById(driver, "compositor_placed_innerclip_flamin");
-                    Helpers.ById(driver, "compositor_placed_innerclip_honeybbq");
-                    Helpers.ById(driver, "compositor_placed_innerclip_korean");
-                    Helpers.ById(driver, "compositor_placed_innerclip_oliveoil");
-                    Helpers.ById(driver, "compositor_placed_innerclip_seasalt");
-                    Helpers.ById(driver, "compositor_placed_innerclip_seasalt");
-                    //
-                    Helpers.ById(driver, "compositor_placed_innerclip_bajablast");
-
-
-                    Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                    try
-                    {
-                        Helpers.switchToBrowserFrameByString(driver, "junFrame");
-                        driver.FindElement(By.Id("expository_image")).Click();
-                    }
-                    catch { }
-                    finally { }
-
-                    Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                    try
-                    {
-                        Helpers.switchToBrowserFrameByString(driver, "junFrame");
-                        driver.FindElement(By.Id("compositor_placed_innerclip_reuben")).Click();
-                    }
-                    catch { }
-                    finally { }
-
-                    Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                    try
-                    {
-                        Helpers.switchToBrowserFrameByString(driver, "junFrame");
-                        if (driver.FindElement(By.Id("ty_body_text")).Displayed)
-                        {
-                            Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                            IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
-                            viewMoreContent.Click();
-                            Helpers.closeWindows(driver, titles);
-                        }
-                    }
-                    catch { }
-                    finally { }
-
-                    Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                    try
-                    {
-                        Helpers.switchToBrowserFrameByString(driver, "junFrame");
-                        if (driver.FindElement(By.Id("countdown_control")).Text == "00:-1")
-                        {
-                            Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                            IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
-                            viewMoreContent.Click();
-                            Helpers.closeWindows(driver, titles);
-                        }
-                    }
-                    catch { }
-                    finally { }
-
-                    Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                    try
-                    {
-                        Helpers.switchToBrowserFrameByString(driver, "junFrame");
-                        if (driver.FindElement(By.Id("offers_exhausted_message")).Displayed)
-                        {
-                            Console.WriteLine("Exiting discoBreak");
-                            Helpers.switchToBrowserByString(driver, "Home | Swagbucks");
-                            Helpers.closeWindows(driver, titles);
-                            driver.Close();
-                        }
-                    }
-                    catch { }
-                    finally { }
-
-                    Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                    try
-                    {
-                        Helpers.switchToBrowserFrameByString(driver, "junFrame");
-                        try
-                        {
-                            IList<IWebElement> oLinks = driver.FindElements(By.ClassName("singleselectset_radio"));
-                            Random random = new Random();
-                            int rndClick = random.Next(1, oLinks.Count);
-                            Console.WriteLine(rndClick);
-                            int counterClick = 1;
-                            foreach (IWebElement oLink in oLinks)
-                            {
-                                Console.WriteLine(counterClick);
-                                if (counterClick == rndClick)
-                                {
-                                    oLink.Click();
-                                }
-                                counterClick++;
-                            }
-                        }
-                        catch { }
-                        finally { }
-
-                        try
-                        {
-                            driver.FindElement(By.Id("demosubmitimg")).Click();
-                        }
-                        catch { }
-                        finally { }
-                    }
-                    catch { }
-                    finally { }
-
-                    Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                    try
-                    {
-                        Helpers.switchToBrowserFrameByString(driver, "junFrame");
-                        try
-                        {
-                            IWebElement dropDownMonth = driver.FindElement(By.Id("dob_month"));
-                            IWebElement dropDownDay = driver.FindElement(By.Id("dob_day"));
-                            IWebElement dropDownYear = driver.FindElement(By.Id("dob_year"));
-                            string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-                            Random random = new Random();
-                            int rndMonth = random.Next(0, 11);
-                            Console.WriteLine(rndMonth);
-                            SelectElement clickThis = new SelectElement(dropDownMonth);
-                            clickThis.SelectByText(months[rndMonth]);
-                            Helpers.wait(1000);
-                            int rndDay = random.Next(1, 28);
-                            clickThis = new SelectElement(dropDownDay);
-                            clickThis.SelectByText(rndDay.ToString());
-                            Helpers.wait(1000);
-                            int rndYear = random.Next(1974, 1994);
-                            clickThis = new SelectElement(dropDownYear);
-                            clickThis.SelectByText(rndYear.ToString());
-                            Helpers.wait(1000);
-                        }
-                        catch { }
-                        finally { }
-
-                        try
-                        {
-                            driver.FindElement(By.Id("demosubmitimg")).Click();
-                        }
-                        catch { }
-                        finally { }
-                    }
-                    catch { }
-                    finally { }
-
-                    Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                    System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
-
-                    int maxCount = windowHandles.Count;
-                    int count = 0;
-
-                    foreach (String window in windowHandles)
-                    {
-                        IWebDriver popup = driver.SwitchTo().Window(window);
-                        try
-                        {
-                            if (popup.Title.Contains("www.swagbucks.com/?"))
-                            {
-                                break;
-                            }
-                        }
-                        catch { }
-                        finally { }
-                        count++;
-                    }
-                    if (count == maxCount)
-                        discoBreak = false;
                 }
+                catch { }
+
+                try
+                {
+                    if (driver.Title.Contains("Facebook"))
+                    {
+                        driver.Close();
+                    }
+                }
+                catch { }
+
+                Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    IWebElement earn2Swag = driver.FindElement(By.Id("webtraffic_popup_start_button"));
+                    earn2Swag.Click();
+                    Console.WriteLine("earn2Swag found,Helpers.wait 5 seconds");
+                    Helpers.wait(500);
+                }
+                catch
+                {
+                    Console.WriteLine("Waiting 5 Seconds!!");
+                    Helpers.wait(500);
+                }
+
+                Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    IWebElement nextPage = driver.FindElement(By.Id("webtraffic_popup_next_button"));
+                    nextPage.Click();
+                    Console.WriteLine("Next Page");
+                    Helpers.wait(500);
+                }
+                catch
+                {
+                    Console.WriteLine("Waiting 5 Seconds!!");
+                    Helpers.wait(500);
+                }
+
+                Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    IWebElement earned2Swag = driver.FindElement(By.Id("ty_header"));
+                    string earn2;
+                    earn2 = earned2Swag.Text;
+                }
+                catch
+                {
+                    Console.WriteLine("Waiting 5 Seconds!!");
+                    Helpers.wait(500);
+                }
+
+                try
+                {
+
+                    if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
+                    {
+                        Console.WriteLine("This is a test to find earned2Swag.Text");
+                        Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                        /*
+                        using (var destination = File.AppendText("pointsLog.txt"))
+                        {
+                            destination.WriteLine(Regex.Match(earn2, @"\d+").Value);
+                        }
+                        */
+                        IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
+                        viewMoreContent.Click();
+                        Helpers.closeWindows(driver, titles);
+                    }
+                }
+                catch { }
+
+                try
+                {
+
+                    if (driver.FindElement(By.Id("ty_headline")).Displayed)
+                    {
+                        Console.WriteLine("This is a test to find earned2Swag.Text");
+                        Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                        /*
+                        using (var destination = File.AppendText("pointsLog.txt"))
+                        {
+                            destination.WriteLine(Regex.Match(earn2, @"\d+").Value);
+                        }
+                        */
+                        IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
+                        viewMoreContent.Click();
+                        Helpers.closeWindows(driver, titles);
+                    }
+                }
+                catch { }
+
+                Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    if (driver.FindElement(By.Id("compositor_placed_innerclip_cta")).Displayed)
+                    {
+                        Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                        IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
+                        viewMoreContent.Click();
+                        Helpers.closeWindows(driver, titles);
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine("Waiting 5 seconds!!");
+                    Helpers.wait(500);
+                }
+
+                // Chips Ad
+                Helpers.ById(driver, "compositor_placed_innerclip_cheddar");
+                Helpers.ById(driver, "compositor_placed_innerclip_gouda");
+                Helpers.ById(driver, "compositor_placed_innerclip_habanero");
+                Helpers.ById(driver, "compositor_placed_innerclip_flamin");
+                Helpers.ById(driver, "compositor_placed_innerclip_honeybbq");
+                Helpers.ById(driver, "compositor_placed_innerclip_korean");
+                Helpers.ById(driver, "compositor_placed_innerclip_oliveoil");
+                Helpers.ById(driver, "compositor_placed_innerclip_seasalt");
+                Helpers.ById(driver, "compositor_placed_innerclip_seasalt");
+                //
+                Helpers.ById(driver, "compositor_placed_innerclip_bajablast");
+
+
+                Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    driver.FindElement(By.Id("expository_image")).Click();
+                }
+                catch { }
+
+                Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    driver.FindElement(By.Id("compositor_placed_innerclip_reuben")).Click();
+                }
+                catch { }
+
+                Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    if (driver.FindElement(By.Id("ty_body_text")).Displayed)
+                    {
+                        Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                        IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
+                        viewMoreContent.Click();
+                        Helpers.closeWindows(driver, titles);
+                    }
+                }
+                catch { }
+
+                Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    if (driver.FindElement(By.Id("countdown_control")).Text == "00:-1")
+                    {
+                        Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                        IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
+                        viewMoreContent.Click();
+                        Helpers.closeWindows(driver, titles);
+                    }
+                }
+                catch { }
+
+                Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    if (driver.FindElement(By.Id("offers_exhausted_message")).Displayed)
+                    {
+                        Console.WriteLine("Exiting discoBreak");
+                        Helpers.switchToBrowserByString(driver, "Home | Swagbucks");
+                        Helpers.closeWindows(driver, titles);
+                        driver.Close();
+                    }
+                }
+                catch { }
+
+                Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    try
+                    {
+                        IList<IWebElement> oLinks = driver.FindElements(By.ClassName("singleselectset_radio"));
+                        Random random = new Random();
+                        int rndClick = random.Next(1, oLinks.Count);
+                        Console.WriteLine(rndClick);
+                        int counterClick = 1;
+                        foreach (IWebElement oLink in oLinks)
+                        {
+                            Console.WriteLine(counterClick);
+                            if (counterClick == rndClick)
+                            {
+                                oLink.Click();
+                            }
+                            counterClick++;
+                        }
+                    }
+                    catch { }
+
+                    try
+                    {
+                        driver.FindElement(By.Id("demosubmitimg")).Click();
+                    }
+                    catch { }
+                }
+                catch { }
+
+                Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    try
+                    {
+                        IWebElement dropDownMonth = driver.FindElement(By.Id("dob_month"));
+                        IWebElement dropDownDay = driver.FindElement(By.Id("dob_day"));
+                        IWebElement dropDownYear = driver.FindElement(By.Id("dob_year"));
+                        string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                        Random random = new Random();
+                        int rndMonth = random.Next(0, 11);
+                        Console.WriteLine(rndMonth);
+                        SelectElement clickThis = new SelectElement(dropDownMonth);
+                        clickThis.SelectByText(months[rndMonth]);
+                        Helpers.wait(1000);
+                        int rndDay = random.Next(1, 28);
+                        clickThis = new SelectElement(dropDownDay);
+                        clickThis.SelectByText(rndDay.ToString());
+                        Helpers.wait(1000);
+                        int rndYear = random.Next(1974, 1994);
+                        clickThis = new SelectElement(dropDownYear);
+                        clickThis.SelectByText(rndYear.ToString());
+                        Helpers.wait(1000);
+                    }
+                    catch { }
+
+                    try
+                    {
+                        driver.FindElement(By.Id("demosubmitimg")).Click();
+                    }
+                    catch { }
+                }
+                catch { }
+
+                Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+
+                discoBreak = Helpers.lookFor(driver, "www.swagbucks.com/?");
             }
-            catch { }
-            finally { }
         }
 
 
         void nGage(IWebDriver driver)
         {
             Random random = new Random();
-            bool nGageCards = true;
+            bool nGageCards;
 
             try
             {
@@ -629,104 +585,104 @@ namespace Scrap.Models
             }
             Helpers.wait(5000);
             Helpers.switchToBrowserByString(driver, "nGage");
-            try
+
+            nGageCards = Helpers.lookFor(driver, "player.ngage-media.com");
+            while (nGageCards)
             {
-                while (nGageCards)
+                Helpers.switchToBrowserByString(driver, "nGage");
+                try
                 {
-                    Helpers.switchToBrowserByString(driver, "nGage");
-                    try
-                    {
-                        IWebElement startEarningBtn = driver.FindElement(By.XPath("//*[@class=\"success\"][@id=\"startEarning\"]"));
-                        startEarningBtn.Click();
-                        Console.WriteLine("startEarningBtn found,Helpers.wait 5 seconds");
-                        Helpers.wait(2000);
-                    }
-                    catch
-                    {
-                        Console.WriteLine("stuff");
-                        Helpers.wait(2000);
-                    }
-
-                    try
-                    {
-                        IWebElement discoverMoreBtn = driver.FindElement(By.XPath("//*[@class=\"success\"][@id=\"discoverMore\"]"));
-                        discoverMoreBtn.Click();
-                        Helpers.closeWindows(driver, titles);
-                        Helpers.wait(2000);
-                    }
-                    catch
-                    {
-
-                    }
-
-
-                    try
-                    {
-                        System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
-
-                        foreach (String window in windowHandles)
-                        {
-                            IWebDriver popup = driver.SwitchTo().Window(window);
-
-                            try
-                            {
-                                if (driver.Title.Contains("Facebook"))
-                                {
-                                    driver.Close();
-                                }
-                            }
-                            catch { }
-
-                            try
-                            {
-                                int rndClick = random.Next(2);
-
-                                driver.FindElements(By.XPath("//div[@id='nextPage']/a"))[rndClick].Click();
-                                break;
-                            }
-                            catch { }
-
-                            try
-                            {
-                                driver.FindElement(By.Id("discoverMore")).Click();
-                                Helpers.closeWindows(driver, titles);
-                                Helpers.wait(2000);
-                                break;
-                            }
-                            catch { }
-                        }
-                    }
-                    catch { }
-
-                    Helpers.switchToBrowserByString(driver, "nGage");
-
-                    try
-                    {
-                        System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
-
-                        foreach (String window in windowHandles)
-                        {
-                            IWebDriver popup = driver.SwitchTo().Window(window);
-                            try
-                            {
-                                if (popup.Title.Contains("Not Available"))
-                                {
-                                    driver.SwitchTo().Window(window);
-                                    driver.Close();
-                                    break;
-                                }
-                            }
-                            catch { }
-                            finally { }
-                        }
-                    }
-                    catch { }
-                    finally { }
-
-                    Helpers.switchToBrowserByString(driver, "nGage");
+                    IWebElement startEarningBtn = driver.FindElement(By.XPath("//*[@class=\"success\"][@id=\"startEarning\"]"));
+                    startEarningBtn.Click();
+                    Console.WriteLine("startEarningBtn found,Helpers.wait 5 seconds");
+                    Helpers.wait(2000);
                 }
+                catch
+                {
+                    Console.WriteLine("stuff");
+                    Helpers.wait(2000);
+                }
+
+                try
+                {
+                    IWebElement discoverMoreBtn = driver.FindElement(By.XPath("//*[@class=\"success\"][@id=\"discoverMore\"]"));
+                    discoverMoreBtn.Click();
+                    Helpers.closeWindows(driver, titles);
+                    Helpers.wait(2000);
+                }
+                catch
+                {
+
+                }
+
+
+                try
+                {
+                    System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
+
+                    foreach (String window in windowHandles)
+                    {
+                        IWebDriver popup = driver.SwitchTo().Window(window);
+
+                        try
+                        {
+                            if (driver.Title.Contains("Facebook"))
+                            {
+                                driver.Close();
+                            }
+                        }
+                        catch { }
+
+                        try
+                        {
+                            int rndClick = random.Next(2);
+
+                            driver.FindElements(By.XPath("//div[@id='nextPage']/a"))[rndClick].Click();
+                            break;
+                        }
+                        catch { }
+
+                        try
+                        {
+                            driver.FindElement(By.Id("discoverMore")).Click();
+                            Helpers.closeWindows(driver, titles);
+                            Helpers.wait(2000);
+                            break;
+                        }
+                        catch { }
+                    }
+                }
+                catch { }
+
+                Helpers.switchToBrowserByString(driver, "nGage");
+
+                try
+                {
+                    System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
+
+                    foreach (String window in windowHandles)
+                    {
+                        IWebDriver popup = driver.SwitchTo().Window(window);
+                        try
+                        {
+                            if (popup.Title.Contains("Not Available"))
+                            {
+                                driver.SwitchTo().Window(window);
+                                driver.Close();
+                                break;
+                            }
+                        }
+                        catch { }
+                        finally { }
+                    }
+                }
+                catch { }
+                finally { }
+
+                Helpers.switchToBrowserByString(driver, "nGage");
+                nGageCards = Helpers.lookFor(driver, "player.ngage-media.com");
+
             }
-            catch { }
         }
 
         void video(IWebDriver driver)
