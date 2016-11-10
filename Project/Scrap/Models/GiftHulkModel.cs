@@ -163,7 +163,6 @@ namespace Scrap.Models
                         }
                         catch { }
 
-
                         Helpers.switchToBrowserFrameByString(driver, "vgPlayer");
                         Helpers.switchFrameByNumber(driver, 0);
                         Helpers.switchToBrowserFrameByString(driver, "player");

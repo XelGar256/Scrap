@@ -12,6 +12,7 @@ namespace Scrap
     public partial class MainWindow : Window
     {
         private BackgroundWorker zoomBw, swagBw, rebelBw, giftHulkBw, InboxBw, grindBw;
+        Window settings = new Settings();
 
         public MainWindow()
         {
@@ -225,38 +226,13 @@ namespace Scrap
             InboxBw.RunWorkerAsync();
         }
 
-        private void btnSaveSettings_Click(object sender, RoutedEventArgs e)
+        private void mnuSettings_Click(object sender, RoutedEventArgs e)
         {
-            if (txtZoomUser.Text != "")
-            {
-                Properties.Settings.Default.ZoomUser = txtZoomUser.Text;
-                Properties.Settings.Default.ZoomPass = txtZoomPass.Password;
-            }
-            if (txtSwagUser.Text != "")
-            {
-                Properties.Settings.Default.SwagUser = txtSwagUser.Text;
-                Properties.Settings.Default.SwagPass = txtSwagPass.Password;
-            }
-            if (txtPrizeUser.Text != "")
-            {
-                Properties.Settings.Default.RebelUser = txtPrizeUser.Text;
-                Properties.Settings.Default.RebelPass = txtPrizePass.Password;
-            }
-            if (txtGiftUser.Text != "")
-            {
+            settings.Show();
+        }
 
-                Properties.Settings.Default.GiftUser = txtGiftUser.Text;
-                Properties.Settings.Default.GiftPass = txtGiftPass.Password;
-            }
-            if (txtInboxUser.Text != "")
-            {
-                Properties.Settings.Default.InboxUser = txtInboxUser.Text;
-                Properties.Settings.Default.InboxPass = txtInboxPass.Password;
-            }
-            Properties.Settings.Default.Save();
-
-            MessageBox.Show("Your Settings Have Been Saved!!", "Save Settings", MessageBoxButton.OK);
-
+        private void LoadSetting_Click(object sender, RoutedEventArgs e)
+        {
             if (Properties.Settings.Default.ZoomUser != string.Empty)
             {
                 txtUsernameZoom.Text = Properties.Settings.Default.ZoomUser;
@@ -282,6 +258,41 @@ namespace Scrap
                 txtUsernameInbox.Text = Properties.Settings.Default.InboxUser;
                 txtPasswordInbox.Password = Properties.Settings.Default.InboxPass;
             }
+        }
+
+        private void mnuExit_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                zoomBw.CancelAsync();
+            }
+            catch { }
+            try
+            {
+                swagBw.CancelAsync();
+            }
+            catch { }
+            try
+            {
+                rebelBw.CancelAsync();
+            }
+            catch { }
+            try
+            {
+                giftHulkBw.CancelAsync();
+            }
+            catch { }
+            try
+            {
+                InboxBw.CancelAsync();
+            }
+            catch { }
+            try
+            {
+                grindBw.CancelAsync();
+            }
+            catch { }
+            Close();
         }
 
         private void btnStopInbox_Click(object sender, RoutedEventArgs e)

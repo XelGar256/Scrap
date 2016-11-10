@@ -42,15 +42,12 @@ namespace Scrap.Models
                 //xbxJxRegPswd
             }
             catch { }
-            finally { }
-
 
             try
             {
                 driver.FindElement(By.Id("loginBtn")).Click();
             }
             catch { }
-            finally { }
 
             Helpers.wait(500);
             Console.WriteLine("I have logged In!!");
@@ -60,7 +57,13 @@ namespace Scrap.Models
                 driver.FindElement(By.Id("swagButtonModalExit")).Click();
             }
             catch { }
-            finally { }
+
+            try
+            {
+                driver.FindElement(By.Id("goldSurveyModalExit")).Click();
+            }
+            catch { }
+
             Console.WriteLine("Please sir no swag button");
 
             if (!openBucks)
@@ -70,24 +73,31 @@ namespace Scrap.Models
                 Helpers.wait(500);
                 while (!bw.CancellationPending && vids)
                 {
-                    video(driver);
+                    video(driver, bw);
                 }
                 Console.WriteLine("past the vids");
 
                 while (true)
                 {
-                    discoveryBreak(driver);
+                    discoveryBreak(driver, bw);
                     Helpers.switchToBrowserByString(driver, "Swagbucks");
                     driver.Navigate().Refresh();
-                    nGage(driver);
+                    nGage(driver, bw);
                     Helpers.switchToBrowserByString(driver, "Swagbucks");
                     driver.Navigate().Refresh();
                     Helpers.switchToBrowserByString(driver, "Swagbucks");
-                    video(driver);
+                    video(driver, bw);
 
                     driver.Navigate().GoToUrl("http://www.swagbucks.com/");
                 }
-                //driver.Quit();
+            }
+            else
+            {
+                while (true)
+                    if (bw.CancellationPending)
+                    {
+                        driver.Quit();
+                    }
             }
         }
 
@@ -158,6 +168,10 @@ namespace Scrap.Models
             craveMe = Helpers.lookFor(driver, "nGage");
             while (craveMe)
             {
+                if (bw.CancellationPending)
+                {
+                    driver.Quit();
+                }
                 bool someSwitch = false;
                 Helpers.closeWindows(driver, titles);
 
@@ -209,7 +223,7 @@ namespace Scrap.Models
             Helpers.ByClass(driver, "logoTopbar");
         }
 
-        void discoveryBreak(IWebDriver driver)
+        void discoveryBreak(IWebDriver driver, BackgroundWorker bw)
         {
             bool discoBreak;
             try
@@ -255,6 +269,11 @@ namespace Scrap.Models
             Helpers.wait(5000);
             while (discoBreak)
             {
+                if (bw.CancellationPending)
+                {
+                    driver.Quit();
+                }
+
                 Console.WriteLine("In the discoBreak!!");
                 Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
                 try
@@ -283,6 +302,7 @@ namespace Scrap.Models
                 }
                 catch { }
 
+                /*
                 try
                 {
                     if (driver.Title.Contains("Facebook"))
@@ -291,6 +311,7 @@ namespace Scrap.Models
                     }
                 }
                 catch { }
+                */
 
                 Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
                 try
@@ -306,6 +327,21 @@ namespace Scrap.Models
                     Console.WriteLine("Waiting 5 Seconds!!");
                     Helpers.wait(500);
                 }
+
+                Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    //if (driver.FindElement(By.ClassName("jw-text-elapsed")).Text == "00:00")
+                    if (driver.FindElement(By.ClassName("jw-reset")).Displayed)
+                    {
+                        Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                        IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
+                        viewMoreContent.Click();
+                        Helpers.closeWindows(driver, titles);
+                    }
+                }
+                catch { }
 
                 Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
                 try
@@ -534,12 +570,20 @@ namespace Scrap.Models
 
                 Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
 
+                Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                Helpers.switchToBrowserFrameByString(driver, "vgPlayer");
+                Helpers.switchFrameByNumber(driver, 0);
+                Helpers.switchFrameByNumber(driver, 0);
+                Helpers.switchToBrowserFrameByString(driver, "player");
+
+                Helpers.ById(driver, "ytp-large-play-button");
+
                 discoBreak = Helpers.lookFor(driver, "www.swagbucks.com/?");
             }
         }
 
 
-        void nGage(IWebDriver driver)
+        void nGage(IWebDriver driver, BackgroundWorker bw)
         {
             Random random = new Random();
             bool nGageCards;
@@ -589,6 +633,11 @@ namespace Scrap.Models
             nGageCards = Helpers.lookFor(driver, "player.ngage-media.com");
             while (nGageCards)
             {
+                if (bw.CancellationPending)
+                {
+                    driver.Quit();
+                }
+
                 Helpers.switchToBrowserByString(driver, "nGage");
                 try
                 {
@@ -685,7 +734,7 @@ namespace Scrap.Models
             }
         }
 
-        void video(IWebDriver driver)
+        void video(IWebDriver driver, BackgroundWorker bw)
         {
             int currentHour = DateTime.Now.Hour;
             bool setComplete = false;
@@ -751,6 +800,11 @@ namespace Scrap.Models
                                 IList<IWebElement> oLinks = driver.FindElements(By.ClassName("sbPlaylistVideoNumber"));
                                 foreach (IWebElement oLink in oLinks)
                                 {
+                                    if (bw.CancellationPending)
+                                    {
+                                        driver.Quit();
+                                    }
+
                                     try
                                     {
                                         Helpers.wait(2000);

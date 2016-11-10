@@ -1,0 +1,40 @@
+﻿<Window x:Class="Scrap.Settings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Scrap"
+        mc:Ignorable="d"
+        Title="Settings" Height="328" Width="523" Icon="ScrapIcon.ico">
+    <Window.Background>
+        <ImageBrush ImageSource="Embedded/ScrapBackground.png"/>
+    </Window.Background>
+    <Grid>
+        <TabControl HorizontalAlignment="Left" Height="277" Margin="10,10,0,0" VerticalAlignment="Top" Width="495" Background="{x:Null}">
+            <TabItem Header="Settings" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="55">
+                <Grid Background="White">
+                    <Label x:Name="label" Content="Zoom Bucks User:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label1" Content="Zoom Bucks Pass:" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label2" Content="Swag Bucks User:" HorizontalAlignment="Left" Margin="13,62,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label3" Content="Swag Bucks Pass:" HorizontalAlignment="Left" Margin="13,88,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label4" Content="Prize Rebel User:" HorizontalAlignment="Left" Margin="16,114,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label5" Content="Prize Rebel Pass" HorizontalAlignment="Left" Margin="19,140,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label6" Content="Gift Hulk User:" HorizontalAlignment="Left" Margin="28,166,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label7" Content="Gift Hulk Pass:" HorizontalAlignment="Left" Margin="29,192,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="txtZoomUser" HorizontalAlignment="Left" Height="23" Margin="119,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                    <PasswordBox x:Name="txtZoomPass" HorizontalAlignment="Left" Margin="119,44,0,0" VerticalAlignment="Top" Width="120"/>
+                    <TextBox x:Name="txtSwagUser" HorizontalAlignment="Left" Height="23" Margin="119,67,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                    <PasswordBox x:Name="txtSwagPass" HorizontalAlignment="Left" Margin="119,95,0,0" VerticalAlignment="Top" Width="120"/>
+                    <TextBox x:Name="txtPrizeUser" HorizontalAlignment="Left" Height="23" Margin="119,118,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                    <PasswordBox x:Name="txtPrizePass" HorizontalAlignment="Left" Margin="119,148,0,0" VerticalAlignment="Top" Width="120"/>
+                    <TextBox x:Name="txtGiftUser" HorizontalAlignment="Left" Height="23" Margin="119,171,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                    <PasswordBox x:Name="txtGiftPass" HorizontalAlignment="Left" Margin="119,199,0,0" VerticalAlignment="Top" Width="120"/>
+                    <Label x:Name="label8" Content="Inbox User:" HorizontalAlignment="Left" Margin="244,14,0,0" VerticalAlignment="Top" Width="73"/>
+                    <Label x:Name="label9" Content="Inbox Pass:" HorizontalAlignment="Left" Margin="244,40,0,0" VerticalAlignment="Top" Width="73"/>
+                    <TextBox x:Name="txtInboxUser" HorizontalAlignment="Left" Height="23" Margin="322,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                    <PasswordBox x:Name="txtInboxPass" HorizontalAlignment="Left" Margin="322,44,0,0" VerticalAlignment="Top" Width="120"/>
+                    <Button x:Name="btnSaveSettings" Content="Save Settings" HorizontalAlignment="Left" Margin="344,121,0,0" VerticalAlignment="Top" Width="75" Click="btnSaveSettings_Click"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid></Window>
