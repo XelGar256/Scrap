@@ -292,6 +292,7 @@ namespace Scrap
                 grindBw.CancelAsync();
             }
             catch { }
+            settings.Close();
             Close();
         }
 
