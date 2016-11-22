@@ -269,270 +269,308 @@ namespace Scrap.Models
             Helpers.wait(5000);
             while (discoBreak)
             {
+                /*
+                System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
+
+                foreach (String window in windowHandles)
+                {
+                    try
+                    {
+                        IWebDriver popup = driver.SwitchTo().Window(window);
+                    }
+                    catch { }
+                    */
+
+
+                if (bw.CancellationPending)
+                {
+                    driver.Quit();
+                }
+
+                Helpers.switchToBrowserByURL(driver, "www.swagbucks.com/?cmd");
+
                 try
                 {
-                    System.Collections.ObjectModel.ReadOnlyCollection<string> windowHandles = driver.WindowHandles;
-
-                    foreach (String window in windowHandles)
+                    Helpers.switchToBrowserByString(driver, "Now Exploring great content!");
+                    while (Helpers.lookFor(driver, "static.jungroup.com/"))
                     {
+                        Helpers.switchToBrowserByString(driver, "Now Exploring great content!");
                         try
                         {
-                            IWebDriver popup = driver.SwitchTo().Window(window);
+                            IWebElement greatContent = driver.FindElement(By.ClassName("nextstepimg"));
+                            greatContent.Click();
                         }
-                        catch { }
-
-
-                        if (bw.CancellationPending)
+                        catch
                         {
-                            driver.Quit();
-                        }
-
-                        try
-                        {
-                            Helpers.switchToBrowserByString(driver, "Now Exploring great content!");
-                            while (Helpers.lookFor(driver, "static.jungroup.com/"))
-                            {
-                                Helpers.switchToBrowserByString(driver, "Now Exploring great content!");
-                                try
-                                {
-                                    IWebElement greatContent = driver.FindElement(By.ClassName("nextstepimg"));
-                                    greatContent.Click();
-                                }
-                                catch
-                                {
-                                    Console.WriteLine("Waiting to finish");
-                                    try
-                                    {
-                                        driver.FindElement(By.XPath("//img[@alt='Claim your reward']")).Click();
-                                        Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                                    }
-                                    catch { }
-                                    Helpers.wait(5000);
-                                }
-                            }
-                        }
-                        catch { }
-
-                        try
-                        {
-                            Helpers.switchToBrowserFrameByString(driver, "junFrame");
-                            IWebElement earn2Swag = driver.FindElement(By.Id("webtraffic_popup_start_button"));
-                            earn2Swag.Click();
-                        }
-                        catch { }
-
-                        try
-                        {
-                            Helpers.switchToBrowserFrameByString(driver, "junFrame");
-                            if (driver.FindElement(By.ClassName("jw-reset")).Displayed)
-                            {
-                                Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                                IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
-                                viewMoreContent.Click();
-                                Helpers.closeWindows(driver, titles);
-                            }
-                        }
-                        catch { }
-
-                        try
-                        {
-                            Helpers.switchToBrowserFrameByString(driver, "junFrame");
-                            IWebElement nextPage = driver.FindElement(By.Id("webtraffic_popup_next_button"));
-                            nextPage.Click();
-                            Console.WriteLine("Next Page");
-                        }
-                        catch { }
-
-                        try
-                        {
-                            Helpers.switchToBrowserFrameByString(driver, "junFrame");
-                            IWebElement earned2Swag = driver.FindElement(By.Id("ty_header"));
-                            string earn2;
-                            earn2 = earned2Swag.Text;
-                        }
-                        catch { }
-
-                        try
-                        {
-
-                            if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
-                            {
-                                Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                                IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
-                                viewMoreContent.Click();
-                                Helpers.closeWindows(driver, titles);
-                            }
-                        }
-                        catch { }
-
-                        try
-                        {
-
-                            if (driver.FindElement(By.Id("ty_headline")).Displayed)
-                            {
-                                Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                                IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
-                                viewMoreContent.Click();
-                                Helpers.closeWindows(driver, titles);
-                            }
-                        }
-                        catch { }
-
-                        try
-                        {
-                            Helpers.switchToBrowserFrameByString(driver, "junFrame");
-                            if (driver.FindElement(By.Id("compositor_placed_innerclip_cta")).Displayed)
-                            {
-                                Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                                IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
-                                viewMoreContent.Click();
-                                Helpers.closeWindows(driver, titles);
-                            }
-                        }
-                        catch { }
-
-                        // Chips Ad
-                        Helpers.ById(driver, "compositor_placed_innerclip_cheddar");
-                        Helpers.ById(driver, "compositor_placed_innerclip_gouda");
-                        Helpers.ById(driver, "compositor_placed_innerclip_habanero");
-                        Helpers.ById(driver, "compositor_placed_innerclip_flamin");
-                        Helpers.ById(driver, "compositor_placed_innerclip_honeybbq");
-                        Helpers.ById(driver, "compositor_placed_innerclip_korean");
-                        Helpers.ById(driver, "compositor_placed_innerclip_oliveoil");
-                        Helpers.ById(driver, "compositor_placed_innerclip_seasalt");
-                        Helpers.ById(driver, "compositor_placed_innerclip_seasalt");
-                        //Soda Ad BajaBlast is the best
-                        Helpers.ById(driver, "compositor_placed_innerclip_bajablast");
-
-                        try
-                        {
-                            Helpers.switchToBrowserFrameByString(driver, "junFrame");
-                            driver.FindElement(By.Id("expository_image")).Click();
-                        }
-                        catch { }
-
-                        try
-                        {
-                            Helpers.switchToBrowserFrameByString(driver, "junFrame");
-                            driver.FindElement(By.Id("compositor_placed_innerclip_reuben")).Click();
-                        }
-                        catch { }
-
-                        try
-                        {
-                            Helpers.switchToBrowserFrameByString(driver, "junFrame");
-                            if (driver.FindElement(By.Id("ty_body_text")).Displayed)
-                            {
-                                Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                                IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
-                                viewMoreContent.Click();
-                                Helpers.closeWindows(driver, titles);
-                            }
-                        }
-                        catch { }
-
-                        try
-                        {
-                            Helpers.switchToBrowserFrameByString(driver, "junFrame");
-                            if (driver.FindElement(By.Id("countdown_control")).Text == "00:-1")
-                            {
-                                Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
-                                IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
-                                viewMoreContent.Click();
-                                Helpers.closeWindows(driver, titles);
-                            }
-                        }
-                        catch { }
-
-                        try
-                        {
-                            Helpers.switchToBrowserFrameByString(driver, "junFrame");
-                            if (driver.FindElement(By.Id("offers_exhausted_message")).Displayed)
-                            {
-                                Console.WriteLine("Exiting discoBreak");
-                                Helpers.switchToBrowserByString(driver, "Home | Swagbucks");
-                                Helpers.closeWindows(driver, titles);
-                                driver.Close();
-                            }
-                        }
-                        catch { }
-
-                        try
-                        {
-                            Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                            Console.WriteLine("Waiting to finish");
                             try
                             {
-                                IList<IWebElement> oLinks = driver.FindElements(By.ClassName("singleselectset_radio"));
-                                Random random = new Random();
-                                int rndClick = random.Next(1, oLinks.Count);
-                                Console.WriteLine(rndClick);
-                                int counterClick = 1;
-                                foreach (IWebElement oLink in oLinks)
-                                {
-                                    Console.WriteLine(counterClick);
-                                    if (counterClick == rndClick)
-                                    {
-                                        oLink.Click();
-                                    }
-                                    counterClick++;
-                                }
+                                driver.FindElement(By.XPath("//img[@alt='Claim your reward']")).Click();
+                                Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
                             }
                             catch { }
-
-                            try
-                            {
-                                driver.FindElement(By.Id("demosubmitimg")).Click();
-                            }
-                            catch { }
+                            Helpers.wait(5000);
                         }
-                        catch { }
-
-                        try
-                        {
-                            Helpers.switchToBrowserFrameByString(driver, "junFrame");
-                            try
-                            {
-                                IWebElement dropDownMonth = driver.FindElement(By.Id("dob_month"));
-                                IWebElement dropDownDay = driver.FindElement(By.Id("dob_day"));
-                                IWebElement dropDownYear = driver.FindElement(By.Id("dob_year"));
-                                string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-                                Random random = new Random();
-                                int rndMonth = random.Next(0, 11);
-                                Console.WriteLine(rndMonth);
-                                SelectElement clickThis = new SelectElement(dropDownMonth);
-                                clickThis.SelectByText(months[rndMonth]);
-                                Helpers.wait(1000);
-                                int rndDay = random.Next(1, 28);
-                                clickThis = new SelectElement(dropDownDay);
-                                clickThis.SelectByText(rndDay.ToString());
-                                Helpers.wait(1000);
-                                int rndYear = random.Next(1974, 1994);
-                                clickThis = new SelectElement(dropDownYear);
-                                clickThis.SelectByText(rndYear.ToString());
-                                Helpers.wait(1000);
-                            }
-                            catch { }
-
-                            try
-                            {
-                                driver.FindElement(By.Id("demosubmitimg")).Click();
-                            }
-                            catch { }
-                        }
-                        catch { }
-
-                        Helpers.switchToBrowserFrameByString(driver, "junFrame");
-                        Helpers.switchToBrowserFrameByString(driver, "vgPlayer");
-                        Helpers.switchFrameByNumber(driver, 0);
-                        Helpers.switchFrameByNumber(driver, 0);
-                        Helpers.switchToBrowserFrameByString(driver, "player");
-
-                        Helpers.ById(driver, "ytp-large-play-button");
-
-                        discoBreak = Helpers.lookFor(driver, "www.swagbucks.com/?");
                     }
                 }
                 catch { }
+
+                Helpers.switchToBrowserByURL(driver, "www.swagbucks.com/?cmd");
+
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    IWebElement earn2Swag = driver.FindElement(By.Id("webtraffic_popup_start_button"));
+                    earn2Swag.Click();
+                }
+                catch { }
+
+                Helpers.switchToBrowserByURL(driver, "www.swagbucks.com/?cmd");
+
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    if (driver.FindElement(By.ClassName("jw-reset")).Displayed)
+                    {
+                        Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                        IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
+                        viewMoreContent.Click();
+                        Helpers.closeWindows(driver, titles);
+                    }
+                }
+                catch { }
+
+                Helpers.switchToBrowserByURL(driver, "www.swagbucks.com/?cmd");
+
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    IWebElement nextPage = driver.FindElement(By.Id("webtraffic_popup_next_button"));
+                    nextPage.Click();
+                    Console.WriteLine("Next Page");
+                }
+                catch { }
+
+                Helpers.switchToBrowserByURL(driver, "www.swagbucks.com/?cmd");
+
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    IWebElement earned2Swag = driver.FindElement(By.Id("ty_header"));
+                    string earn2;
+                    earn2 = earned2Swag.Text;
+                }
+                catch { }
+
+                Helpers.switchToBrowserByURL(driver, "www.swagbucks.com/?cmd");
+
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    if (driver.FindElement(By.Id("ty_headline")).Text == "Thanks for visiting great content!")
+                    {
+                        Helpers.switchToBrowserByURL(driver, "www.swagbucks.com/?cmd");
+                        IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
+                        viewMoreContent.Click();
+                        Helpers.closeWindows(driver, titles);
+                    }
+                }
+                catch { }
+
+                Helpers.switchToBrowserByURL(driver, "www.swagbucks.com/?cmd");
+
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    if (driver.FindElement(By.Id("ty_headline")).Displayed)
+                    {
+                        Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                        IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
+                        viewMoreContent.Click();
+                        Helpers.closeWindows(driver, titles);
+                    }
+                }
+                catch { }
+
+                Helpers.switchToBrowserByURL(driver, "www.swagbucks.com/?cmd");
+
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    if (driver.FindElement(By.Id("compositor_placed_innerclip_cta")).Displayed)
+                    {
+                        Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                        IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
+                        viewMoreContent.Click();
+                        Helpers.closeWindows(driver, titles);
+                    }
+                }
+                catch { }
+
+                // Chips Ad
+                Helpers.switchToBrowserByURL(driver, "www.swagbucks.com/?cmd");
+
+                Helpers.ById(driver, "compositor_placed_innerclip_cheddar");
+                Helpers.ById(driver, "compositor_placed_innerclip_gouda");
+                Helpers.ById(driver, "compositor_placed_innerclip_habanero");
+                Helpers.ById(driver, "compositor_placed_innerclip_flamin");
+                Helpers.ById(driver, "compositor_placed_innerclip_honeybbq");
+                Helpers.ById(driver, "compositor_placed_innerclip_korean");
+                Helpers.ById(driver, "compositor_placed_innerclip_oliveoil");
+                Helpers.ById(driver, "compositor_placed_innerclip_seasalt");
+                Helpers.ById(driver, "compositor_placed_innerclip_seasalt");
+                //Soda Ad BajaBlast is the best
+                Helpers.ById(driver, "compositor_placed_innerclip_bajablast");
+
+                Helpers.switchToBrowserByURL(driver, "www.swagbucks.com/?cmd");
+
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    driver.FindElement(By.Id("expository_image")).Click();
+                }
+                catch { }
+
+                Helpers.switchToBrowserByURL(driver, "www.swagbucks.com/?cmd");
+
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    driver.FindElement(By.Id("compositor_placed_innerclip_reuben")).Click();
+                }
+                catch { }
+
+                Helpers.switchToBrowserByURL(driver, "www.swagbucks.com/?cmd");
+
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    if (driver.FindElement(By.Id("ty_body_text")).Displayed)
+                    {
+                        Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                        IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
+                        viewMoreContent.Click();
+                        Helpers.closeWindows(driver, titles);
+                    }
+                }
+                catch { }
+
+                Helpers.switchToBrowserByURL(driver, "www.swagbucks.com/?cmd");
+
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    if (driver.FindElement(By.Id("countdown_control")).Text == "00:-1")
+                    {
+                        Helpers.switchToBrowserByString(driver, "www.swagbucks.com/?cmd");
+                        IWebElement viewMoreContent = driver.FindElement(By.XPath("//*[@class=\"btn1 btn2\"]"));
+                        viewMoreContent.Click();
+                        Helpers.closeWindows(driver, titles);
+                    }
+                }
+                catch { }
+
+                Helpers.switchToBrowserByURL(driver, "www.swagbucks.com/?cmd");
+
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    if (driver.FindElement(By.Id("offers_exhausted_message")).Displayed)
+                    {
+                        Console.WriteLine("Exiting discoBreak");
+                        Helpers.switchToBrowserByString(driver, "Home | Swagbucks");
+                        Helpers.closeWindows(driver, titles);
+                        driver.Close();
+                    }
+                }
+                catch { }
+
+                Helpers.switchToBrowserByURL(driver, "www.swagbucks.com/?cmd");
+
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    try
+                    {
+                        IList<IWebElement> oLinks = driver.FindElements(By.ClassName("singleselectset_radio"));
+                        Random random = new Random();
+                        int rndClick = random.Next(1, oLinks.Count);
+                        Console.WriteLine(rndClick);
+                        int counterClick = 1;
+                        foreach (IWebElement oLink in oLinks)
+                        {
+                            Console.WriteLine(counterClick);
+                            if (counterClick == rndClick)
+                            {
+                                oLink.Click();
+                            }
+                            counterClick++;
+                        }
+                    }
+                    catch { }
+
+                    Helpers.switchToBrowserByURL(driver, "www.swagbucks.com/?cmd");
+
+                    try
+                    {
+                        driver.FindElement(By.Id("demosubmitimg")).Click();
+                    }
+                    catch { }
+                }
+                catch { }
+
+                Helpers.switchToBrowserByURL(driver, "www.swagbucks.com/?cmd");
+
+                try
+                {
+                    Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                    try
+                    {
+                        IWebElement dropDownMonth = driver.FindElement(By.Id("dob_month"));
+                        IWebElement dropDownDay = driver.FindElement(By.Id("dob_day"));
+                        IWebElement dropDownYear = driver.FindElement(By.Id("dob_year"));
+                        string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                        Random random = new Random();
+                        int rndMonth = random.Next(0, 11);
+                        Console.WriteLine(rndMonth);
+                        SelectElement clickThis = new SelectElement(dropDownMonth);
+                        clickThis.SelectByText(months[rndMonth]);
+                        Helpers.wait(1000);
+                        int rndDay = random.Next(1, 28);
+                        clickThis = new SelectElement(dropDownDay);
+                        clickThis.SelectByText(rndDay.ToString());
+                        Helpers.wait(1000);
+                        int rndYear = random.Next(1974, 1994);
+                        clickThis = new SelectElement(dropDownYear);
+                        clickThis.SelectByText(rndYear.ToString());
+                        Helpers.wait(1000);
+                    }
+                    catch { }
+
+                    Helpers.switchToBrowserByURL(driver, "www.swagbucks.com/?cmd");
+
+                    try
+                    {
+                        driver.FindElement(By.Id("demosubmitimg")).Click();
+                    }
+                    catch { }
+                }
+                catch { }
+
+                Helpers.switchToBrowserByURL(driver, "www.swagbucks.com/?cmd");
+
+                Helpers.switchToBrowserFrameByString(driver, "junFrame");
+                Helpers.switchToBrowserFrameByString(driver, "vgPlayer");
+                Helpers.switchFrameByNumber(driver, 0);
+                Helpers.switchFrameByNumber(driver, 0);
+                Helpers.switchToBrowserFrameByString(driver, "player");
+
+                Helpers.ById(driver, "ytp-large-play-button");
+
+                discoBreak = Helpers.lookFor(driver, "www.swagbucks.com/?");
+                //}
+                //}
+                //catch { }
             }
         }
 

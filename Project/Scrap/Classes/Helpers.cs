@@ -240,5 +240,31 @@ namespace Scrap.Classes
             }
             catch { }
         }
+
+        public static void switchToBrowserByURL(IWebDriver driver, string targetBrowserString)
+        {
+            try
+            {
+                foreach (string defwindow in driver.WindowHandles)
+                {
+                    IWebDriver popup = driver.SwitchTo().Window(defwindow);
+
+                    Console.WriteLine(popup.Title.ToString());
+                    try
+                    {
+                        if (popup.Url.Contains(targetBrowserString))
+                        {
+                            Console.WriteLine("You are now in " + driver.Title);
+                            break;
+                        }
+                    }
+                    catch
+                    {
+                        break;
+                    }
+                }
+            }
+            catch { }
+        }
     }
 }
