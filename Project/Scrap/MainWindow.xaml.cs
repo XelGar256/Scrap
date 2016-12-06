@@ -328,5 +328,42 @@ namespace Scrap
         {
             swagBw.CancelAsync();
         }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            try
+            {
+                zoomBw.CancelAsync();
+            }
+            catch { }
+            try
+            {
+                swagBw.CancelAsync();
+            }
+            catch { }
+            try
+            {
+                rebelBw.CancelAsync();
+            }
+            catch { }
+            try
+            {
+                giftHulkBw.CancelAsync();
+            }
+            catch { }
+            try
+            {
+                InboxBw.CancelAsync();
+            }
+            catch { }
+            try
+            {
+                grindBw.CancelAsync();
+            }
+            catch { }
+            settings.Close();
+
+            base.OnClosing(e);
+        }
     }
 }

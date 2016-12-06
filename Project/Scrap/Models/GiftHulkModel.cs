@@ -1,9 +1,11 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Interactions;
 using Scrap.Classes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows;
 
 namespace Scrap.Models
 {
@@ -30,11 +32,50 @@ namespace Scrap.Models
 
                 driver.FindElement(By.Name("log")).SendKeys(username);
                 driver.FindElement(By.Name("pwd")).SendKeys(password);
+
+                /*
+                IList<IWebElement> iframes = driver.FindElements(By.TagName("iframe"));
+                MessageBox.Show(iframes.Count.ToString());
+                foreach(IWebElement iframe in iframes)
+                {
+                    MessageBox.Show(iframe.GetAttribute("title"));
+                }
+                */
+
+                Helpers.switchFrameByNumber(driver, 3);
+                //driver.FindElement(By.ClassName("recaptcha-checkbox")).Click();
+                /*
+                if (driver.FindElement(By.Id("recaptcha-anchor")).Displayed)
+                {
+                    MessageBox.Show("Hey");
+                }
+                */
+                int classCount = 0;
+                IList<IWebElement> ClassNames = driver.FindElements(By.TagName("div"));
+                foreach(IWebElement ClassName in ClassNames)
+                {
+                    if (classCount == 4)
+                    {
+                        try
+                        {
+                            ClassName.Click();   
+                        }
+                        catch { }
+                    }
+                    classCount++;
+                }
+                driver.SwitchTo().DefaultContent();
+                while (driver.FindElement(By.Name("pwd")).Displayed)
+                {
+
+                }
                 driver.FindElement(By.Name("pwd")).SendKeys(Keys.Enter);
             }
             catch { }
             finally { }
             Helpers.wait(5000);
+
+            Helpers.ByClass(driver, "close-popup");
 
             if (!openHulk)
             {

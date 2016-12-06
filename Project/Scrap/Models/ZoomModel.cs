@@ -17,8 +17,6 @@ namespace Scrap.Models
             bool looping = true;
             while (looping)
             {
-                if (!justZoom)
-                {
 
                     ChromeDriverService service = ChromeDriverService.CreateDefaultService(App.Folder);
                     service.HideCommandPromptWindow = true;
@@ -41,6 +39,8 @@ namespace Scrap.Models
                     catch { }
 
                     Helpers.wait(10000);
+                if (!justZoom)
+                {
 
                     try
                     {
@@ -121,6 +121,10 @@ namespace Scrap.Models
                     junVideos = false;
                     volume = false;
                     viroolBool = false;
+                }
+                else
+                {
+                    looping = false;
                 }
             }
         }
