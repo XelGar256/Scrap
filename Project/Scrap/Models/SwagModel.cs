@@ -82,11 +82,12 @@ namespace Scrap.Models
                     discoveryBreak(driver, bw);
                     Helpers.switchToBrowserByString(driver, "Swagbucks");
                     driver.Navigate().Refresh();
+                    sbYouCanEat(driver, bw);
+                    Helpers.switchToBrowserByString(driver, "Swagbucks");
+                    driver.Navigate().Refresh();
                     nGage(driver, bw);
                     Helpers.switchToBrowserByString(driver, "Swagbucks");
                     driver.Navigate().Refresh();
-                    Helpers.switchToBrowserByString(driver, "Swagbucks");
-                    video(driver, bw);
 
                     driver.Navigate().GoToUrl("http://www.swagbucks.com/");
                 }
@@ -98,6 +99,38 @@ namespace Scrap.Models
                     {
                         driver.Quit();
                     }
+            }
+        }
+
+        void sbYouCanEat(IWebDriver driver, BackgroundWorker bw)
+        {
+            bool looping = true;
+            try
+            {
+                IWebElement youCanEat = driver.FindElement(By.Id("sbHomeCard378979-563"));
+                youCanEat.Click();
+                Helpers.wait(5000);
+                Helpers.switchToBrowserByString(driver, "nGage");
+            }
+            catch
+            {
+                looping = false;
+            }
+
+            while (looping)
+            {
+                Helpers.switchToBrowserByString(driver, "nGage");
+                Helpers.wait(5000);
+                try
+                {
+                    if (!driver.FindElement(By.ClassName("timer")).Displayed && !driver.FindElement(By.Id("discoverMore")).Displayed)
+                    {
+                        looping = false;
+                    }
+                }
+                catch { }
+
+                looping = Helpers.lookFor(driver, "Not Available");
             }
         }
 
@@ -629,6 +662,12 @@ namespace Scrap.Models
                 {
                     driver.Quit();
                 }
+
+                try
+                {
+                    driver.FindElement(By.Id("startEarning")).Click();
+                }
+                catch { }
 
                 Helpers.switchToBrowserByString(driver, "nGage");
                 try

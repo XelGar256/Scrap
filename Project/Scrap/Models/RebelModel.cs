@@ -137,17 +137,18 @@ namespace Scrap.Models
 
                     try
                     {
+                        driver.FindElement(By.Id("beginPromo")).Click();
+                    }
+                    catch { }
+
+                    try
+                    {
                         if (driver.Title.Contains("Facebook"))
                         {
                             driver.Close();
                         }
                     }
                     catch { }
-
-                    if (!Helpers.lookFor(driver, "Entertainmentcrave"))
-                    {
-                        nCraveLoop = false;
-                    }
 
                     if (hr != DateTime.Now.Hour)
                     {

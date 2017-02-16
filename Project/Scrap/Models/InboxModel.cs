@@ -37,9 +37,9 @@ namespace Scrap.Models
 
             try
             {
-                if (driver.FindElement(By.Id("emailsBlock")).FindElement(By.ClassName("textBox")).Text != "0")
                 {
                     driver.FindElement(By.Id("emailsBlock")).FindElement(By.ClassName("textBox")).Click();
+                    emails(driver);
                 }
             }
             catch { }
@@ -71,6 +71,11 @@ namespace Scrap.Models
                 }
                 catch { }
             }
+        }
+
+        void emails(IWebDriver driver)
+        {
+
         }
 
         void videos(IWebDriver driver)

@@ -266,5 +266,25 @@ namespace Scrap.Classes
             }
             catch { }
         }
+
+        public static bool findText(IWebDriver driver, string targetString)
+        {
+            try
+            {
+                IList<IWebElement> h2s = driver.FindElements(By.TagName("h2"));
+                foreach (IWebElement h2 in h2s)
+                {
+                    if (h2.Text.Contains(targetString))
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            return false;
+        }
     }
 }

@@ -18,27 +18,27 @@ namespace Scrap.Models
             while (looping)
             {
 
-                    ChromeDriverService service = ChromeDriverService.CreateDefaultService(App.Folder);
-                    service.HideCommandPromptWindow = true;
+                ChromeDriverService service = ChromeDriverService.CreateDefaultService(App.Folder);
+                service.HideCommandPromptWindow = true;
 
-                    ChromeOptions options = new ChromeOptions();
-                    options.AddArgument("start-maximized");
-                    options.AddArgument("user-data-dir=" + App.Folder + "profileZB");
+                ChromeOptions options = new ChromeOptions();
+                options.AddArgument("start-maximized");
+                options.AddArgument("user-data-dir=" + App.Folder + "profileZB");
 
-                    IWebDriver driver = new ChromeDriver(service, options);
-                    driver.Navigate().GoToUrl("http://members.grabpoints.com/#/login?email=" + username);
+                IWebDriver driver = new ChromeDriver(service, options);
+                driver.Navigate().GoToUrl("http://members.grabpoints.com/#/login?email=" + username);
 
-                    try
-                    {
-                        //driver.FindElement(By.Name("email")).SendKeys(username);
-                        //driver.FindElement(By.Name("email")).SendKeys(Keys.Enter);
-                        ////Helpers.wait(5000);
-                        driver.FindElement(By.Id("password")).SendKeys(password);
-                        driver.FindElement(By.ClassName("btn-block")).Click();
-                    }
-                    catch { }
+                try
+                {
+                    //driver.FindElement(By.Name("email")).SendKeys(username);
+                    //driver.FindElement(By.Name("email")).SendKeys(Keys.Enter);
+                    ////Helpers.wait(5000);
+                    driver.FindElement(By.Id("password")).SendKeys(password);
+                    driver.FindElement(By.ClassName("btn-block")).Click();
+                }
+                catch { }
 
-                    Helpers.wait(10000);
+                Helpers.wait(10000);
                 if (!justZoom)
                 {
 
@@ -46,13 +46,27 @@ namespace Scrap.Models
                     {
                         int counter = 0;
                         IList<IWebElement> turnOffNotifcations = driver.FindElements(By.ClassName("btn-block"));
-                        foreach (IWebElement turnOffNotication in turnOffNotifcations)
+                        if (!Helpers.findText(driver, "Milestones"))
                         {
-                            if (counter == turnOffNotifcations.Count - 1)
+                            foreach (IWebElement turnOffNotication in turnOffNotifcations)
                             {
-                                turnOffNotication.Click();
+                                if (counter == turnOffNotifcations.Count - 1)
+                                {
+                                    turnOffNotication.Click();
+                                }
+                                counter++;
                             }
-                            counter++;
+                        }
+                        else
+                        {
+                            foreach (IWebElement turnOffNotication in turnOffNotifcations)
+                            {
+                                if (counter == 1)
+                                {
+                                    turnOffNotication.Click();
+                                }
+                                counter++;
+                            }
                         }
                     }
                     catch { }
